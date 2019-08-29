@@ -13,6 +13,11 @@ class TestCMakeTidyFormat(unittest.TestCase):
         self.reporter = GenericDiffReporterFactory().get_first_working()
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_command(self, stdout):
-        execute_cmake_tidy(command='format', arguments=[])
+    def test_format_command_help_shown(self, stdout):
+        execute_cmake_tidy(command='format', arguments=['--help'])
+        verify(stdout.getvalue(), self.reporter)
+
+    @mock.patch('sys.stderr', new_callable=StringIO)
+    def test_incorrect_command_should_print_error_with_usage_help(self, stdout):
+        execute_cmake_tidy(command='', arguments=[])
         verify(stdout.getvalue(), self.reporter)

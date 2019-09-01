@@ -1,4 +1,7 @@
-usage: cmake-tidy format [-h]
+usage: cmake-tidy format [-h] input
+
+positional arguments:
+  input       CMake file to be formatted
 
 optional arguments:
   -h, --help  show this help message and exit

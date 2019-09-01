@@ -4,6 +4,7 @@ import inspect
 class Configuration:
     def __init__(self, arguments: dict):
         self._config = {}
+        self.__input_data = None
         for name in self.__get_all_property_names():
             if arguments.get(name) is not None:
                 self._config[name] = arguments.get(name)
@@ -13,8 +14,10 @@ class Configuration:
         input_file = self._config.get(self._property_name())
         if input_file is None:
             return ''
-        else:
-            return input_file.read()
+        elif self.__input_data is None:
+            self.__input_data = input_file.read()
+            input_file.close()
+        return self.__input_data
 
     @property
     def all_properties(self):

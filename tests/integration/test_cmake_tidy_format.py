@@ -23,3 +23,9 @@ class TestCMakeTidyFormat(unittest.TestCase):
         execute_cmake_tidy(command='', arguments=[])
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    def test_format_command_should_print_file_to_output(self, stdout):
+        execute_cmake_tidy(command='format', arguments=['input_files/first_example.cmake'])
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)

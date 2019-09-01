@@ -1,5 +1,6 @@
 from cmake_tidy.command_line_handling import arguments
 from cmake_tidy.command_line_handling.command import Command
+from cmake_tidy.configuration import create_configuration
 
 
 class FormatCommand(Command):
@@ -10,4 +11,6 @@ class FormatCommand(Command):
         arguments.input(self._command_parser)
 
     def execute_command(self, args):
-        print(f'{args.sub_command}')
+        config = create_configuration(args)
+        print(f'Command<{args.sub_command}>: ')
+        print(f'{config.input}')

@@ -2,7 +2,7 @@ import ply.lex as lex
 
 
 class CMakeLexer:
-    tokens = ['NEWLINES']
+    tokens = ['NEWLINES', 'UNHANDLED_YET']
 
     def __init__(self) -> None:
         self.lexer = lex.lex(module=self)
@@ -15,8 +15,13 @@ class CMakeLexer:
 
     @staticmethod
     def t_ANY_error(t: lex.LexToken) -> None:
-        print("Illegal character '%s'" % t.value[0])
+        print(f'Unsupported: {t.value[0]}')
         t.lexer.skip(1)
+
+    @staticmethod
+    def t_UNHANDLED_YET(t: lex.Token) -> lex.Token:
+        r"""[^\n]+"""
+        return t
 
     def analyze(self, data: str) -> list:
         self.lexer.input(data)

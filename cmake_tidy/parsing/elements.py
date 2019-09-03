@@ -26,6 +26,10 @@ class Element(ABC):
     def add(self, component: 'Element') -> 'Element':
         pass
 
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
 
 class PrimitiveElement(Element):
     def __init__(self, name='', values=''):
@@ -47,6 +51,9 @@ class PrimitiveElement(Element):
     def add(self, component: 'Element') -> 'Element':
         pass
 
+    def accept(self, visitor):
+        visitor.visit(self.name, self.values)
+
 
 class ComplexElement(Element):
     def __init__(self, name='') -> None:
@@ -65,3 +72,8 @@ class ComplexElement(Element):
     def remove(self, component: Element) -> None:
         self._children.remove(component)
         component.parent = None
+
+    def accept(self, visitor):
+        for child in self._children:
+            child.accept(visitor)
+        visitor.visit(self.name)

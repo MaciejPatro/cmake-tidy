@@ -21,9 +21,10 @@ class TestElements(unittest.TestCase):
         self.assertEqual('', str(ComplexElement()))
 
     def test_complex_element_should_handle_multiple_primitives(self):
-        element = ComplexElement('complex')\
-            .add(PrimitiveElement('abc', 123))\
+        element = ComplexElement('complex') \
+            .add(PrimitiveElement('abc', 123)) \
             .add(PrimitiveElement('def', 456))
+
         self.assertIn('complex.abc: 123', str(element))
         self.assertIn('complex.def: 456', str(element))
 
@@ -34,3 +35,20 @@ class TestElements(unittest.TestCase):
         root.add(ComplexElement('empty'))
 
         self.assertEqual('root.abc: 123\nroot.another.def: 456', str(root))
+
+    def test_visitor_printer_going_through_tree(self):
+        visitor = self.Visitor()
+
+        root = ComplexElement('file') \
+            .add(ComplexElement('element').add(PrimitiveElement('a', 1))) \
+            .add(PrimitiveElement('b', 2))
+        root.accept(visitor)
+
+        self.assertListEqual(['a', 'element', 'b', 'file'], visitor.calls)
+
+    class Visitor:
+        def __init__(self):
+            self.calls = []
+
+        def visit(self, name: str, value=None):
+            self.calls.append(name)

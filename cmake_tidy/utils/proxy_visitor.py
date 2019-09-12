@@ -4,4 +4,4 @@ class ProxyVisitor:
 
     def visit(self, name: str, values=None):
         if name in self.__proxies:
-            self.__proxies[name](values)
+            return self.__proxies[name](values)

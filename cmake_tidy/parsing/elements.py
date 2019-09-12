@@ -52,7 +52,7 @@ class PrimitiveElement(Element):
         pass
 
     def accept(self, visitor):
-        visitor.visit(self.name, self.values)
+        return visitor.visit(self.name, self.values)
 
 
 class ComplexElement(Element):
@@ -74,6 +74,5 @@ class ComplexElement(Element):
         component.parent = None
 
     def accept(self, visitor):
-        for child in self._children:
-            child.accept(visitor)
-        visitor.visit(self.name)
+        values = [child.accept(visitor) for child in self._children]
+        return visitor.visit(self.name, values)

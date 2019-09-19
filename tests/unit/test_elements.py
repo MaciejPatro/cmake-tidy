@@ -31,10 +31,12 @@ class TestElements(unittest.TestCase):
     def test_complex_elements_can_be_both_populated_with_primitives_and_complex_elements(self):
         root = ComplexElement('root')
         root.add(PrimitiveElement('abc', 123))
-        root.add(ComplexElement('another').add(PrimitiveElement('def', 456)))
+        root.add(ComplexElement('another')
+                 .add(PrimitiveElement('def', 456))
+                 .add(PrimitiveElement('ghi', 789)))
         root.add(ComplexElement('empty'))
 
-        self.assertEqual('root.abc: 123\nroot.another.def: 456', str(root))
+        self.assertEqual('root.abc: 123\nroot.another.def: 456\n     another.ghi: 789', str(root))
 
     def test_visitor_printer_going_through_tree(self):
         visitor = self.Visitor()

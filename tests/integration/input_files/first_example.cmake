@@ -5,6 +5,7 @@ include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 find_package(GTest REQUIRED)
 
+# Here we have a line comment with weird stuff like #[===]] $#%!#@$!#@%^^%$&%
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

@@ -22,9 +22,22 @@ class CMakeParser:
 
     @staticmethod
     def p_file_element(p):
-        """file_element : newlines
+        """file_element : line_ending
                         | unhandled"""
         p[0] = p[1]
+
+    @staticmethod
+    def p_line_ending(p):
+        """line_ending : line_comment newlines
+                       | newlines"""
+        p[0] = ComplexElement('line_ending')
+        for i in range(1, len(p)):
+            p[0].add(p[i])
+
+    @staticmethod
+    def p_line_comment(p):
+        """line_comment : LINE_COMMENT"""
+        p[0] = PrimitiveElement('line_comment', p[1])
 
     @staticmethod
     def p_newlines(p):

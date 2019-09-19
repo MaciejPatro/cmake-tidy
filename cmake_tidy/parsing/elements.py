@@ -62,7 +62,11 @@ class ComplexElement(Element):
         self._name = name
 
     def __repr__(self) -> str:
-        return '\n'.join([f'{self.name}.{child}' for child in self._children if str(child) is not ''])
+        children_repr = [f'{self.name}.{self.__ident(str(child))}' for child in self._children if str(child) is not '']
+        return '\n'.join(children_repr)
+
+    def __ident(self, representation: str) -> str:
+        return representation.replace('\n', '\n{}'.format(' ' * (len(self.name) + 1)))
 
     def add(self, component: Element) -> 'Element':
         self._children.append(component)

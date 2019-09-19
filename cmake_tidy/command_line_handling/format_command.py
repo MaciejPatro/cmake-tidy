@@ -1,7 +1,7 @@
-from cmake_tidy.command_line_handling import arguments
-from cmake_tidy.command_line_handling.command import Command
+from cmake_tidy.command_line_handling import arguments, Command
 from cmake_tidy.configuration import create_configuration
-from cmake_tidy.formatting.cmake_formatter import CMakeFormatter
+from cmake_tidy.formatting import CMakeFormatter
+from cmake_tidy.parsing import CMakeParser
 
 
 class FormatCommand(Command):
@@ -9,10 +9,20 @@ class FormatCommand(Command):
         description = 'format file to align it to standard'
         super().__init__(parser, 'format', description)
 
-        arguments.input(self._command_parser)
+        arguments.input_data(self._command_parser)
 
     def execute_command(self, args):
         config = create_configuration(args)
         print(f'Command<{args.sub_command}>: ')
-        formatted_data = CMakeFormatter().format(config.input)
+
+        parsed_input = self.__parse_input(config.input)
+        formatted_data = self.__format_data(parsed_input)
         print(formatted_data)
+
+    @staticmethod
+    def __format_data(parsed_input):
+        return CMakeFormatter().format(parsed_input)
+
+    @staticmethod
+    def __parse_input(input_data: str):
+        return CMakeParser().parse(input_data)

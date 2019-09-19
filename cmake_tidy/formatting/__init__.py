@@ -1,0 +1,1 @@
+from cmake_tidy.formatting.cmake_formatter import CMakeFormatter

@@ -1,13 +1,19 @@
+from cmake_tidy.parsing.elements import Element
+from cmake_tidy.utils.proxy_visitor import ProxyVisitor
+
+
 class CMakeFormatter:
-    @staticmethod
-    def format(text: str) -> str:
-        return text
+    def __init__(self):
+        self.__visitor = ProxyVisitor(self.__generate_formatting_methods())
 
-
-class FormatUnhandled:
-    def register(self, dictionary: dict):
-        dictionary['unhandled'] = self.format
+    def format(self, data: Element) -> str:
+        formatted_elements = data.accept(self.__visitor)
+        return ''.join(formatted_elements)
 
     @staticmethod
-    def format(data: str) -> str:
-        return data
+    def __generate_formatting_methods():
+        formatting_methods = dict()
+        formatting_methods['unhandled'] = lambda data: data
+        formatting_methods['newlines'] = lambda newlines: '\n' * newlines
+        formatting_methods['file'] = lambda data: data
+        return formatting_methods

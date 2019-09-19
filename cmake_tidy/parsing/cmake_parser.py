@@ -29,7 +29,7 @@ class CMakeParser:
     @staticmethod
     def p_newlines(p):
         """newlines : NEWLINES"""
-        p[0] = PrimitiveElement('newlines', f'{len(p[1])}')
+        p[0] = PrimitiveElement('newlines', len(p[1]))
 
     @staticmethod
     def p_empty(p):

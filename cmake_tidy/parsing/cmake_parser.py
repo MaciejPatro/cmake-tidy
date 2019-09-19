@@ -31,8 +31,8 @@ class CMakeParser:
         """line_ending : line_comment newlines
                        | newlines"""
         p[0] = ComplexElement('line_ending')
-        for i in range(1, len(p)):
-            p[0].add(p[i])
+        for element in p[1:]:
+            p[0].add(element)
 
     @staticmethod
     def p_line_comment(p):

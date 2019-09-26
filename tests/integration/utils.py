@@ -9,4 +9,4 @@ def execute_cmake_tidy(command: str, arguments: list):
 
 
 def normalize(data: str) -> str:
-    return data.replace('\r', '')
+    return data.replace('\r\n', '\n')

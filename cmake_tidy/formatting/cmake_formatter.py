@@ -17,5 +17,5 @@ class CMakeFormatter:
         formatting_methods['file'] = lambda data: data
         formatting_methods['line_comment'] = lambda data: data
         formatting_methods['line_ending'] = lambda data: ''.join(data)
-        formatting_methods['newlines'] = lambda newlines: '\n' * newlines
+        formatting_methods['newlines'] = lambda newlines: '\n' * min(2, newlines)
         return formatting_methods

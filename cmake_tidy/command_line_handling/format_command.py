@@ -1,6 +1,6 @@
 from cmake_tidy.command_line_handling import arguments, Command
 from cmake_tidy.configuration import create_configuration
-from cmake_tidy.formatting import CMakeFormatter
+from cmake_tidy.formatting import CMakeFormatter, load_format_settings
 from cmake_tidy.parsing import CMakeParser
 
 
@@ -21,7 +21,8 @@ class FormatCommand(Command):
 
     @staticmethod
     def __format_data(parsed_input):
-        return CMakeFormatter().format(parsed_input)
+        format_settings = load_format_settings()
+        return CMakeFormatter(format_settings).format(parsed_input)
 
     @staticmethod
     def __parse_input(input_data: str):

@@ -17,4 +17,6 @@ def load_format_settings() -> dict:
 def _get_default_format_settings() -> dict:
     settings = dict()
     settings['succeeding_newlines'] = 2
+    settings['tabs_as_spaces'] = True
+    settings['tab_size'] = 4
     return settings

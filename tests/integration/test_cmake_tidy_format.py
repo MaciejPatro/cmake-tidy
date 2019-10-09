@@ -48,3 +48,9 @@ class TestCMakeTidyFormat(unittest.TestCase):
 
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    def test_format_tabs_with_spaces_replacement(self, stdout):
+        execute_cmake_tidy(command='format', arguments=['input_files/spaces_violations.cmake'])
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)

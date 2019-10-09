@@ -23,6 +23,7 @@ class CMakeParser:
     @staticmethod
     def p_file_element(p):
         """file_element : line_ending
+                        | spaces
                         | unhandled"""
         p[0] = p[1]
 
@@ -53,6 +54,11 @@ class CMakeParser:
     def p_unhandled(p):
         """unhandled : UNHANDLED_YET"""
         p[0] = PrimitiveElement('unhandled', p[1])
+
+    @staticmethod
+    def p_spaces(p):
+        """spaces : SPACES"""
+        p[0] = PrimitiveElement('spaces', p[1])
 
     @staticmethod
     def p_error(p):

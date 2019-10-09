@@ -2,9 +2,10 @@ import ply.lex as lex
 
 
 class CMakeLexer:
-    tokens = ['NEWLINES', 'UNHANDLED_YET', 'LINE_COMMENT']
+    tokens = ['NEWLINES', 'UNHANDLED_YET', 'LINE_COMMENT', 'SPACES']
 
     t_LINE_COMMENT = r'\#[^\n]+'
+    t_SPACES = r'[ \t]+'
 
     def __init__(self) -> None:
         self.lexer = lex.lex(module=self)
@@ -22,7 +23,7 @@ class CMakeLexer:
 
     @staticmethod
     def t_UNHANDLED_YET(t: lex.Token) -> lex.Token:
-        r"""[^\n#]+"""
+        r"""[\w\d\.\"\-\=\$\{\}\/\)\(\<\:\>]+"""
         return t
 
     def analyze(self, data: str) -> list:

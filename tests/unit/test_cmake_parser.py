@@ -33,9 +33,19 @@ class TestCMakeParser(unittest.TestCase):
         comment = '# cdaew9u32#$#@%#232cd a2o#@$@!'
         root = file() \
             .add(line_comment(comment, 1)) \
-            .add(unhandled('xc 43'))
+            .add(unhandled('xc_43'))
 
-        self.assertReprEqual(root, self.parser.parse(comment + '\nxc 43'))
+        self.assertReprEqual(root, self.parser.parse(comment + '\nxc_43'))
+
+    def test_should_parse_spacings_within_text(self):
+        begin = 'abc'
+        spacing = '  \t'
+        end = '_\"DWa'
+        root = file().add(unhandled(begin)) \
+            .add(spaces(spacing)) \
+            .add(unhandled(end))
+
+        self.assertReprEqual(root, self.parser.parse(begin + spacing + end))
 
     def assertReprEqual(self, expected, received):
         self.assertEqual(str(expected), str(received))
@@ -43,6 +53,10 @@ class TestCMakeParser(unittest.TestCase):
 
 def file() -> Element:
     return ComplexElement('file')
+
+
+def spaces(data: str) -> PrimitiveElement:
+    return PrimitiveElement('spaces', data)
 
 
 def line_comment(comment: str, newlines_number: int) -> Element:

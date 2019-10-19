@@ -17,13 +17,10 @@ class CMakeLexer:
         return t
 
     @staticmethod
-    def t_ANY_error(t: lex.LexToken) -> None:
-        print(f'Unsupported: {t.value[0]}')
+    def t_ANY_error(t: lex.LexToken):
         t.lexer.skip(1)
-
-    @staticmethod
-    def t_UNHANDLED_YET(t: lex.Token) -> lex.Token:
-        r"""[\w\d\.\"\-\=\$\{\}\/\)\(\<\:\>]+"""
+        t.type = 'UNHANDLED_YET'
+        t.value = t.value[0]
         return t
 
     def analyze(self, data: str) -> list:

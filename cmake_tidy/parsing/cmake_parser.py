@@ -52,8 +52,18 @@ class CMakeParser:
 
     @staticmethod
     def p_unhandled(p):
-        """unhandled : UNHANDLED_YET"""
-        p[0] = PrimitiveElement('unhandled', p[1])
+        """unhandled : unhandled unhandled_element
+                | unhandled_element"""
+        if p[1].name is 'unhandled':
+            p[0] = p[1]
+            p[0].values += p[2].values
+        else:
+            p[0] = PrimitiveElement('unhandled', p[1].values)
+
+    @staticmethod
+    def p_unhandled_element(p):
+        """unhandled_element : UNHANDLED_YET"""
+        p[0] = PrimitiveElement('unhandled_element', str(p[1]))
 
     @staticmethod
     def p_spaces(p):

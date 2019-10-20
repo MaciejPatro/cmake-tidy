@@ -25,7 +25,7 @@ class CMakeParser:
         """file_element : line_ending
                         | spaces
                         | unhandled"""
-        p[0] = p[1]
+        p[0] = ComplexElement('file_element').add(p[1])
 
     @staticmethod
     def p_line_ending(p):

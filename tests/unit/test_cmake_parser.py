@@ -55,19 +55,25 @@ def file() -> Element:
     return ComplexElement('file')
 
 
-def spaces(data: str) -> PrimitiveElement:
-    return PrimitiveElement('spaces', data)
+def file_element() -> Element:
+    return ComplexElement('file_element')
+
+
+def spaces(data: str) -> Element:
+    return ComplexElement('file_element').add(PrimitiveElement('spaces', data))
 
 
 def line_comment(comment: str, newlines_number: int) -> Element:
-    return ComplexElement('line_ending') \
-        .add(PrimitiveElement('line_comment', comment)) \
-        .add(PrimitiveElement('newlines', newlines_number))
+    return ComplexElement('file_element') \
+        .add(ComplexElement('line_ending')
+             .add(PrimitiveElement('line_comment', comment))
+             .add(PrimitiveElement('newlines', newlines_number)))
 
 
 def newlines(number: int) -> Element:
-    return ComplexElement('line_ending').add(PrimitiveElement('newlines', number))
+    return ComplexElement('file_element').add(
+        ComplexElement('line_ending').add(PrimitiveElement('newlines', number)))
 
 
-def unhandled(data: str) -> PrimitiveElement:
-    return PrimitiveElement('unhandled', data)
+def unhandled(data: str) -> Element:
+    return ComplexElement('file_element').add(PrimitiveElement('unhandled', data))

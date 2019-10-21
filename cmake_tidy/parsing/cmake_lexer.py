@@ -2,13 +2,36 @@ import ply.lex as lex
 
 
 class CMakeLexer:
-    tokens = ['NEWLINES', 'UNHANDLED_YET', 'LINE_COMMENT', 'SPACES']
+    states = (
+        ('commandinvocation', 'exclusive'),
+    )
+
+    tokens = ['NEWLINES',
+              'UNHANDLED_YET',
+              'LINE_COMMENT',
+              'SPACES',
+              'COMMAND_INVOCATION_START',
+              'COMMAND_INVOCATION_END']
 
     t_LINE_COMMENT = r'\#[^\n]+'
     t_SPACES = r'[ \t]+'
 
     def __init__(self) -> None:
         self.lexer = lex.lex(module=self)
+
+    @staticmethod
+    def t_begin_commandinvocation(t: lex.Token) -> lex.Token:
+        r"""[A-Za-z_][A-Za-z0-9_]*[ \t]*\("""
+        t.type = 'COMMAND_INVOCATION_START'
+        t.lexer.push_state('commandinvocation')
+        return t
+
+    @staticmethod
+    def t_commandinvocation_end(t: lex.Token) -> lex.Token:
+        r"""\)"""
+        t.lexer.pop_state()
+        t.type = 'COMMAND_INVOCATION_END'
+        return t
 
     @staticmethod
     def t_NEWLINES(t: lex.LexToken) -> lex.LexToken:

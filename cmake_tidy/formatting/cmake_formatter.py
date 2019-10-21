@@ -19,8 +19,11 @@ class CMakeFormatter:
         formatting_methods['unhandled'] = lambda data: data
         formatting_methods['file'] = lambda data: data
         formatting_methods['line_comment'] = lambda data: data
+        formatting_methods['start_cmd_invoke'] = lambda data: data
+        formatting_methods['end_cmd_invoke'] = lambda data: data
         formatting_methods['file_element'] = lambda data: ''.join(data)
         formatting_methods['line_ending'] = lambda data: ''.join(data)
+        formatting_methods['command_invocation'] = lambda data: ''.join(data)
         formatting_methods['spaces'] = FormatSpaces(self.__settings)
         formatting_methods['newlines'] = FormatNewlines(self.__settings)
         return formatting_methods

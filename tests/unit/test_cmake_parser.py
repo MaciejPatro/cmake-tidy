@@ -47,6 +47,24 @@ class TestCMakeParser(unittest.TestCase):
 
         self.assertReprEqual(root, self.parser.parse(begin + spacing + end))
 
+    def test_parsing_command_invocation_without_arguments(self):
+        start_invocation = 'include('
+        root = file().add(
+            command_invocation([PrimitiveElement('start_cmd_invoke', start_invocation),
+                                PrimitiveElement('end_cmd_invoke', ')')]))
+
+        self.assertReprEqual(root, self.parser.parse(start_invocation + ')'))
+
+    def test_parsing_command_invocation_with_arguments_and_spaces(self):
+        start_invocation = 'include \t('
+        arguments = 'CTest, 123'
+        root = file().add(
+            command_invocation([PrimitiveElement('start_cmd_invoke', start_invocation),
+                                PrimitiveElement('unhandled', arguments),
+                                PrimitiveElement('end_cmd_invoke', ')')]))
+
+        self.assertReprEqual(root, self.parser.parse(start_invocation + arguments + ')'))
+
     def assertReprEqual(self, expected, received):
         self.assertEqual(str(expected), str(received))
 
@@ -77,3 +95,10 @@ def newlines(number: int) -> Element:
 
 def unhandled(data: str) -> Element:
     return ComplexElement('file_element').add(PrimitiveElement('unhandled', data))
+
+
+def command_invocation(elements: list):
+    cmd_invocation = ComplexElement('command_invocation')
+    for element in elements:
+        cmd_invocation.add(element)
+    return ComplexElement('file_element').add(cmd_invocation)

@@ -24,8 +24,17 @@ class CMakeParser:
     def p_file_element(p):
         """file_element : line_ending
                         | spaces
+                        | command_invocation
                         | unhandled"""
         p[0] = ComplexElement('file_element').add(p[1])
+
+    @staticmethod
+    def p_command_invocation(p):
+        """command_invocation : start_cmd_invoke end_cmd_invoke
+                        | start_cmd_invoke unhandled end_cmd_invoke"""
+        p[0] = ComplexElement('command_invocation')
+        for element in p[1:]:
+            p[0].add(element)
 
     @staticmethod
     def p_line_ending(p):
@@ -69,6 +78,16 @@ class CMakeParser:
     def p_spaces(p):
         """spaces : SPACES"""
         p[0] = PrimitiveElement('spaces', p[1])
+
+    @staticmethod
+    def p_start_cmd_invoke(p):
+        """start_cmd_invoke : COMMAND_INVOCATION_START"""
+        p[0] = PrimitiveElement('start_cmd_invoke', p[1])
+
+    @staticmethod
+    def p_end_cmd_invoke(p):
+        """end_cmd_invoke : COMMAND_INVOCATION_END"""
+        p[0] = PrimitiveElement('end_cmd_invoke', p[1])
 
     @staticmethod
     def p_error(p):

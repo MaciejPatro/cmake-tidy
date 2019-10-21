@@ -51,6 +51,7 @@ class TestCMakeParser(unittest.TestCase):
         start_invocation = 'include('
         root = file().add(
             command_invocation([PrimitiveElement('start_cmd_invoke', start_invocation),
+                                PrimitiveElement('arguments', ''),
                                 PrimitiveElement('end_cmd_invoke', ')')]))
 
         self.assertReprEqual(root, self.parser.parse(start_invocation + ')'))
@@ -60,7 +61,7 @@ class TestCMakeParser(unittest.TestCase):
         arguments = 'CTest, 123'
         root = file().add(
             command_invocation([PrimitiveElement('start_cmd_invoke', start_invocation),
-                                PrimitiveElement('unhandled', arguments),
+                                PrimitiveElement('arguments', arguments),
                                 PrimitiveElement('end_cmd_invoke', ')')]))
 
         self.assertReprEqual(root, self.parser.parse(start_invocation + arguments + ')'))

@@ -30,11 +30,16 @@ class CMakeParser:
 
     @staticmethod
     def p_command_invocation(p):
-        """command_invocation : start_cmd_invoke end_cmd_invoke
-                        | start_cmd_invoke unhandled end_cmd_invoke"""
+        """command_invocation : start_cmd_invoke arguments end_cmd_invoke"""
         p[0] = ComplexElement('command_invocation')
         for element in p[1:]:
             p[0].add(element)
+
+    @staticmethod
+    def p_arguments(p):
+        """arguments : unhandled
+                     | empty"""
+        p[0] = PrimitiveElement('arguments', p[1].values)
 
     @staticmethod
     def p_line_ending(p):

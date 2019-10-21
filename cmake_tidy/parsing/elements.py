@@ -69,8 +69,9 @@ class ComplexElement(Element):
         return representation.replace('\n', '\n{}'.format(' ' * (len(self.name) + 1)))
 
     def add(self, component: Element) -> 'Element':
-        self._children.append(component)
-        component.parent = self
+        if component:
+            self._children.append(component)
+            component.parent = self
         return self
 
     def remove(self, component: Element) -> None:

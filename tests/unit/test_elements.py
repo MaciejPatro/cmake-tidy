@@ -28,6 +28,14 @@ class TestElements(unittest.TestCase):
         self.assertIn('complex.abc: 123', str(element))
         self.assertIn('complex.def: 456', str(element))
 
+    def test_complex_element_should_ignore_none_provided_as_element(self):
+        element = ComplexElement('complex') \
+            .add(PrimitiveElement('abc', 123)) \
+            .add(None) \
+            .add(PrimitiveElement('def', 456))
+
+        self.assertEqual('complex.abc: 123\ncomplex.def: 456', str(element))
+
     def test_complex_elements_can_be_both_populated_with_primitives_and_complex_elements(self):
         root = ComplexElement('root')
         root.add(PrimitiveElement('abc', 123))

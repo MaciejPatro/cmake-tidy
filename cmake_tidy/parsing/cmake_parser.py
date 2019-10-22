@@ -37,9 +37,15 @@ class CMakeParser:
 
     @staticmethod
     def p_arguments(p):
-        """arguments : unhandled
+        """arguments : bracket_argument
+                     | unhandled
                      | empty"""
-        p[0] = PrimitiveElement('arguments', p[1].values)
+        p[0] = ComplexElement('arguments').add(p[1])
+
+    @staticmethod
+    def p_bracket_argument(p):
+        """bracket_argument : BRACKET_ARGUMENT_START unhandled BRACKET_ARGUMENT_END"""
+        p[0] = PrimitiveElement('bracket_argument', 'URRA' + p[1] + p[2].values + p[3])
 
     @staticmethod
     def p_line_ending(p):

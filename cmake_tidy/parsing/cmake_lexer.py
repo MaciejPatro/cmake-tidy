@@ -4,6 +4,7 @@ import ply.lex as lex
 class CMakeLexer:
     states = (
         ('commandinvocation', 'exclusive'),
+        ('bracketargument', 'exclusive'),
     )
 
     tokens = ['NEWLINES',
@@ -11,12 +12,15 @@ class CMakeLexer:
               'LINE_COMMENT',
               'SPACES',
               'COMMAND_INVOCATION_START',
-              'COMMAND_INVOCATION_END']
+              'COMMAND_INVOCATION_END',
+              'BRACKET_ARGUMENT_START',
+              'BRACKET_ARGUMENT_END']
 
     t_LINE_COMMENT = r'\#[^\n]+'
     t_SPACES = r'[ \t]+'
 
     def __init__(self) -> None:
+        self.bracket_argument_size = 0
         self.lexer = lex.lex(module=self)
 
     @staticmethod
@@ -26,11 +30,27 @@ class CMakeLexer:
         t.lexer.push_state('commandinvocation')
         return t
 
+    def t_commandinvocation_begin_bracketargument(self, t: lex.Token) -> lex.Token:
+        r"""\[==\["""
+        t.type = 'BRACKET_ARGUMENT_START'
+        self.bracket_argument_size = len(t.value)
+        t.lexer.push_state('bracketargument')
+        return t
+
     @staticmethod
     def t_commandinvocation_end(t: lex.Token) -> lex.Token:
         r"""\)"""
         t.lexer.pop_state()
         t.type = 'COMMAND_INVOCATION_END'
+        return t
+
+    def t_bracketargument_end(self, t: lex.Token) -> lex.Token:
+        r"""\]==\]"""
+        if self.bracket_argument_size == len(t.value):
+            t.lexer.pop_state()
+            t.type = 'BRACKET_ARGUMENT_END'
+        else:
+            t.type = 'UNHANDLED_YET'
         return t
 
     @staticmethod

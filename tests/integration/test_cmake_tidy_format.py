@@ -57,6 +57,6 @@ class TestCMakeTidyFormat(unittest.TestCase):
 
     @mock.patch('sys.stdout', new_callable=StringIO)
     def test_format_bracket_arguments_handling(self, stdout):
-        execute_cmake_tidy(command='format', arguments=['input_files/bracket_argument.cmake'])
+        execute_cmake_tidy(command='format', arguments=['input_files/arguments.cmake'])
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)

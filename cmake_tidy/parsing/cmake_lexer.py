@@ -23,6 +23,7 @@ class CMakeLexer:
 
     t_LINE_COMMENT = r'\#[^\n]+'
     t_SPACES = r'[ \t]+'
+    t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'\\\"'
 
     def __init__(self) -> None:
         self.bracket_argument_size = 0

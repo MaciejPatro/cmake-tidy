@@ -7,7 +7,10 @@ find_package(GTest REQUIRED)
 
 # Here we have a line comment with weird stuff like #[===]] $#%!#@$!#@%^^%$&%
 set([==[ currently a weird bracket argument introduced
-some 2839697%%*^$& text ]===] fake close and stuff]==] some other [===[www]===])
+some 2839697%%*^$& text ]===] fake close and stuff]==] some
+    other
+    [===[www]===]
+    "quoted argument with \" escaped quote")
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

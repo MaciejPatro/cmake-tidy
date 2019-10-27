@@ -34,4 +34,5 @@ class CMakeFormatter:
             formatting_methods['arguments'] = lambda data: ''.join(data)
         formatting_methods['spaces'] = FormatSpaces(self.__settings)
         formatting_methods['newlines'] = FormatNewlines(self.__settings)
+        formatting_methods['quoted_argument'] = lambda data: f'"{data}"'
         return formatting_methods

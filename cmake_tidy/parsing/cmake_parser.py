@@ -47,9 +47,15 @@ class CMakeParser:
     @staticmethod
     def p_argument(p):
         """argument : bracket_argument
+                    | quoted_argument
                     | unhandled
                     | empty"""
         p[0] = p[1]
+
+    @staticmethod
+    def p_quoted_argument(p):
+        """quoted_argument : QUOTED_ARGUMENT_START QUOTED_ARGUMENT_END"""
+        p[0] = PrimitiveElement('quoted_argument', '')
 
     @staticmethod
     def p_bracket_argument(p):

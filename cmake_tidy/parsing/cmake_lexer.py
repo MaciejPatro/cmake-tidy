@@ -5,6 +5,7 @@ class CMakeLexer:
     states = (
         ('commandinvocation', 'exclusive'),
         ('bracketargument', 'exclusive'),
+        ('quotedargument', 'exclusive')
     )
 
     tokens = ['NEWLINES',
@@ -15,7 +16,10 @@ class CMakeLexer:
               'COMMAND_INVOCATION_END',
               'BRACKET_ARGUMENT_START',
               'BRACKET_ARGUMENT_CONTENT',
-              'BRACKET_ARGUMENT_END']
+              'BRACKET_ARGUMENT_END',
+              'QUOTED_ARGUMENT_START',
+              'QUOTED_ARGUMENT_CONTENT',
+              "QUOTED_ARGUMENT_END"]
 
     t_LINE_COMMENT = r'\#[^\n]+'
     t_SPACES = r'[ \t]+'
@@ -38,11 +42,24 @@ class CMakeLexer:
         t.lexer.push_state('bracketargument')
         return t
 
+    def t_commandinvocation_begin_quotedargument(self, t: lex.Token) -> lex.Token:
+        r"""\""""
+        t.type = 'QUOTED_ARGUMENT_START'
+        t.lexer.push_state('quotedargument')
+        return t
+
     @staticmethod
     def t_commandinvocation_end(t: lex.Token) -> lex.Token:
         r"""\)"""
         t.lexer.pop_state()
         t.type = 'COMMAND_INVOCATION_END'
+        return t
+
+    @staticmethod
+    def t_quotedargument_end(t: lex.Token) -> lex.Token:
+        r"""\""""
+        t.lexer.pop_state()
+        t.type = 'QUOTED_ARGUMENT_END'
         return t
 
     def t_bracketargument_end(self, t: lex.Token) -> lex.Token:
@@ -71,6 +88,13 @@ class CMakeLexer:
     def t_bracketargument_error(t: lex.LexToken) -> lex.LexToken:
         t.lexer.skip(1)
         t.type = 'BRACKET_ARGUMENT_CONTENT'
+        t.value = t.value[0]
+        return t
+
+    @staticmethod
+    def t_quotedargument_error(t: lex.LexToken) -> lex.LexToken:
+        t.lexer.skip(1)
+        t.type = 'QUOTED_ARGUMENT_CONTENT'
         t.value = t.value[0]
         return t
 

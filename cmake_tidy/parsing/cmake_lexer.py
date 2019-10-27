@@ -51,12 +51,12 @@ class CMakeLexer:
     @staticmethod
     def t_commandinvocation_end(t: lex.Token) -> lex.Token:
         r"""\)"""
-        return end_state(t, 'COMMAND_INVOCATION_END')
+        return _end_state(t, 'COMMAND_INVOCATION_END')
 
     @staticmethod
     def t_quotedargument_end(t: lex.Token) -> lex.Token:
         r"""\""""
-        return end_state(t, 'QUOTED_ARGUMENT_END')
+        return _end_state(t, 'QUOTED_ARGUMENT_END')
 
     def t_bracketargument_end(self, t: lex.Token) -> lex.Token:
         r"""\]==\]"""
@@ -75,15 +75,15 @@ class CMakeLexer:
 
     @staticmethod
     def t_INITIAL_commandinvocation_error(t: lex.LexToken) -> lex.LexToken:
-        return skip_one_and_return_with(t, 'UNHANDLED_YET')
+        return _skip_one_and_return_with(t, 'UNHANDLED_YET')
 
     @staticmethod
     def t_bracketargument_error(t: lex.LexToken) -> lex.LexToken:
-        return skip_one_and_return_with(t, 'BRACKET_ARGUMENT_CONTENT')
+        return _skip_one_and_return_with(t, 'BRACKET_ARGUMENT_CONTENT')
 
     @staticmethod
     def t_quotedargument_error(t: lex.LexToken) -> lex.LexToken:
-        return skip_one_and_return_with(t, 'QUOTED_ARGUMENT_CONTENT')
+        return _skip_one_and_return_with(t, 'QUOTED_ARGUMENT_CONTENT')
 
     def analyze(self, data: str) -> list:
         self.lexer.input(data)
@@ -98,14 +98,14 @@ class CMakeLexer:
         return data
 
 
-def skip_one_and_return_with(element: lex.LexToken, token_type: str) -> lex.LexToken:
+def _skip_one_and_return_with(element: lex.LexToken, token_type: str) -> lex.LexToken:
     element.lexer.skip(1)
     element.type = token_type
     element.value = element.value[0]
     return element
 
 
-def end_state(element: lex.LexToken, token_type: str) -> lex.LexToken:
+def _end_state(element: lex.LexToken, token_type: str) -> lex.LexToken:
     element.lexer.pop_state()
     element.type = token_type
     return element

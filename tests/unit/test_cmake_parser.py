@@ -64,15 +64,15 @@ class TestCMakeParser(unittest.TestCase):
 
     def test_parsing_command_invocation_with_bracket_argument(self):
         start_invocation = 'function_name('
-        bracket_argument = 'this is bracket_dwad832423#$@#$ content]===] still there'
+        bracket_start = '[==['
+        bracket_end = ']==]'
+        bracket_argument_data = 'this is bracket_dwad832423#$@#$ content]===] still there'
 
-        expected_arguments = arguments() \
-            .add(PrimitiveElement('start_bracket_argument', 2)) \
-            .add(PrimitiveElement('bracket_argument_content', bracket_argument)) \
-            .add(PrimitiveElement('end_bracket_argument', 2))
-        root = file().add(command_invocation(start_invocation, expected_arguments))
+        root = file().add(command_invocation(start_invocation,
+                                             arguments().add(bracket_argument(2, bracket_argument_data))))
 
-        self.assertReprEqual(root, self.parser.parse(f'{start_invocation}[==[{bracket_argument}]==])'))
+        self.assertReprEqual(root, self.parser.parse(
+            f'{start_invocation}{bracket_start}{bracket_argument_data}{bracket_end})'))
 
     def assertReprEqual(self, expected, received):
         self.assertEqual(str(expected), str(received))
@@ -92,6 +92,14 @@ def line_comment(comment: str, newlines_number: int) -> Element:
 def newlines(number: int) -> Element:
     return ComplexElement('file_element').add(
         ComplexElement('line_ending').add(PrimitiveElement('newlines', number)))
+
+
+def bracket_argument(bracket_size: int, data: str) -> Element:
+    bracket_part = '=' * bracket_size
+    return ComplexElement('bracket_argument') \
+        .add(PrimitiveElement('bracket_start', f'[{bracket_part}[')) \
+        .add(PrimitiveElement('bracket_argument_content', data)) \
+        .add(PrimitiveElement('bracket_end', f']{bracket_part}]'))
 
 
 def command_invocation(func_name: str, args=None):

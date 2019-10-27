@@ -16,15 +16,22 @@ class CMakeFormatter:
 
     def __generate_formatting_methods(self):
         formatting_methods = dict()
-        formatting_methods['unhandled'] = lambda data: data
-        formatting_methods['file'] = lambda data: data
-        formatting_methods['line_comment'] = lambda data: data
-        formatting_methods['start_cmd_invoke'] = lambda data: data
-        formatting_methods['end_cmd_invoke'] = lambda data: data
-        formatting_methods['arguments'] = lambda data: data
-        formatting_methods['file_element'] = lambda data: ''.join(data)
-        formatting_methods['line_ending'] = lambda data: ''.join(data)
-        formatting_methods['command_invocation'] = lambda data: ''.join(data)
+
+        formatting_methods['unhandled'] = \
+            formatting_methods['file'] = \
+            formatting_methods['line_comment'] = \
+            formatting_methods['start_cmd_invoke'] = \
+            formatting_methods['end_cmd_invoke'] = \
+            formatting_methods['arguments'] = \
+            formatting_methods['bracket_start'] = \
+            formatting_methods['bracket_end'] = \
+            formatting_methods['bracket_argument_content'] = lambda data: data
+
+        formatting_methods['file_element'] = \
+            formatting_methods['line_ending'] = \
+            formatting_methods['command_invocation'] = \
+            formatting_methods['bracket_argument'] = \
+            formatting_methods['arguments'] = lambda data: ''.join(data)
         formatting_methods['spaces'] = FormatSpaces(self.__settings)
         formatting_methods['newlines'] = FormatNewlines(self.__settings)
         return formatting_methods

@@ -44,7 +44,7 @@ class CMakeParser:
 
     @staticmethod
     def p_bracket_argument(p):
-        """bracket_argument : BRACKET_ARGUMENT_START unhandled BRACKET_ARGUMENT_END"""
+        """bracket_argument : BRACKET_ARGUMENT_START bracket_argument_content BRACKET_ARGUMENT_END"""
         p[0] = ComplexElement('bracket_argument') \
             .add(PrimitiveElement('bracket_start', p[1])) \
             .add(PrimitiveElement('bracket_argument_content', p[2].values)) \
@@ -84,9 +84,24 @@ class CMakeParser:
             p[0] = PrimitiveElement('unhandled', p[1].values)
 
     @staticmethod
+    def p_bracket_argument_content(p):
+        """bracket_argument_content : bracket_argument_content bracket_argument_content_element
+                                    | bracket_argument_content_element"""
+        if p[1].name is 'bracket_argument_content':
+            p[0] = p[1]
+            p[0].values += p[2].values
+        else:
+            p[0] = PrimitiveElement('bracket_argument_content', p[1].values)
+
+    @staticmethod
     def p_unhandled_element(p):
         """unhandled_element : UNHANDLED_YET"""
         p[0] = PrimitiveElement('unhandled_element', str(p[1]))
+
+    @staticmethod
+    def p_bracket_argument_content_element(p):
+        """bracket_argument_content_element : BRACKET_ARGUMENT_CONTENT"""
+        p[0] = PrimitiveElement('bracket_argument_content_element', str(p[1]))
 
     @staticmethod
     def p_spaces(p):

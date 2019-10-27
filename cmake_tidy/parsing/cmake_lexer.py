@@ -14,6 +14,7 @@ class CMakeLexer:
               'COMMAND_INVOCATION_START',
               'COMMAND_INVOCATION_END',
               'BRACKET_ARGUMENT_START',
+              'BRACKET_ARGUMENT_CONTENT',
               'BRACKET_ARGUMENT_END']
 
     t_LINE_COMMENT = r'\#[^\n]+'
@@ -50,7 +51,7 @@ class CMakeLexer:
             t.lexer.pop_state()
             t.type = 'BRACKET_ARGUMENT_END'
         else:
-            t.type = 'UNHANDLED_YET'
+            t.type = 'BRACKET_ARGUMENT_CONTENT'
         return t
 
     @staticmethod
@@ -60,9 +61,16 @@ class CMakeLexer:
         return t
 
     @staticmethod
-    def t_ANY_error(t: lex.LexToken):
+    def t_INITIAL_commandinvocation_error(t: lex.LexToken) -> lex.LexToken:
         t.lexer.skip(1)
         t.type = 'UNHANDLED_YET'
+        t.value = t.value[0]
+        return t
+
+    @staticmethod
+    def t_bracketargument_error(t: lex.LexToken) -> lex.LexToken:
+        t.lexer.skip(1)
+        t.type = 'BRACKET_ARGUMENT_CONTENT'
         t.value = t.value[0]
         return t
 

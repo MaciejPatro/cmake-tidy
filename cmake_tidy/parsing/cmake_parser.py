@@ -54,8 +54,8 @@ class CMakeParser:
 
     @staticmethod
     def p_quoted_argument(p):
-        """quoted_argument : QUOTED_ARGUMENT_START QUOTED_ARGUMENT_END"""
-        p[0] = PrimitiveElement('quoted_argument', '')
+        """quoted_argument : QUOTED_ARGUMENT_START quoted_argument_content QUOTED_ARGUMENT_END"""
+        p[0] = PrimitiveElement('quoted_argument', p[2].values)
 
     @staticmethod
     def p_bracket_argument(p):
@@ -91,32 +91,35 @@ class CMakeParser:
     @staticmethod
     def p_unhandled(p):
         """unhandled : unhandled unhandled_element
-                | unhandled_element"""
-        if p[1].name is 'unhandled':
-            p[0] = p[1]
-            p[0].values += p[2].values
-        else:
-            p[0] = PrimitiveElement('unhandled', p[1].values)
+                     | unhandled_element"""
+        _create_content(p, 'unhandled')
 
     @staticmethod
     def p_bracket_argument_content(p):
         """bracket_argument_content : bracket_argument_content bracket_argument_content_element
                                     | bracket_argument_content_element"""
-        if p[1].name is 'bracket_argument_content':
-            p[0] = p[1]
-            p[0].values += p[2].values
-        else:
-            p[0] = PrimitiveElement('bracket_argument_content', p[1].values)
+        _create_content(p, 'bracket_argument_content')
+
+    @staticmethod
+    def p_quoted_argument_content(p):
+        """quoted_argument_content : quoted_argument_content quoted_argument_content_element
+                                   | quoted_argument_content_element"""
+        _create_content(p, 'quoted_argument_content')
 
     @staticmethod
     def p_unhandled_element(p):
         """unhandled_element : UNHANDLED_YET"""
-        p[0] = PrimitiveElement('unhandled_element', str(p[1]))
+        p[0] = _get_content_element(p[1])
 
     @staticmethod
     def p_bracket_argument_content_element(p):
         """bracket_argument_content_element : BRACKET_ARGUMENT_CONTENT"""
-        p[0] = PrimitiveElement('bracket_argument_content_element', str(p[1]))
+        p[0] = _get_content_element(p[1])
+
+    @staticmethod
+    def p_quoted_argument_content_element(p):
+        """quoted_argument_content_element : QUOTED_ARGUMENT_CONTENT"""
+        p[0] = _get_content_element(p[1])
 
     @staticmethod
     def p_spaces(p):
@@ -139,3 +142,15 @@ class CMakeParser:
 
     def parse(self, data: str):
         return self.parser.parse(data)
+
+
+def _get_content_element(data) -> PrimitiveElement:
+    return PrimitiveElement('content_element', str(data))
+
+
+def _create_content(p, name: str):
+    if p[1].name is name:
+        p[0] = p[1]
+        p[0].values += p[2].values
+    else:
+        p[0] = PrimitiveElement(name, p[1].values)

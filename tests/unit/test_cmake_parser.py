@@ -74,16 +74,16 @@ class TestCMakeParser(unittest.TestCase):
         self.assertReprEqual(root, self.parser.parse(
             f'{start_invocation}{bracket_start}{bracket_argument_data}{bracket_end})'))
 
-    def test_parsing_command_invocation_with_empty_quoted_argument(self):
+    def test_parsing_command_invocation_with_simple_quoted_argument(self):
         start_invocation = 'name('
-
+        argument_content = 'simple\n text'
         root = file().add(
             command_invocation(start_invocation,
-                               arguments().add(quoted_argument()))
+                               arguments().add(quoted_argument(argument_content)))
         )
 
         self.assertReprEqual(root, self.parser.parse(
-            f'{start_invocation}"")'))
+            f'{start_invocation}"{argument_content}")'))
 
     def assertReprEqual(self, expected, received):
         self.assertEqual(str(expected), str(received))

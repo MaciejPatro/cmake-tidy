@@ -37,10 +37,19 @@ class CMakeParser:
 
     @staticmethod
     def p_arguments(p):
-        """arguments : bracket_argument
-                     | unhandled
-                     | empty"""
-        p[0] = ComplexElement('arguments').add(p[1])
+        """arguments : arguments argument
+                     | argument"""
+        if p[1].name is 'arguments':
+            p[0] = p[1].add(p[2])
+        else:
+            p[0] = ComplexElement('arguments').add(p[1])
+
+    @staticmethod
+    def p_argument(p):
+        """argument : bracket_argument
+                    | unhandled
+                    | empty"""
+        p[0] = p[1]
 
     @staticmethod
     def p_bracket_argument(p):

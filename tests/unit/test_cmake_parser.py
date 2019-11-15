@@ -85,6 +85,17 @@ class TestCMakeParser(unittest.TestCase):
         self.assertReprEqual(root, self.parser.parse(
             f'{start_invocation}"{argument_content}")'))
 
+    def test_parsing_command_invocation_with_basic_unquoted_argument(self):
+        start_invocation = 'name('
+        argument_content = 'simple_argument'
+        root = file().add(
+            command_invocation(start_invocation,
+                               arguments().add(unquoted_argument(argument_content)))
+        )
+
+        self.assertReprEqual(root, self.parser.parse(
+            f'{start_invocation}{argument_content})'))
+
     def assertReprEqual(self, expected, received):
         self.assertEqual(str(expected), str(received))
 
@@ -115,6 +126,10 @@ def bracket_argument(bracket_size: int, data: str) -> Element:
 
 def quoted_argument(data='') -> PrimitiveElement:
     return PrimitiveElement('quoted_argument', data)
+
+
+def unquoted_argument(data='') -> PrimitiveElement:
+    return PrimitiveElement('unquoted_argument', data)
 
 
 def command_invocation(func_name: str, args=None):

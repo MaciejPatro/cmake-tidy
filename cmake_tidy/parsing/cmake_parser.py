@@ -48,6 +48,7 @@ class CMakeParser:
     def p_argument(p):
         """argument : bracket_argument
                     | quoted_argument
+                    | line_ending
                     | unhandled
                     | empty"""
         p[0] = p[1]

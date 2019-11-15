@@ -7,7 +7,6 @@ class CMakeLexer:
         ('bracketargument', 'exclusive'),
         ('quotedargument', 'exclusive')
     )
-
     tokens = ['NEWLINES',
               'UNHANDLED_YET',
               'LINE_COMMENT',
@@ -19,7 +18,7 @@ class CMakeLexer:
               'BRACKET_ARGUMENT_END',
               'QUOTED_ARGUMENT_START',
               'QUOTED_ARGUMENT_CONTENT',
-              "QUOTED_ARGUMENT_END"]
+              'QUOTED_ARGUMENT_END']
 
     t_LINE_COMMENT = r'\#[^\n]+'
     t_SPACES = r'[ \t]+'
@@ -69,7 +68,7 @@ class CMakeLexer:
         return t
 
     @staticmethod
-    def t_NEWLINES(t: lex.LexToken) -> lex.LexToken:
+    def t_INITIAL_commandinvocation_NEWLINES(t: lex.LexToken) -> lex.LexToken:
         r"""\n+"""
         t.lexer.lineno += len(t.value)
         return t

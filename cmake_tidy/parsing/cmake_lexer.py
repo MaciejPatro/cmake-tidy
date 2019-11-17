@@ -18,11 +18,13 @@ class CMakeLexer:
               'BRACKET_ARGUMENT_END',
               'QUOTED_ARGUMENT_START',
               'QUOTED_ARGUMENT_CONTENT',
-              'QUOTED_ARGUMENT_END']
+              'QUOTED_ARGUMENT_END',
+              'UNQUOTED_ARGUMENT']
 
     t_LINE_COMMENT = r'\#[^\n]+'
     t_SPACES = r'[ \t]+'
     t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'\\\"'
+    t_commandinvocation_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\]+'
 
     def __init__(self) -> None:
         self.bracket_argument_size = 0

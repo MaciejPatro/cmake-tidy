@@ -48,6 +48,7 @@ class CMakeParser:
     def p_argument(p):
         """argument : bracket_argument
                     | quoted_argument
+                    | unquoted_argument
                     | line_ending
                     | unhandled
                     | empty"""
@@ -73,6 +74,11 @@ class CMakeParser:
         p[0] = ComplexElement('line_ending')
         for element in p[1:]:
             p[0].add(element)
+
+    @staticmethod
+    def p_unquoted_argument(p):
+        """unquoted_argument : UNQUOTED_ARGUMENT"""
+        p[0] = PrimitiveElement('unquoted_argument', p[1])
 
     @staticmethod
     def p_line_comment(p):

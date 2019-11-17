@@ -55,14 +55,18 @@ class TestCMakeParser(unittest.TestCase):
 
         self.assertReprEqual(root, self.parser.parse(start_invocation + ')'))
 
-    def test_parsing_command_invocation_with_arguments_and_spaces(self):
+    def test_parsing_command_invocation_with_unquoted_arguments_and_spaces(self):
         start_invocation = 'include \t('
-        func_arguments = 'CTest, 123'
+        first_arg = 'CTest'
+        whitespaces = ' '
+        second_arg = '123'
 
-        expected_arguments = arguments().add(unhandled(func_arguments))
+        expected_arguments = arguments().add(unquoted_argument(first_arg)) \
+            .add(unhandled(whitespaces)) \
+            .add(unquoted_argument(second_arg))
         root = file().add(command_invocation(start_invocation, expected_arguments))
 
-        self.assertReprEqual(root, self.parser.parse(f'{start_invocation}{func_arguments})'))
+        self.assertReprEqual(root, self.parser.parse(f'{start_invocation}{first_arg}{whitespaces}{second_arg})'))
 
     def test_parsing_command_invocation_with_bracket_argument(self):
         start_invocation = 'function_name('
@@ -86,17 +90,6 @@ class TestCMakeParser(unittest.TestCase):
 
         self.assertReprEqual(root, self.parser.parse(
             f'{start_invocation}"{argument_content}")'))
-
-    def test_parsing_command_invocation_with_basic_unquoted_argument(self):
-        start_invocation = 'name('
-        argument_content = 'simple_argument'
-        root = file().add(
-            command_invocation(start_invocation,
-                               arguments().add(unquoted_argument(argument_content)))
-        )
-
-        self.assertReprEqual(root, self.parser.parse(
-            f'{start_invocation}{argument_content})'))
 
     def assertReprEqual(self, expected, received):
         self.assertEqual(str(expected), str(received))

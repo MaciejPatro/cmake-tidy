@@ -25,6 +25,7 @@ class CMakeFormatter:
             formatting_methods['arguments'] = \
             formatting_methods['bracket_start'] = \
             formatting_methods['bracket_end'] = \
+            formatting_methods['unquoted_argument'] = \
             formatting_methods['bracket_argument_content'] = lambda data: data
 
         formatting_methods['file_element'] = \

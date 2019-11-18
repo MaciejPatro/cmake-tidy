@@ -49,9 +49,14 @@ class CMakeParser:
         """argument : bracket_argument
                     | quoted_argument
                     | unquoted_argument
-                    | line_ending
-                    | unhandled
+                    | arguments_separation
                     | empty"""
+        p[0] = p[1]
+
+    @staticmethod
+    def p_arguments_separation(p):
+        """arguments_separation : spaces
+                                | line_ending"""
         p[0] = p[1]
 
     @staticmethod

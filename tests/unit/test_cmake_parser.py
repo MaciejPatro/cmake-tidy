@@ -2,7 +2,7 @@ import unittest
 
 from cmake_tidy.parsing.cmake_parser import CMakeParser
 from cmake_tidy.parsing.elements import PrimitiveElement
-from tests.unit.parser_composite_elements import spaces, line_comment, newlines, unhandled_file_element, file
+from tests.unit.parser_composite_elements import spaces_file_element, line_comment, newlines, unhandled_file_element, file
 
 
 class TestCMakeParser(unittest.TestCase):
@@ -48,7 +48,7 @@ class TestParseBasicElements(TestCMakeParser):
         spacing = '  \t'
         end = '_\"DWa'
         root = file().add(unhandled_file_element(begin)) \
-            .add(spaces(spacing)) \
+            .add(spaces_file_element(spacing)) \
             .add(unhandled_file_element(end))
 
         self.assertReprEqual(root, self.parser.parse(begin + spacing + end))

@@ -1,6 +1,6 @@
 from tests.unit.test_cmake_parser import TestCMakeParser
-from tests.unit.parser_composite_elements import file, command_invocation, arguments, unquoted_argument, unhandled, \
-    bracket_argument, quoted_argument
+from tests.unit.parser_composite_elements import file, command_invocation, arguments, unquoted_argument, \
+    bracket_argument, quoted_argument, spaces
 
 
 class TestParseCommandInvocation(TestCMakeParser):
@@ -17,7 +17,7 @@ class TestParseCommandInvocation(TestCMakeParser):
         second_arg = '123'
 
         expected_arguments = arguments().add(unquoted_argument(first_arg)) \
-            .add(unhandled(whitespaces)) \
+            .add(spaces(whitespaces)) \
             .add(unquoted_argument(second_arg))
         root = file().add(command_invocation(start_invocation, expected_arguments))
 
@@ -45,3 +45,21 @@ class TestParseCommandInvocation(TestCMakeParser):
 
         self.assertReprEqual(root, self.parser.parse(
             f'{start_invocation}"{argument_content}")'))
+
+    def test_basic_command_invocation_with_different_arguments(self):
+        # TODO: improve handling of command_name
+        command_name = 'message('
+        unquoted_arg = 'FATAL_ERROR'
+        separation = ' '
+        quoted_arg = 'Couldn\'t find assembler application'
+        command = f'{command_name}{unquoted_arg}{separation}\"{quoted_arg}\")'
+
+        root = file().add(
+            command_invocation(command_name,
+                               arguments()
+                               .add(unquoted_argument(unquoted_arg))
+                               .add(spaces(' '))
+                               .add(quoted_argument(quoted_arg)))
+        )
+
+        self.assertReprEqual(root, self.parser.parse(command))

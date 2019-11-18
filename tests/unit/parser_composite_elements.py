@@ -1,8 +1,12 @@
 from cmake_tidy.parsing.elements import Element, ComplexElement, PrimitiveElement
 
 
-def spaces(data: str) -> Element:
-    return ComplexElement('file_element').add(PrimitiveElement('spaces', data))
+def spaces_file_element(data: str) -> Element:
+    return ComplexElement('file_element').add(spaces(data))
+
+
+def spaces(data: str) -> PrimitiveElement:
+    return PrimitiveElement('spaces', data);
 
 
 def line_comment(comment: str, newlines_number: int) -> Element:

@@ -16,9 +16,12 @@ def line_comment(comment: str, newlines_number: int) -> Element:
              .add(PrimitiveElement('newlines', newlines_number)))
 
 
+def newlines_file_element(number: int) -> Element:
+    return ComplexElement('file_element').add(newlines(number))
+
+
 def newlines(number: int) -> Element:
-    return ComplexElement('file_element').add(
-        ComplexElement('line_ending').add(PrimitiveElement('newlines', number)))
+    return ComplexElement('line_ending').add(PrimitiveElement('newlines', number))
 
 
 def bracket_argument(bracket_size: int, data: str) -> Element:

@@ -24,10 +24,10 @@ class CMakeLexer:
     t_LINE_COMMENT = r'\#[^\n]+'
     t_INITIAL_commandinvocation_SPACES = r'[ \t]+'
     t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'\\\"'
-    t_commandinvocation_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\]+'
+    t_commandinvocation_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\\n]+'
 
     def __init__(self) -> None:
-        self.bracket_argument_size = 0
+        self.bracket_argument_size = -1
         self.lexer = lex.lex(module=self)
 
     @staticmethod
@@ -38,7 +38,7 @@ class CMakeLexer:
         return t
 
     def t_commandinvocation_begin_bracketargument(self, t: lex.Token) -> lex.Token:
-        r"""\[==\["""
+        r"""\[=*\["""
         t.type = 'BRACKET_ARGUMENT_START'
         self.bracket_argument_size = len(t.value)
         t.lexer.push_state('bracketargument')
@@ -61,7 +61,7 @@ class CMakeLexer:
         return _end_state(t, 'QUOTED_ARGUMENT_END')
 
     def t_bracketargument_end(self, t: lex.Token) -> lex.Token:
-        r"""\]==\]"""
+        r"""\]=*\]"""
         if self.bracket_argument_size == len(t.value):
             t.lexer.pop_state()
             t.type = 'BRACKET_ARGUMENT_END'

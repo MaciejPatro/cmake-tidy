@@ -1,4 +1,4 @@
-from cmake_tidy.formatting.utils import FormatNewlines, FormatSpaces
+from cmake_tidy.formatting.utils import FormatNewlines, FormatSpaces, FormatLineEnding
 from cmake_tidy.parsing.elements import Element
 from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
@@ -29,11 +29,11 @@ class CMakeFormatter:
             formatting_methods['bracket_argument_content'] = lambda data: data
 
         formatting_methods['file_element'] = \
-            formatting_methods['line_ending'] = \
             formatting_methods['command_invocation'] = \
             formatting_methods['bracket_argument'] = \
             formatting_methods['arguments'] = lambda data: ''.join(data)
         formatting_methods['spaces'] = FormatSpaces(self.__settings)
         formatting_methods['newlines'] = FormatNewlines(self.__settings)
+        formatting_methods['line_ending'] = FormatLineEnding()
         formatting_methods['quoted_argument'] = lambda data: f'"{data}"'
         return formatting_methods

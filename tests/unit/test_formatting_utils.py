@@ -1,6 +1,6 @@
 import unittest
 
-from cmake_tidy.formatting.utils import FormatNewlines, FormatSpaces
+from cmake_tidy.formatting.utils import FormatNewlines, FormatSpaces, FormatLineEnding
 
 
 class TestFormatNewlines(unittest.TestCase):
@@ -21,3 +21,13 @@ class TestFormatSpaces(unittest.TestCase):
     def test_replace_tabs_with_multiple_spaces(self):
         format_spaces = FormatSpaces({'tab_size': 4})
         self.assertEqual(' ' * 10, format_spaces(' \t \t'))
+
+
+class TestFormatLineEnding(unittest.TestCase):
+    def test_line_ending_should_merge_comments_and_newlines(self):
+        comment = '# comment'
+        newline = '\n'
+
+        format_line_ending = FormatLineEnding()
+
+        self.assertEqual(comment + newline, format_line_ending([comment, newline]))

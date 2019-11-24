@@ -12,3 +12,8 @@ class FormatSpaces:
 
     def __call__(self, data: str) -> str:
         return data.replace('\t', ' ' * self.__tab_size)
+
+
+class FormatLineEnding:
+    def __call__(self, data: list) -> str:
+        return ''.join(data)

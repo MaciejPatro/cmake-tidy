@@ -24,10 +24,17 @@ class TestFormatSpaces(unittest.TestCase):
 
 
 class TestFormatLineEnding(unittest.TestCase):
+    def setUp(self):
+        self.formatter = FormatLineEnding()
+        self.newline = '\n'
+
     def test_line_ending_should_merge_comments_and_newlines(self):
         comment = '# comment'
-        newline = '\n'
 
-        format_line_ending = FormatLineEnding()
+        self.assertEqual(comment + self.newline, self.formatter([comment, self.newline]))
 
-        self.assertEqual(comment + newline, format_line_ending([comment, newline]))
+    def test_line_ending_should_trigger_on_line_end(self):
+        self.formatter.on_line_end(lambda data: data + suffix)
+        suffix = 'xyz'
+
+        self.assertEqual(self.newline + suffix, self.formatter([self.newline]))

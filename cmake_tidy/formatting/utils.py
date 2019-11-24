@@ -15,5 +15,20 @@ class FormatSpaces:
 
 
 class FormatLineEnding:
+    def __init__(self):
+        self.__callback = None
+
     def __call__(self, data: list) -> str:
+        return self.__update_on_new_line(self.__format_line_ending(data))
+
+    def on_line_end(self, callback) -> None:
+        self.__callback = callback
+
+    @staticmethod
+    def __format_line_ending(data: list) -> str:
         return ''.join(data)
+
+    def __update_on_new_line(self, formatted_line_ending: str) -> str:
+        if self.__callback:
+            return self.__callback(formatted_line_ending)
+        return formatted_line_ending

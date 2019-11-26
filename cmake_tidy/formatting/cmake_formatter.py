@@ -1,6 +1,5 @@
 from cmake_tidy.formatting.utils import FormatNewlines, FormatSpaces, FormatLineEnding
 from cmake_tidy.parsing.elements import Element
-from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
 
 class CMakeFormatter:
@@ -8,10 +7,14 @@ class CMakeFormatter:
 
     def __init__(self, format_settings: dict):
         self.__settings = format_settings
-        self.__visitor = ProxyVisitor(self.__generate_formatting_methods())
+        self.__proxies = self.__generate_formatting_methods()
+
+    def visit(self, name: str, values=None):
+        if name in self.__proxies:
+            return self.__proxies[name](values)
 
     def format(self, data: Element) -> str:
-        formatted_elements = data.accept(self.__visitor)
+        formatted_elements = data.accept(self)
         return ''.join(formatted_elements)
 
     def __generate_formatting_methods(self):

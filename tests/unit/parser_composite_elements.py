@@ -6,7 +6,7 @@ def spaces_file_element(data: str) -> Element:
 
 
 def spaces(data: str) -> PrimitiveElement:
-    return PrimitiveElement('spaces', data);
+    return PrimitiveElement('spaces', data)
 
 
 def line_comment(comment: str, newlines_number: int) -> Element:

@@ -1,4 +1,3 @@
-from cmake_tidy.formatting.utils import FormatNewlines, FormatSpaces, FormatLineEnding
 from cmake_tidy.parsing.elements import Element
 
 
@@ -7,17 +6,18 @@ class CMakeFormatter:
 
     def __init__(self, format_settings: dict):
         self.__settings = format_settings
-        self.__proxies = self.__generate_formatting_methods()
+        self.__state = {'indent': 0}
 
     def visit(self, name: str, values=None):
-        if name in self.__proxies:
-            return self.__proxies[name](values)
+        if name in self.__format_methods:
+            return self.__format_methods[name](values)
 
     def format(self, data: Element) -> str:
         formatted_elements = data.accept(self)
         return ''.join(formatted_elements)
 
-    def __generate_formatting_methods(self):
+    @property
+    def __format_methods(self):
         formatting_methods = dict()
 
         formatting_methods['unhandled'] = \
@@ -35,8 +35,9 @@ class CMakeFormatter:
             formatting_methods['command_invocation'] = \
             formatting_methods['bracket_argument'] = \
             formatting_methods['arguments'] = lambda data: ''.join(data)
-        formatting_methods['spaces'] = FormatSpaces(self.__settings)
-        formatting_methods['newlines'] = FormatNewlines(self.__settings)
-        formatting_methods['line_ending'] = FormatLineEnding()
+
+        formatting_methods['spaces'] = lambda data: data.replace('\t', ' ' * self.__settings['tab_size'])
+        formatting_methods['newlines'] = lambda lines: '\n' * min(self.__settings['succeeding_newlines'], lines)
+        formatting_methods['line_ending'] = lambda data: ''.join(data)
         formatting_methods['quoted_argument'] = lambda data: f'"{data}"'
         return formatting_methods

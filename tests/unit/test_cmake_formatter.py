@@ -1,7 +1,7 @@
 import unittest
 
 from cmake_tidy.formatting import CMakeFormatter
-from tests.unit.parser_composite_elements import spaces, newlines, command_invocation
+from tests.unit.parser_composite_elements import spaces, newlines, command_invocation, line_ending, unhandled
 
 
 class TestCMakeFormatter(unittest.TestCase):
@@ -22,12 +22,18 @@ class TestCMakeFormatter(unittest.TestCase):
         self.__settings['tab_size'] = 4
         self.assertFormatting(' ' * 10, spaces(' \t \t'))
 
-    def test_function_should_force_indentation_for_next_lines(self):
+    def test_function_should_force_indentation_for_command_invocation_and_line_comments_only(self):
         function_with_invocation_in_second_line = command_invocation('function(') \
             .add(newlines(1)) \
+            .add(line_ending('# comment', 1)) \
+            .add(unhandled('abc')) \
+            .add(newlines(1)) \
             .add(command_invocation('test('))
-        expected_formatting = 'function()\n  test()'
 
+        expected_formatting = """function()
+  # comment
+abc
+  test()"""
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
     @unittest.SkipTest

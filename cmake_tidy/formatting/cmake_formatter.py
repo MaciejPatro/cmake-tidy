@@ -23,7 +23,6 @@ class CMakeFormatter:
         formatting_methods['unhandled'] = \
             formatting_methods['file'] = \
             formatting_methods['line_comment'] = \
-            formatting_methods['start_cmd_invoke'] = \
             formatting_methods['end_cmd_invoke'] = \
             formatting_methods['arguments'] = \
             formatting_methods['bracket_start'] = \
@@ -36,8 +35,19 @@ class CMakeFormatter:
             formatting_methods['bracket_argument'] = \
             formatting_methods['arguments'] = lambda data: ''.join(data)
 
+        formatting_methods['start_cmd_invoke'] = self.__format_start_of_command_invocation
         formatting_methods['spaces'] = lambda data: data.replace('\t', ' ' * self.__settings['tab_size'])
-        formatting_methods['newlines'] = lambda lines: '\n' * min(self.__settings['succeeding_newlines'], lines)
+        formatting_methods['newlines'] = self.__format_newlines
         formatting_methods['line_ending'] = lambda data: ''.join(data)
         formatting_methods['quoted_argument'] = lambda data: f'"{data}"'
         return formatting_methods
+
+    def __format_newlines(self, number_of_newlines: int) -> str:
+        formatted_newlines = '\n' * min(self.__settings['succeeding_newlines'], number_of_newlines)
+        newline_indentation = self.__state['indent'] * self.__settings['tab_size'] * ' '
+        return formatted_newlines + newline_indentation
+
+    def __format_start_of_command_invocation(self, data: str) -> str:
+        if data.startswith('function'):
+            self.__state['indent'] = self.__state['indent'] + 1
+        return data

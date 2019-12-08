@@ -30,5 +30,15 @@ class TestCMakeFormatter(unittest.TestCase):
 
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
+    def test_endfunction_keyword_should_reduce_the_indentation(self):
+        function_with_invocation_in_second_line = command_invocation('function(') \
+            .add(newlines(1)) \
+            .add(command_invocation('test(')) \
+            .add(newlines(1)) \
+            .add(command_invocation('endfunction('))
+        expected_formatting = 'function()\n  test()\nendfunction()'
+
+        self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
+
     def assertFormatting(self, formatted_string, lex_data):
         self.assertEqual(formatted_string, CMakeFormatter(self.__settings).format(lex_data))

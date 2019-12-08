@@ -9,11 +9,15 @@ def spaces(data: str) -> PrimitiveElement:
     return PrimitiveElement('spaces', data)
 
 
-def line_comment(comment: str, newlines_number: int) -> Element:
+def line_comment_file_element(comment: str, newlines_number: int) -> Element:
     return ComplexElement('file_element') \
-        .add(ComplexElement('line_ending')
-             .add(PrimitiveElement('line_comment', comment))
-             .add(PrimitiveElement('newlines', newlines_number)))
+        .add(line_ending(comment, newlines_number))
+
+
+def line_ending(comment, newlines_number):
+    return ComplexElement('line_ending') \
+        .add(PrimitiveElement('line_comment', comment)) \
+        .add(PrimitiveElement('newlines', newlines_number))
 
 
 def newlines_file_element(number: int) -> Element:

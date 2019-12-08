@@ -2,7 +2,7 @@ import unittest
 
 from cmake_tidy.parsing.cmake_parser import CMakeParser
 from cmake_tidy.lex_data.elements import PrimitiveElement
-from tests.unit.parser_composite_elements import spaces_file_element, line_comment, newlines_file_element, \
+from tests.unit.parser_composite_elements import spaces_file_element, line_comment_file_element, newlines_file_element, \
     unhandled_file_element, file
 
 
@@ -32,14 +32,14 @@ class TestParseBasicElements(TestCMakeParser):
 
     def test_should_handle_line_comments(self):
         comment = '# comment here'
-        root = file().add(line_comment(comment, 2))
+        root = file().add(line_comment_file_element(comment, 2))
 
         self.assertReprEqual(root, self.parser.parse(comment + '\n\n'))
 
     def test_should_parse_line_comments_and_unhandled_data_together(self):
         comment = '# cdaew9u32#$#@%#232cd a2o#@$@!'
         root = file() \
-            .add(line_comment(comment, 1)) \
+            .add(line_comment_file_element(comment, 1)) \
             .add(unhandled_file_element('xc_43'))
 
         self.assertReprEqual(root, self.parser.parse(comment + '\nxc_43'))

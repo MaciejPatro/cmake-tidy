@@ -1,4 +1,4 @@
-from cmake_tidy.parsing.elements import Element
+from cmake_tidy.lex_data.elements import Element
 
 
 class CMakeFormatter:

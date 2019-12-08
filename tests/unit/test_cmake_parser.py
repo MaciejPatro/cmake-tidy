@@ -1,7 +1,7 @@
 import unittest
 
 from cmake_tidy.parsing.cmake_parser import CMakeParser
-from cmake_tidy.parsing.elements import PrimitiveElement
+from cmake_tidy.lex_data.elements import PrimitiveElement
 from tests.unit.parser_composite_elements import spaces_file_element, line_comment, newlines_file_element, \
     unhandled_file_element, file
 

@@ -1,6 +1,6 @@
 import unittest
 
-from cmake_tidy.parsing.elements import PrimitiveElement, ComplexElement
+from cmake_tidy.lex_data.elements import PrimitiveElement, ComplexElement
 
 
 class TestElements(unittest.TestCase):

@@ -1,5 +1,5 @@
 from cmake_tidy.command_line_handling import arguments, Command
-from cmake_tidy.configuration import create_configuration
+from cmake_tidy.app_configuration import create_configuration
 from cmake_tidy.formatting import CMakeFormatter, load_format_settings
 from cmake_tidy.parsing import CMakeParser
 

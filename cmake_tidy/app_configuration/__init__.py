@@ -1,4 +1,4 @@
-from cmake_tidy.configuration.configuration import Configuration
+from cmake_tidy.app_configuration.configuration import Configuration
 
 
 def create_configuration(arguments):

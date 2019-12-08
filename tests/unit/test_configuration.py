@@ -1,6 +1,6 @@
 import unittest
 
-from cmake_tidy.configuration import Configuration
+from cmake_tidy.app_configuration import Configuration
 
 
 class TestConfigurationPropertiesHandling(unittest.TestCase):

@@ -9,18 +9,18 @@ class TestCMakeFormatter(unittest.TestCase):
         self.__settings = {'succeeding_newlines': 1, 'tab_size': 2}
 
     def test_return_single_newline(self):
-        self.assert_formatting(newlines(3), '\n')
+        self.assertFormatting('\n', newlines(3))
 
     def test_return_3_newlines_although_settings_allow_more(self):
         self.__settings['succeeding_newlines'] = 5
-        self.assert_formatting(newlines(3), '\n\n\n')
+        self.assertFormatting('\n\n\n', newlines(3))
 
     def test_replace_tab_with_space_one_to_two(self):
-        self.assert_formatting(spaces('\t\t'), ' ' * 4)
+        self.assertFormatting(' ' * 4, spaces('\t\t'))
 
     def test_replace_tabs_with_multiple_spaces(self):
         self.__settings['tab_size'] = 4
-        self.assert_formatting(spaces(' \t \t'), ' ' * 10)
+        self.assertFormatting(' ' * 10, spaces(' \t \t'))
 
     @unittest.SkipTest
     def test_function_should_force_indentation_for_next_lines(self):
@@ -29,8 +29,7 @@ class TestCMakeFormatter(unittest.TestCase):
             .add(command_invocation('test('))
         expected_formatting = 'function()\n  test()'
 
-        f = CMakeFormatter(self.__settings)
-        self.assertEqual(expected_formatting, f.format(function_with_invocation_in_second_line))
+        self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
-    def assert_formatting(self, lex_data, formatted_string):
+    def assertFormatting(self, formatted_string, lex_data):
         self.assertEqual(formatted_string, CMakeFormatter(self.__settings).format(lex_data))

@@ -1,7 +1,6 @@
 import unittest
 
 from cmake_tidy.formatting import CMakeFormatter
-from cmake_tidy.parsing.elements import PrimitiveElement
 from tests.unit.parser_composite_elements import spaces, newlines
 
 

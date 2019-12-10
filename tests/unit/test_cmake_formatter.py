@@ -22,31 +22,18 @@ class TestCMakeFormatter(unittest.TestCase):
         self.__settings['tab_size'] = 4
         self.assertFormatting(' ' * 10, spaces(' \t \t'))
 
-    @unittest.SkipTest
-    def test_function_should_force_indentation_for_command_invocation_and_line_comments_only(self):
-        function_with_invocation_in_second_line = command_invocation('function(') \
-            .add(newlines(1)) \
-            .add(line_ending('# comment', 1)) \
-            .add(unhandled('abc')) \
-            .add(newlines(1)) \
-            .add(command_invocation('test('))
-
-        expected_formatting = """function()
-  # comment
-abc
-  test()"""
-        self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
-
     def test_function_declaration_should_indent_correctly_within_its_scope(self):
         function_with_invocation_in_second_line = file() \
             .add(command_invocation('function(')) \
             .add(newlines(1)) \
+            .add(line_ending('# comment', 1)) \
             .add(command_invocation('test(')) \
             .add(newlines(1)) \
             .add(command_invocation('endfunction(')) \
             .add(newlines(1)) \
             .add(command_invocation('test2('))
         expected_formatting = """function()
+  # comment
   test()
 endfunction()
 test2()"""

@@ -37,12 +37,15 @@ abc
   test()"""
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
-    def test_endfunction_keyword_should_reduce_the_indentation(self):
+    def test_function_declaration_should_indent_correctly_within_its_scope(self):
         function_with_invocation_in_second_line = file() \
             .add(command_invocation('function(')) \
             .add(newlines(1)) \
             .add(command_invocation('test(')) \
-            .add(newlines(1)).add(command_invocation('endfunction('))
+            .add(newlines(1)) \
+            .add(command_invocation('endfunction(')) \
+            .add(newlines(1)) \
+            .add(command_invocation('test2('))
         expected_formatting = 'function()\n  test()\nendfunction()'
 
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)

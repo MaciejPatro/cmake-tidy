@@ -54,6 +54,8 @@ class CMakeFormatter:
     def __format_start_of_command_invocation(self, data: str) -> str:
         if data.startswith('function'):
             self.__state['indent'] += 1
+        elif data.startswith('endfunction'):
+            self.__state['indent'] -= 1
         return data
 
     def __format_file(self, data: list) -> str:

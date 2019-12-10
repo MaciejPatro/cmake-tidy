@@ -46,8 +46,10 @@ abc
             .add(command_invocation('endfunction(')) \
             .add(newlines(1)) \
             .add(command_invocation('test2('))
-        expected_formatting = 'function()\n  test()\nendfunction()'
-
+        expected_formatting = """function()
+  test()
+endfunction()
+test2()"""
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
     def assertFormatting(self, formatted_string, lex_data):

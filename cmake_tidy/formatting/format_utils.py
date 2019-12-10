@@ -32,3 +32,15 @@ class FormatStartCommandInvocation(Formatter):
         elif data.startswith('endfunction'):
             self.__state['indent'] -= 1
         return data
+
+
+class FormatFile(Formatter):
+    def __init__(self, settings: dict):
+        self.__settings = settings
+
+    def exec(self, data) -> str:
+        return self.__cleanup_end_invocations(''.join(data))
+
+    def __cleanup_end_invocations(self, formatted_file: str) -> str:
+        indent = self.__settings['tab_size'] * ' '
+        return formatted_file.replace(indent + 'endfunction', 'endfunction')

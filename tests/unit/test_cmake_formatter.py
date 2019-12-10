@@ -22,6 +22,7 @@ class TestCMakeFormatter(unittest.TestCase):
         self.__settings['tab_size'] = 4
         self.assertFormatting(' ' * 10, spaces(' \t \t'))
 
+    @unittest.SkipTest
     def test_function_should_force_indentation_for_command_invocation_and_line_comments_only(self):
         function_with_invocation_in_second_line = command_invocation('function(') \
             .add(newlines(1)) \

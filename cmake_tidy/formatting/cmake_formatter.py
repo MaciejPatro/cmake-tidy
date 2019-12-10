@@ -1,4 +1,5 @@
 from cmake_tidy.lex_data.elements import Element
+from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
 
 class CMakeFormatter:
@@ -8,12 +9,9 @@ class CMakeFormatter:
         self.__settings = format_settings
         self.__state = {'indent': 0}
 
-    def visit(self, name: str, values=None):
-        if name in self.__format_methods:
-            return self.__format_methods[name](values)
-
     def format(self, data: Element) -> str:
-        formatted_elements = data.accept(self)
+        visitor = ProxyVisitor(self.__format_methods)
+        formatted_elements = data.accept(visitor)
         return ''.join(formatted_elements)
 
     @property

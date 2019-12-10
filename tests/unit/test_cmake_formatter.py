@@ -1,7 +1,7 @@
 import unittest
 
 from cmake_tidy.formatting import CMakeFormatter
-from tests.unit.parser_composite_elements import spaces, newlines, command_invocation, line_ending, unhandled
+from tests.unit.parser_composite_elements import spaces, newlines, command_invocation, line_ending, unhandled, file
 
 
 class TestCMakeFormatter(unittest.TestCase):
@@ -37,13 +37,12 @@ abc
   test()"""
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
-    @unittest.SkipTest
     def test_endfunction_keyword_should_reduce_the_indentation(self):
-        function_with_invocation_in_second_line = command_invocation('function(') \
+        function_with_invocation_in_second_line = file() \
+            .add(command_invocation('function(')) \
             .add(newlines(1)) \
             .add(command_invocation('test(')) \
-            .add(newlines(1)) \
-            .add(command_invocation('endfunction('))
+            .add(newlines(1)).add(command_invocation('endfunction('))
         expected_formatting = 'function()\n  test()\nendfunction()'
 
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)

@@ -1,18 +1,9 @@
-from abc import ABC, abstractmethod
-
-
-class Formatter(ABC):
-    @abstractmethod
-    def exec(self, data) -> str:
-        pass
-
-
-class FormatNewline(Formatter):
+class FormatNewline:
     def __init__(self, state: dict, settings: dict):
         self.__state = state
         self.__settings = settings
 
-    def exec(self, data) -> str:
+    def __call__(self, data) -> str:
         return self.__format_newlines(data) + self.__prepare_initial_newline_indent()
 
     def __prepare_initial_newline_indent(self) -> str:
@@ -22,11 +13,11 @@ class FormatNewline(Formatter):
         return '\n' * min(self.__settings['succeeding_newlines'], number_of_newlines)
 
 
-class FormatStartCommandInvocation(Formatter):
+class FormatStartCommandInvocation:
     def __init__(self, state: dict):
         self.__state = state
 
-    def exec(self, data) -> str:
+    def __call__(self, data) -> str:
         if data.startswith('function'):
             self.__state['indent'] += 1
         elif data.startswith('endfunction'):
@@ -34,11 +25,11 @@ class FormatStartCommandInvocation(Formatter):
         return data
 
 
-class FormatFile(Formatter):
+class FormatFile:
     def __init__(self, settings: dict):
         self.__settings = settings
 
-    def exec(self, data) -> str:
+    def __call__(self, data) -> str:
         return self.__cleanup_end_invocations(''.join(data))
 
     def __cleanup_end_invocations(self, formatted_file: str) -> str:

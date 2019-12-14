@@ -19,7 +19,7 @@ class CMakeFormatter:
         self.__formatters['unhandled'] = lambda data: data
         self.__formatters['line_comment'] = lambda data: data
         self.__formatters['end_cmd_invoke'] = lambda data: data
-        self.__formatters['arguments'] = lambda data: ''.join(data)
+        self.__formatters['arguments'] = lambda data: ''.join(data) if data[0] else ''
         self.__formatters['bracket_start'] = lambda data: data
         self.__formatters['bracket_end'] = lambda data: data
         self.__formatters['unquoted_argument'] = lambda data: data

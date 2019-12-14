@@ -60,3 +60,9 @@ class TestCMakeTidyFormat(unittest.TestCase):
         execute_cmake_tidy(command='format', arguments=[get_input_file('arguments.cmake')])
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    def test_format_indentation_of_basic_invocations(self, stdout):
+        execute_cmake_tidy(command='format', arguments=[get_input_file('indentations.cmake')])
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)

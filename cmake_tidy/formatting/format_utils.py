@@ -16,7 +16,7 @@ class FormatNewline:
 class FormatStartCommandInvocation:
     def __init__(self, state: dict):
         self.__state = state
-        self.__invocations_with_indent = ['function', 'if']
+        self.__invocations_with_indent = ['function', 'if', 'while', 'foreach', 'macro']
 
     def __call__(self, data) -> str:
         self.__update_indent(data)
@@ -38,7 +38,7 @@ class FormatStartCommandInvocation:
 class FormatFile:
     def __init__(self, settings: dict):
         self.__settings = settings
-        self.__elements_to_ident_backward = ['endfunction', 'endif', 'elseif']
+        self.__elements_to_ident_backward = ['endfunction', 'endif', 'elseif', 'endwhile', 'endforeach', 'endmacro']
 
     def __call__(self, data) -> str:
         return self.__cleanup_end_invocations(''.join(data))

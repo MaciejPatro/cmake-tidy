@@ -39,7 +39,6 @@ endfunction()
 test2()"""
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
-    @unittest.SkipTest
     def test_if_statement_should_indent_properly_also_removing_unneeded_spaces(self):
         root = file() \
             .add(command_invocation('if(')) \

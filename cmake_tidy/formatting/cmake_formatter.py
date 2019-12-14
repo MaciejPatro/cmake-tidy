@@ -15,7 +15,7 @@ class CMakeFormatter:
         self.__formatters['newlines'] = FormatNewline(self.__state, self.__settings)
         self.__formatters['start_cmd_invoke'] = FormatStartCommandInvocation(self.__state)
         self.__formatters['file'] = FormatFile(self.__settings)
-        self.__formatters['spaces'] = FormatSpaces(self.__settings)
+        self.__formatters['spaces'] = FormatSpaces(self.__settings, self.__state)
         self.__formatters['unhandled'] = lambda data: data
         self.__formatters['line_comment'] = lambda data: data
         self.__formatters['end_cmd_invoke'] = lambda data: data

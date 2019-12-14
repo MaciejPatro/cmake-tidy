@@ -47,9 +47,19 @@ test2()"""
             .add(command_invocation('test(')) \
             .add(newlines(1)) \
             .add(spaces('         ')) \
+            .add(command_invocation('elseif(')) \
+            .add(newlines(1)) \
+            .add(spaces('         ')) \
+            .add(command_invocation('test(')) \
+            .add(newlines(1)) \
+            .add(spaces('         ')) \
             .add(command_invocation('endif('))
 
-        expected_formatting = 'if()\n  test()\nendif()'
+        expected_formatting = """if()
+  test()
+elseif()
+  test()
+endif()"""
 
         self.assertFormatting(expected_formatting, root)
 

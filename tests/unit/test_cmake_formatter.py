@@ -1,7 +1,7 @@
 import unittest
 
 from cmake_tidy.formatting import CMakeFormatter
-from tests.unit.parser_composite_elements import spaces, newlines, command_invocation, line_ending, unhandled, file
+from tests.unit.parser_composite_elements import spaces, newlines, command_invocation, line_ending, file
 
 
 class TestCMakeFormatter(unittest.TestCase):

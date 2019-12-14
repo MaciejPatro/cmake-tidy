@@ -39,5 +39,19 @@ endfunction()
 test2()"""
         self.assertFormatting(expected_formatting, function_with_invocation_in_second_line)
 
+    def test_if_statement_should_indent_properly_also_removing_unneeded_spaces(self):
+        root = file() \
+            .add(command_invocation('if(')) \
+            .add(newlines(1)) \
+            .add(spaces('         ')) \
+            .add(command_invocation('test(')) \
+            .add(newlines(1)) \
+            .add(spaces('         ')) \
+            .add(command_invocation('endif('))
+
+        expected_formatting = 'if()\n  test()\nendif()'
+
+        self.assertFormatting(expected_formatting, root)
+
     def assertFormatting(self, formatted_string, lex_data):
         self.assertEqual(formatted_string, CMakeFormatter(self.__settings).format(lex_data))

@@ -16,12 +16,12 @@ class TestCMakeFormatDispatcher(unittest.TestCase):
 
     def test_dispatched_method_should_remember_last_usage(self):
         self.dispatcher['new'] = lambda: 1
-        self.assertEqual(1, self.dispatcher['new'])
+        self.assertEqual(1, self.dispatcher['new']())
         self.assertLastStateEqual('new')
 
     def test_ensure_that_state_changes_at_the_end_of_invocation(self):
         self.dispatcher['some'] = lambda: self.state['last']
-        self.assertEqual(None, self.dispatcher['some'])
+        self.assertEqual(None, self.dispatcher['some']())
         self.assertLastStateEqual('some')
 
     def test_dispatcher_should_accept_only_callable_values(self):

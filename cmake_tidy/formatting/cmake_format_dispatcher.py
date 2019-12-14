@@ -1,3 +1,18 @@
+class _Executor:
+    def __init__(self, state: dict, name: str, to_be_called):
+        self.__state = state
+        self.__name = name
+        self.__to_be_called = to_be_called
+
+    def __call__(self, arguments=None):
+        if arguments:
+            value = self.__to_be_called(arguments)
+        else:
+            value = self.__to_be_called()
+        self.__state['last'] = self.__name
+        return value
+
+
 class CMakeFormatDispatcher:
     def __init__(self, state: dict):
         self.__state = state
@@ -6,12 +21,10 @@ class CMakeFormatDispatcher:
     def __setitem__(self, key, value):
         if not callable(value):
             raise TypeError('Only callable values accepted')
-        self.__dict[key] = value
+        self.__dict[key] = _Executor(self.__state, key, value)
 
     def __getitem__(self, item):
-        return self.__exec(item)
+        return self.__dict[item]
 
-    def __exec(self, item):
-        value = self.__dict[item]()
-        self.__state['last'] = item
-        return value
+    def __contains__(self, item):
+        return item in self.__dict

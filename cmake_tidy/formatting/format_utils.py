@@ -48,3 +48,11 @@ class FormatFile:
         for element in self.__elements_to_ident_backward:
             formatted_file = formatted_file.replace(indent + element, element)
         return formatted_file
+
+
+class FormatSpaces:
+    def __init__(self, settings: dict):
+        self.__settings = settings
+
+    def __call__(self, data) -> str:
+        return data.replace('\t', ' ' * self.__settings['tab_size'])

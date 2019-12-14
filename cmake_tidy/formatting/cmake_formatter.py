@@ -1,5 +1,5 @@
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
-from cmake_tidy.formatting.format_utils import FormatNewline, FormatStartCommandInvocation, FormatFile
+from cmake_tidy.formatting.format_utils import FormatNewline, FormatStartCommandInvocation, FormatFile, FormatSpaces
 from cmake_tidy.lex_data.elements import Element
 from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
@@ -15,6 +15,7 @@ class CMakeFormatter:
         self.__formatters['newlines'] = FormatNewline(self.__state, self.__settings)
         self.__formatters['start_cmd_invoke'] = FormatStartCommandInvocation(self.__state)
         self.__formatters['file'] = FormatFile(self.__settings)
+        self.__formatters['spaces'] = FormatSpaces(self.__settings)
         self.__formatters['unhandled'] = lambda data: data
         self.__formatters['line_comment'] = lambda data: data
         self.__formatters['end_cmd_invoke'] = lambda data: data
@@ -26,7 +27,6 @@ class CMakeFormatter:
         self.__formatters['file_element'] = lambda data: ''.join(data)
         self.__formatters['command_invocation'] = lambda data: ''.join(data)
         self.__formatters['bracket_argument'] = lambda data: ''.join(data)
-        self.__formatters['spaces'] = lambda data: data.replace('\t', ' ' * self.__settings['tab_size'])
         self.__formatters['line_ending'] = lambda data: ''.join(data)
         self.__formatters['quoted_argument'] = lambda data: f'"{data}"'
 

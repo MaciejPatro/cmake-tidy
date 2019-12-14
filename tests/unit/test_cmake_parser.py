@@ -2,8 +2,7 @@ import unittest
 
 from cmake_tidy.parsing.cmake_parser import CMakeParser
 from cmake_tidy.lex_data.elements import PrimitiveElement
-from tests.unit.parser_composite_elements import spaces_file_element, line_comment_file_element, newlines_file_element, \
-    unhandled_file_element, file
+from tests.unit.parser_composite_elements import file, line_ending, spaces, unhandled, newlines
 
 
 class TestCMakeParser(unittest.TestCase):
@@ -19,28 +18,28 @@ class TestParseBasicElements(TestCMakeParser):
         self.assertReprEqual(PrimitiveElement(), self.parser.parse(''))
 
     def test_should_parse_correctly_newlines(self):
-        file_with_new_lines = file().add(newlines_file_element(2))
+        file_with_new_lines = file().add(newlines(2))
         self.assertReprEqual(file_with_new_lines, self.parser.parse('\n\n'))
 
     def test_should_parse_with_unhandled_data_still_collecting_output(self):
         root = file() \
-            .add(newlines_file_element(1)) \
-            .add(unhandled_file_element('aaa')) \
-            .add(newlines_file_element(2))
+            .add(newlines(1)) \
+            .add(unhandled('aaa')) \
+            .add(newlines(2))
 
         self.assertReprEqual(root, self.parser.parse('\naaa\n\n'))
 
     def test_should_handle_line_comments(self):
         comment = '# comment here'
-        root = file().add(line_comment_file_element(comment, 2))
+        root = file().add(line_ending(comment, 2))
 
         self.assertReprEqual(root, self.parser.parse(comment + '\n\n'))
 
     def test_should_parse_line_comments_and_unhandled_data_together(self):
         comment = '# cdaew9u32#$#@%#232cd a2o#@$@!'
         root = file() \
-            .add(line_comment_file_element(comment, 1)) \
-            .add(unhandled_file_element('xc_43'))
+            .add(line_ending(comment, 1)) \
+            .add(unhandled('xc_43'))
 
         self.assertReprEqual(root, self.parser.parse(comment + '\nxc_43'))
 
@@ -48,8 +47,8 @@ class TestParseBasicElements(TestCMakeParser):
         begin = 'abc'
         spacing = '  \t'
         end = '_\"DWa'
-        root = file().add(unhandled_file_element(begin)) \
-            .add(spaces_file_element(spacing)) \
-            .add(unhandled_file_element(end))
+        root = file().add(unhandled(begin)) \
+            .add(spaces(spacing)) \
+            .add(unhandled(end))
 
         self.assertReprEqual(root, self.parser.parse(begin + spacing + end))

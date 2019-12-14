@@ -26,7 +26,7 @@ class CMakeParser:
                         | spaces
                         | command_invocation
                         | unhandled"""
-        p[0] = ComplexElement('file_element').add(p[1])
+        p[0] = p[1]
 
     @staticmethod
     def p_command_invocation(p):

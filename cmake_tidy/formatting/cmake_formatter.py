@@ -24,7 +24,6 @@ class CMakeFormatter:
         self.__formatters['bracket_end'] = lambda data: data
         self.__formatters['unquoted_argument'] = lambda data: data
         self.__formatters['bracket_argument_content'] = lambda data: data
-        self.__formatters['file_element'] = lambda data: ''.join(data)
         self.__formatters['command_invocation'] = lambda data: ''.join(data)
         self.__formatters['bracket_argument'] = lambda data: ''.join(data)
         self.__formatters['line_ending'] = lambda data: ''.join(data)

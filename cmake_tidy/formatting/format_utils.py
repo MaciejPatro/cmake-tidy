@@ -66,12 +66,28 @@ class FormatSpaces:
 
 
 class FormatArguments:
+    __spacing = r'^[ \t]+$'
+
     def __call__(self, data) -> str:
         if data[0]:
-            data = self.__remove_spacing(data)
-            return ''.join(data).strip()
+            data = self.__replace_spacings_between_arguments_with_single_space(data)
+            data = self.__remove_spacing_from_first_element(data)
+            data = self.__remove_spacing_from_last_element(data)
+            return ''.join(data)
         return ''
 
     @staticmethod
-    def __remove_spacing(data: list) -> list:
-        return [re.sub(r'^[ \t]+$', ' ', element) for element in data]
+    def __replace_spacings_between_arguments_with_single_space(data: list) -> list:
+        return [re.sub(FormatArguments.__spacing, ' ', element) for element in data]
+
+    @staticmethod
+    def __remove_spacing_from_first_element(data: list) -> list:
+        if re.match(FormatArguments.__spacing, data[0]):
+            return data[1:]
+        return data
+
+    @staticmethod
+    def __remove_spacing_from_last_element(data: list) -> list:
+        if re.match(FormatArguments.__spacing, data[-1]):
+            return data[:-1]
+        return data

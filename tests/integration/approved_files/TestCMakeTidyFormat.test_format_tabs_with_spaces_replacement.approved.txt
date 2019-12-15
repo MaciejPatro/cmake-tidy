@@ -19,7 +19,7 @@ foreach(ARG ${ARGN})            # Iterate over each argument
 endforeach()
 
 add_subdirectory(sum_of_non_adjacent)
-add_subdirectory(record_last                  n_logs)
+add_subdirectory(record_last n_logs)
 add_subdirectory(max_values_subarrays)
 add_subdirectory(string_distance)
 add_subdirectory(new_dir)

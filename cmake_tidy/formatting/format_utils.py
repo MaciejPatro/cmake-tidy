@@ -1,3 +1,6 @@
+import re
+
+
 class FormatNewline:
     def __init__(self, state: dict, settings: dict):
         self.__state = state
@@ -65,5 +68,10 @@ class FormatSpaces:
 class FormatArguments:
     def __call__(self, data) -> str:
         if data[0]:
+            data = self.__remove_spacing(data)
             return ''.join(data).strip()
         return ''
+
+    @staticmethod
+    def __remove_spacing(data: list) -> list:
+        return [re.sub(r'^[ \t]+$', ' ', element) for element in data]

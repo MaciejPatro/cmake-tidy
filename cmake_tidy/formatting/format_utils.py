@@ -32,13 +32,24 @@ class FormatCommandInvocation:
         self.__state = state
 
     def __call__(self, data) -> str:
-        self.__state['indent'] -= 1
         formatted = ''.join(data)
-        if any([formatted.startswith(f'{token}(') for token in FormatCommandInvocation.__start_tokens]):
+        self.__update_indentation(formatted)
+        return formatted
+
+    def __update_indentation(self, formatted):
+        self.__state['indent'] -= 1
+        if self.__is_start_of_special_command(formatted):
             self.__state['indent'] += 1
-        if any([formatted.startswith(f'end{token}(') for token in FormatCommandInvocation.__start_tokens]):
+        elif self.__is_end_of_special_command(formatted):
             self.__state['indent'] -= 1
-        return ''.join(data)
+
+    @staticmethod
+    def __is_start_of_special_command(formatted: str) -> bool:
+        return any([formatted.startswith(f'{token}(') for token in FormatCommandInvocation.__start_tokens])
+
+    @staticmethod
+    def __is_end_of_special_command(formatted: str) -> bool:
+        return any([formatted.startswith(f'end{token}(') for token in FormatCommandInvocation.__start_tokens])
 
 
 class FormatFile:
@@ -85,12 +96,8 @@ class FormatArguments:
 
     @staticmethod
     def __remove_spacing_from_first_element(data: list) -> list:
-        if re.match(FormatArguments.__spacing, data[0]):
-            return data[1:]
-        return data
+        return data[1:] if re.match(FormatArguments.__spacing, data[0]) else data
 
     @staticmethod
     def __remove_spacing_from_last_element(data: list) -> list:
-        if re.match(FormatArguments.__spacing, data[-1]):
-            return data[:-1]
-        return data
+        return data[:-1] if re.match(FormatArguments.__spacing, data[-1]) else data

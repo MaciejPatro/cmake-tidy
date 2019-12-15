@@ -60,3 +60,10 @@ class FormatSpaces:
         if self.__state['last'] is 'line_ending':
             return ''
         return data.replace('\t', ' ' * self.__settings['tab_size'])
+
+
+class FormatArguments:
+    def __call__(self, data) -> str:
+        if data[0]:
+            return ''.join(data).strip()
+        return ''

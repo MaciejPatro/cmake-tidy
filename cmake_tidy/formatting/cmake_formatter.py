@@ -1,5 +1,6 @@
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
-from cmake_tidy.formatting.format_utils import FormatNewline, FormatStartCommandInvocation, FormatFile, FormatSpaces
+from cmake_tidy.formatting.format_utils import FormatNewline, FormatStartCommandInvocation, FormatFile, FormatSpaces, \
+    FormatArguments
 from cmake_tidy.lex_data.elements import Element
 from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
@@ -16,10 +17,10 @@ class CMakeFormatter:
         self.__formatters['start_cmd_invoke'] = FormatStartCommandInvocation(self.__state)
         self.__formatters['file'] = FormatFile(self.__settings)
         self.__formatters['spaces'] = FormatSpaces(self.__settings, self.__state)
+        self.__formatters['arguments'] = FormatArguments()
         self.__formatters['unhandled'] = lambda data: data
         self.__formatters['line_comment'] = lambda data: data
         self.__formatters['end_cmd_invoke'] = lambda data: data
-        self.__formatters['arguments'] = lambda data: ''.join(data) if data[0] else ''
         self.__formatters['bracket_start'] = lambda data: data
         self.__formatters['bracket_end'] = lambda data: data
         self.__formatters['unquoted_argument'] = lambda data: data

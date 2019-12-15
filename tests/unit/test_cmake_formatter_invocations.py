@@ -2,7 +2,7 @@ from tests.unit.parser_composite_elements import newlines, spaces, file, command
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
-class TestCMakeFormatterBasicElements(TestCMakeFormatter):
+class TestCMakeFormatterCommandInvocations(TestCMakeFormatter):
     def test_function_declaration_should_indent_correctly_within_its_scope(self):
         function_with_invocation_in_second_line = file() \
             .add(command_invocation('function(')) \

@@ -38,7 +38,8 @@ class FormatStartCommandInvocation:
 class FormatFile:
     def __init__(self, settings: dict):
         self.__settings = settings
-        self.__elements_to_ident_backward = ['endfunction', 'endif', 'elseif', 'endwhile', 'endforeach', 'endmacro']
+        self.__elements_to_ident_backward = ['endfunction', 'endif', 'elseif', 'endwhile', 'endforeach', 'endmacro',
+                                             'else']
 
     def __call__(self, data) -> str:
         return self.__cleanup_end_invocations(''.join(data))

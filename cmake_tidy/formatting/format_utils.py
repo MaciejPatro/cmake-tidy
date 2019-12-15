@@ -37,10 +37,9 @@ class FormatCommandInvocation:
         return formatted
 
     def __update_indentation(self, formatted):
-        self.__state['indent'] -= 1
-        if self.__is_start_of_special_command(formatted):
-            self.__state['indent'] += 1
-        elif self.__is_end_of_special_command(formatted):
+        if not self.__is_start_of_special_command(formatted):
+            self.__state['indent'] -= 1
+        if self.__is_end_of_special_command(formatted):
             self.__state['indent'] -= 1
 
     @staticmethod

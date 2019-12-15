@@ -29,7 +29,6 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
         expected_formatting = f'abc(NAME \"{text}\")'
         self.assertFormattingArguments(expected_formatting, function_arguments)
 
-    @unittest.SkipTest
     def test_indentation_of_arguments_in_newlines(self):
         function_arguments = arguments() \
             .add(newlines(4)) \

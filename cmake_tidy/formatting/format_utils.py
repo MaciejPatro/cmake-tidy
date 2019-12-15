@@ -19,23 +19,26 @@ class FormatNewline:
 class FormatStartCommandInvocation:
     def __init__(self, state: dict):
         self.__state = state
-        self.__invocations_with_indent = ['function', 'if', 'while', 'foreach', 'macro']
 
     def __call__(self, data) -> str:
-        self.__update_indent(data)
+        self.__state['indent'] += 1
         return data
 
-    def __update_indent(self, data: str) -> None:
-        if data.startswith(self.__start_indents()):
+
+class FormatCommandInvocation:
+    __start_tokens = ['macro', 'while', 'foreach', 'if', 'function']
+
+    def __init__(self, state: dict):
+        self.__state = state
+
+    def __call__(self, data) -> str:
+        self.__state['indent'] -= 1
+        formatted = ''.join(data)
+        if any([formatted.startswith(f'{token}(') for token in FormatCommandInvocation.__start_tokens]):
             self.__state['indent'] += 1
-        elif data.startswith(self.__end_indents()):
+        if any([formatted.startswith(f'end{token}(') for token in FormatCommandInvocation.__start_tokens]):
             self.__state['indent'] -= 1
-
-    def __start_indents(self) -> tuple:
-        return tuple(self.__invocations_with_indent)
-
-    def __end_indents(self) -> tuple:
-        return tuple(f'end{x}' for x in self.__invocations_with_indent)
+        return ''.join(data)
 
 
 class FormatFile:

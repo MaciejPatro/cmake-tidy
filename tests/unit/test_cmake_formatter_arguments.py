@@ -1,7 +1,7 @@
 import unittest
 
 from tests.unit.parser_composite_elements import spaces, file, command_invocation, unquoted_argument, \
-    arguments, quoted_argument, newlines
+    arguments, quoted_argument, newlines, bracket_argument
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
@@ -40,4 +40,13 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
             .add(spaces(' '))
 
         expected_formatting = f'abc(\n  NAME\n  \"XYZ\")'
+        self.assertFormattingArguments(expected_formatting, function_arguments)
+
+    def test_indentation_should_not_apply_to_content_of_bracket_argument_endif_should_be_indented(self):
+        function_arguments = arguments() \
+            .add(newlines(4)) \
+            .add(spaces('    ')) \
+            .add(bracket_argument(2, 'text\n  endif(\nother'))
+
+        expected_formatting = f'abc(\n  [==[text\n  endif(\nother]==])'
         self.assertFormattingArguments(expected_formatting, function_arguments)

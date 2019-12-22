@@ -7,6 +7,11 @@ class TestCMakeFormatterCommandInvocations(TestCMakeFormatter):
         invocation = file().add(command_invocation('FUNCTION('))
         self.assertFormatting('function()', invocation)
 
+    def test_command_invocation_not_change_to_lowercase_when_decided(self):
+        self.settings['force_command_lowercase'] = False
+        invocation = file().add(command_invocation('FUNCTION('))
+        self.assertFormatting('FUNCTION()', invocation)
+
     def test_function_declaration_should_indent_correctly_within_its_scope(self):
         function_with_invocation_in_second_line = file() \
             .add(command_invocation('function(')) \

@@ -50,3 +50,14 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
 
         expected_formatting = f'abc(\n  [==[text\n  endif(\nother]==])'
         self.assertFormattingArguments(expected_formatting, function_arguments)
+
+    def test_ident_target_keyword_in_command(self):
+        function_arguments = arguments() \
+            .add(newlines(4)) \
+            .add(unquoted_argument('TARGET')) \
+            .add(newlines(4)) \
+            .add(bracket_argument(2, 'text')) \
+            .add(newlines(4))
+
+        expected_formatting = 'abc(\n  TARGET\n    [==[text]==]\n)'
+        self.assertFormattingArguments(expected_formatting, function_arguments)

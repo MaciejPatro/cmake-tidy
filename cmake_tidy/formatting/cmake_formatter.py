@@ -1,6 +1,6 @@
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
 from cmake_tidy.formatting.format_utils import FormatNewline, FormatStartCommandInvocation, FormatFile, FormatSpaces, \
-    FormatArguments, FormatCommandInvocation
+    FormatArguments, FormatCommandInvocation, FormatUnquotedArgument, FormatEndCommandInvocation
 from cmake_tidy.lex_data.elements import Element
 from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
@@ -9,7 +9,7 @@ class CMakeFormatter:
     __settings: dict
 
     def __init__(self, format_settings: dict):
-        self.__state = {'indent': 0, 'last': None}
+        self.__state = {'indent': 0, 'last': None, 'keyword_argument': False}
         self.__settings = format_settings
 
         self.__formatters = CMakeFormatDispatcher(self.__state)
@@ -18,13 +18,13 @@ class CMakeFormatter:
         self.__formatters['file'] = FormatFile(self.__settings)
         self.__formatters['spaces'] = FormatSpaces(self.__settings, self.__state)
         self.__formatters['command_invocation'] = FormatCommandInvocation(self.__state)
-        self.__formatters['arguments'] = FormatArguments()
+        self.__formatters['arguments'] = FormatArguments(self.__state)
+        self.__formatters['unquoted_argument'] = FormatUnquotedArgument(self.__state)
+        self.__formatters['end_cmd_invoke'] = FormatEndCommandInvocation(self.__state)
         self.__formatters['unhandled'] = lambda data: data
         self.__formatters['line_comment'] = lambda data: data
-        self.__formatters['end_cmd_invoke'] = lambda data: data
         self.__formatters['bracket_start'] = lambda data: data
         self.__formatters['bracket_end'] = lambda data: data
-        self.__formatters['unquoted_argument'] = lambda data: data
         self.__formatters['bracket_argument_content'] = lambda data: data
         self.__formatters['bracket_argument'] = lambda data: ''.join(data)
         self.__formatters['line_ending'] = lambda data: ''.join(data)

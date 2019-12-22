@@ -1,6 +1,7 @@
 import re
 
 _reindent_token = '<cmake-tidy-reindent>'
+_reindent_2_tokens = '<cmake-tidy-reindent2>'
 
 
 class FormatNewline:
@@ -37,14 +38,15 @@ class FormatCommandInvocation:
 
     def __call__(self, data) -> str:
         original = ''.join(data)
-        self.__update_indentation(original)
+        self.__update_state(original)
         return self.__add_reindent_tokens_where_needed(original)
 
-    def __update_indentation(self, formatted):
+    def __update_state(self, formatted):
         if not self.__is_start_of_special_command(formatted):
             self.__state['indent'] -= 1
         if self.__is_end_of_special_command(formatted):
             self.__state['indent'] -= 1
+        self.__state['keyword_argument'] = False
 
     @staticmethod
     def __is_start_of_special_command(original: str) -> bool:
@@ -55,11 +57,11 @@ class FormatCommandInvocation:
         return any([original.startswith(f'end{token}(') for token in FormatCommandInvocation.__start_tokens])
 
     @staticmethod
-    def __add_reindent_tokens_where_needed(original: str) -> str:
+    def __add_reindent_tokens_where_needed(data: str) -> str:
         for reindent_cmd in FormatCommandInvocation.__reindent_commands:
-            if original.startswith(f'{reindent_cmd}('):
-                return _reindent_token + original
-        return original
+            if data.startswith(f'{reindent_cmd}('):
+                return _reindent_token + data
+        return data
 
 
 class FormatFile:
@@ -71,7 +73,9 @@ class FormatFile:
 
     def __cleanup_end_invocations(self, formatted_file: str) -> str:
         indent = self.__settings['tab_size'] * ' '
+        formatted_file = formatted_file.replace(2 * indent + _reindent_2_tokens, '')
         formatted_file = formatted_file.replace(indent + _reindent_token, '')
+        formatted_file = formatted_file.replace(_reindent_token, '')
         return formatted_file
 
 
@@ -89,13 +93,24 @@ class FormatSpaces:
 class FormatArguments:
     __spacing = r'^[ \t]+$'
 
+    def __init__(self, state: dict):
+        self.__state = state
+
     def __call__(self, data) -> str:
         if data[0]:
-            data = self.__replace_spacings_between_arguments_with_single_space(data)
-            data = self.__remove_spacing_from_first_element(data)
-            data = self.__remove_spacing_from_last_element(data)
-            return ''.join(data)
+            self.__update_state()
+            return self.__format_arguments(data)
         return ''
+
+    def __update_state(self):
+        if self.__state['keyword_argument']:
+            self.__state['indent'] -= 1
+
+    def __format_arguments(self, data) -> str:
+        data = self.__replace_spacings_between_arguments_with_single_space(data)
+        data = self.__remove_spacing_from_first_element(data)
+        data = self.__remove_spacing_from_last_element(data)
+        return ''.join(data)
 
     @staticmethod
     def __replace_spacings_between_arguments_with_single_space(data: list) -> list:
@@ -108,3 +123,33 @@ class FormatArguments:
     @staticmethod
     def __remove_spacing_from_last_element(data: list) -> list:
         return data[:-1] if re.match(FormatArguments.__spacing, data[-1]) else data
+
+
+class FormatUnquotedArgument:
+    __keywords = ['TARGET']
+
+    def __init__(self, state: dict):
+        self.__state = state
+
+    def __call__(self, data) -> str:
+        self.__update_state(data)
+        return data
+
+    def __update_state(self, data: str) -> None:
+        if self.__is_matching_any_of_keywords(data):
+            self.__state['keyword_argument'] = True
+            self.__state['indent'] += 1
+
+    @staticmethod
+    def __is_matching_any_of_keywords(data):
+        return any([data == keyword for keyword in FormatUnquotedArgument.__keywords])
+
+
+class FormatEndCommandInvocation:
+    def __init__(self, state: dict):
+        self.__state = state
+
+    def __call__(self, data) -> str:
+        if self.__state['keyword_argument']:
+            return _reindent_2_tokens + data
+        return _reindent_token + data

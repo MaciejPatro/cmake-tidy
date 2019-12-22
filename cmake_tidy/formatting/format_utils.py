@@ -1,7 +1,6 @@
 import re
 
-_reindent_token = '<cmake-tidy-reindent>'
-_reindent_2_tokens = '<cmake-tidy-reindent2>'
+from cmake_tidy.formatting.utils.tokens import Tokens
 
 
 class FormatNewline:
@@ -60,23 +59,8 @@ class FormatCommandInvocation:
     def __add_reindent_tokens_where_needed(data: str) -> str:
         for reindent_cmd in FormatCommandInvocation.__reindent_commands:
             if data.startswith(f'{reindent_cmd}('):
-                return _reindent_token + data
+                return Tokens.reindent + data
         return data
-
-
-class FormatFile:
-    def __init__(self, settings: dict):
-        self.__settings = settings
-
-    def __call__(self, data) -> str:
-        return self.__cleanup_end_invocations(''.join(data))
-
-    def __cleanup_end_invocations(self, formatted_file: str) -> str:
-        indent = self.__settings['tab_size'] * ' '
-        formatted_file = formatted_file.replace(2 * indent + _reindent_2_tokens, '')
-        formatted_file = formatted_file.replace(indent + _reindent_token, '')
-        formatted_file = formatted_file.replace(_reindent_token, '')
-        return formatted_file
 
 
 class FormatSpaces:
@@ -151,5 +135,5 @@ class FormatEndCommandInvocation:
 
     def __call__(self, data) -> str:
         if self.__state['keyword_argument']:
-            return _reindent_2_tokens + data
-        return _reindent_token + data
+            return Tokens.reindent_2 + data
+        return Tokens.reindent + data

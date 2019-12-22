@@ -1,6 +1,7 @@
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
-from cmake_tidy.formatting.format_utils import FormatNewline, FormatStartCommandInvocation, FormatFile, FormatSpaces, \
+from cmake_tidy.formatting.format_utils import FormatNewline, FormatStartCommandInvocation, FormatSpaces, \
     FormatArguments, FormatCommandInvocation, FormatUnquotedArgument, FormatEndCommandInvocation
+from cmake_tidy.formatting.utils.format_file import FormatFile
 from cmake_tidy.lex_data.elements import Element
 from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 

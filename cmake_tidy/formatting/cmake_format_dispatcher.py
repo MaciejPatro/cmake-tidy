@@ -5,10 +5,10 @@ class _Executor:
         self.__to_be_called = to_be_called
 
     def __call__(self, arguments=None):
-        if arguments:
-            value = self.__to_be_called(arguments)
-        else:
+        if arguments is None:
             value = self.__to_be_called()
+        else:
+            value = self.__to_be_called(arguments)
         self.__state['last'] = self.__name
         return value
 

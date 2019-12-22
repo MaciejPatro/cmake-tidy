@@ -22,7 +22,7 @@ test2()"""
 
     def test_if_statement_should_indent_properly_also_removing_unneeded_spaces(self):
         root = file() \
-            .add(command_invocation('if(')) \
+            .add(command_invocation('if (')) \
             .add(newlines(1)) \
             .add(spaces('         ')) \
             .add(command_invocation('test(')) \

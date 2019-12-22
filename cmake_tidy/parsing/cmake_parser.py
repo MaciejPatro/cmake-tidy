@@ -115,7 +115,8 @@ class CMakeParser:
     @staticmethod
     def p_quoted_argument_content(p):
         """quoted_argument_content : quoted_argument_content quoted_argument_content_element
-                                   | quoted_argument_content_element"""
+                                   | quoted_argument_content_element
+                                   | empty"""
         _create_content(p, 'quoted_argument_content')
 
     @staticmethod

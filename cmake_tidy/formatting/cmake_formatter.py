@@ -13,12 +13,12 @@ class CMakeFormatter:
 
         self.__formatters = CMakeFormatDispatcher(self.__state)
         self.__formatters['newlines'] = utils.FormatNewline(self.__state, self.__settings)
+        self.__formatters['unquoted_argument'] = utils.FormatUnquotedArgument(self.__state, self.__settings)
         self.__formatters['start_cmd_invoke'] = utils.FormatStartCommandInvocation(self.__state)
         self.__formatters['file'] = utils.FormatFile(self.__settings)
         self.__formatters['spaces'] = utils.FormatSpaces(self.__settings, self.__state)
         self.__formatters['command_invocation'] = utils.FormatCommandInvocation(self.__state)
         self.__formatters['arguments'] = utils.FormatArguments(self.__state)
-        self.__formatters['unquoted_argument'] = utils.FormatUnquotedArgument(self.__state)
         self.__formatters['end_cmd_invoke'] = utils.FormatEndCommandInvocation(self.__state)
         self.__formatters['unhandled'] = lambda data: data
         self.__formatters['line_comment'] = lambda data: data

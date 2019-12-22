@@ -1,10 +1,10 @@
 from cmake_tidy.formatting.utils.tokens import Tokens
+from cmake_tidy.utils.keyword_verifier import KeywordVerifier
 
 
 class FormatUnquotedArgument:
-    __keywords = ['TARGET']
-
-    def __init__(self, state: dict):
+    def __init__(self, state: dict, settings: dict):
+        self.__verifier = KeywordVerifier(settings)
         self.__state = state
         self.__keyword_argument_already_found = False
 
@@ -14,7 +14,7 @@ class FormatUnquotedArgument:
         return self.__format_data(data)
 
     def __update_state(self, data: str) -> None:
-        if self.__is_matching_any_of_keywords(data):
+        if self.__verifier.is_keyword(data):
             if not self.__state['keyword_argument']:
                 self.__state['indent'] += 1
             self.__state['keyword_argument'] = True
@@ -23,7 +23,3 @@ class FormatUnquotedArgument:
         if self.__keyword_argument_already_found:
             return Tokens.reindent + data
         return data
-
-    @staticmethod
-    def __is_matching_any_of_keywords(data):
-        return any([data == keyword for keyword in FormatUnquotedArgument.__keywords])

@@ -6,7 +6,7 @@ from tests.unit.parser_composite_elements import spaces, newlines
 
 class TestCMakeFormatter(unittest.TestCase):
     def setUp(self) -> None:
-        self.settings = {'succeeding_newlines': 1, 'tab_size': 2}
+        self.settings = {'succeeding_newlines': 1, 'tab_size': 2, 'keywords': ['TARGET']}
 
     def assertFormatting(self, formatted_string, lex_data):
         self.assertEqual(formatted_string, CMakeFormatter(self.settings).format(lex_data))

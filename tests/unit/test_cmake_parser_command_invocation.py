@@ -16,6 +16,12 @@ class TestParseCommandInvocation(TestCMakeParser):
 
         self.assertReprEqual(root, self.parser.parse(start_invocation + '\"\")'))
 
+    def test_with_unquoted_arguments_in_braces(self):
+        start_invocation = 'include('
+        root = file().add(command_invocation(start_invocation, arguments().add(unquoted_argument('(some)'))))
+
+        self.assertReprEqual(root, self.parser.parse(start_invocation + '(some))'))
+
     def test_with_bracket_argument(self):
         start_invocation = 'function_name('
         bracket_start = '[['

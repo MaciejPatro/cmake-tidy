@@ -1,6 +1,8 @@
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
-from cmake_tidy.formatting.format_utils import FormatSpaces, \
-    FormatArguments, FormatUnquotedArgument, FormatEndCommandInvocation
+from cmake_tidy.formatting.utils.format_end_command_invocation import FormatEndCommandInvocation
+from cmake_tidy.formatting.utils.format_unquoted_argument import FormatUnquotedArgument
+from cmake_tidy.formatting.utils.format_arguments import FormatArguments
+from cmake_tidy.formatting.utils.format_spaces import FormatSpaces
 from cmake_tidy.formatting.utils.format_command_invocation import FormatCommandInvocation
 from cmake_tidy.formatting.utils.format_start_command_invocation import FormatStartCommandInvocation
 from cmake_tidy.formatting.utils.format_newline import FormatNewline

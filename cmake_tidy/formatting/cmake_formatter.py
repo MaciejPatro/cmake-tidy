@@ -1,12 +1,5 @@
+from cmake_tidy.formatting import utils
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
-from cmake_tidy.formatting.utils.format_end_command_invocation import FormatEndCommandInvocation
-from cmake_tidy.formatting.utils.format_unquoted_argument import FormatUnquotedArgument
-from cmake_tidy.formatting.utils.format_arguments import FormatArguments
-from cmake_tidy.formatting.utils.format_spaces import FormatSpaces
-from cmake_tidy.formatting.utils.format_command_invocation import FormatCommandInvocation
-from cmake_tidy.formatting.utils.format_start_command_invocation import FormatStartCommandInvocation
-from cmake_tidy.formatting.utils.format_newline import FormatNewline
-from cmake_tidy.formatting.utils.format_file import FormatFile
 from cmake_tidy.lex_data.elements import Element
 from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
@@ -19,14 +12,14 @@ class CMakeFormatter:
         self.__settings = format_settings
 
         self.__formatters = CMakeFormatDispatcher(self.__state)
-        self.__formatters['newlines'] = FormatNewline(self.__state, self.__settings)
-        self.__formatters['start_cmd_invoke'] = FormatStartCommandInvocation(self.__state)
-        self.__formatters['file'] = FormatFile(self.__settings)
-        self.__formatters['spaces'] = FormatSpaces(self.__settings, self.__state)
-        self.__formatters['command_invocation'] = FormatCommandInvocation(self.__state)
-        self.__formatters['arguments'] = FormatArguments(self.__state)
-        self.__formatters['unquoted_argument'] = FormatUnquotedArgument(self.__state)
-        self.__formatters['end_cmd_invoke'] = FormatEndCommandInvocation(self.__state)
+        self.__formatters['newlines'] = utils.FormatNewline(self.__state, self.__settings)
+        self.__formatters['start_cmd_invoke'] = utils.FormatStartCommandInvocation(self.__state)
+        self.__formatters['file'] = utils.FormatFile(self.__settings)
+        self.__formatters['spaces'] = utils.FormatSpaces(self.__settings, self.__state)
+        self.__formatters['command_invocation'] = utils.FormatCommandInvocation(self.__state)
+        self.__formatters['arguments'] = utils.FormatArguments(self.__state)
+        self.__formatters['unquoted_argument'] = utils.FormatUnquotedArgument(self.__state)
+        self.__formatters['end_cmd_invoke'] = utils.FormatEndCommandInvocation(self.__state)
         self.__formatters['unhandled'] = lambda data: data
         self.__formatters['line_comment'] = lambda data: data
         self.__formatters['bracket_start'] = lambda data: data

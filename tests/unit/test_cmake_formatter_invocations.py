@@ -3,6 +3,10 @@ from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
 class TestCMakeFormatterCommandInvocations(TestCMakeFormatter):
+    def test_command_invocation_should_be_by_default_lowercase(self):
+        invocation = file().add(command_invocation('FUNCTION('))
+        self.assertFormatting('function()', invocation)
+
     def test_function_declaration_should_indent_correctly_within_its_scope(self):
         function_with_invocation_in_second_line = file() \
             .add(command_invocation('function(')) \

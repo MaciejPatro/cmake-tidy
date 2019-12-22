@@ -7,4 +7,9 @@ class FormatStartCommandInvocation:
 
     def __call__(self, data: str) -> str:
         self.__state['indent'] += 1
-        return re.sub(r'\s+', '', data)
+        return self.__format_data(data)
+
+    @staticmethod
+    def __format_data(original: str) -> str:
+        formatted = re.sub(r'\s+', '', original)
+        return formatted.lower()

@@ -59,6 +59,12 @@ class TestParseCommandInvocation(TestCMakeParser):
         [===[--text]===])
     )"""
 
+        expected_arguments_in_parentheses = parentheses().add(arguments()
+                                                              .add(quoted_argument('${DATA_PATH_OPTION}'))
+                                                              .add(newlines(1))
+                                                              .add(spaces('        '))
+                                                              .add(bracket_argument(3, '--text')))
+
         expected_args = arguments() \
             .add(newlines(1)) \
             .add(spaces('    ')) \
@@ -79,10 +85,7 @@ class TestParseCommandInvocation(TestCMakeParser):
             .add(unquoted_argument('$<TARGET_FILE:${TARGET}>')) \
             .add(newlines(1)) \
             .add(spaces('        ')) \
-            .add(quoted_argument('${DATA_PATH_OPTION}')) \
-            .add(newlines(1)) \
-            .add(spaces('        ')) \
-            .add(bracket_argument(3, '--text')) \
+            .add(expected_arguments_in_parentheses) \
             .add(newlines(1)) \
             .add(spaces('    '))
         expected_invocation = command_invocation('add_test(', expected_args)

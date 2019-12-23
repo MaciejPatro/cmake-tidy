@@ -25,7 +25,7 @@ class CMakeLexer:
               'END_PARENTHESIS']
 
     t_LINE_COMMENT = r'\#[^\n]+'
-    t_INITIAL_commandinvocation_SPACES = r'[ \t]+'
+    t_INITIAL_commandinvocation_insideparentheses_SPACES = r'[ \t]+'
     t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'\\\"'
     t_commandinvocation_insideparentheses_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\\n]+'
 

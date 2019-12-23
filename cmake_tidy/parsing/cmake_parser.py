@@ -160,7 +160,7 @@ class CMakeParser:
 
     @staticmethod
     def p_error(p):
-        print("Illegal symbol '%s'" % p.type)
+        print(f'Illegal symbol {p.type} \"{p.value}\"')
 
     def parse(self, data: str):
         return self.parser.parse(data)

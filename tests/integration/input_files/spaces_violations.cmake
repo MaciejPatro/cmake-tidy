@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
     foreach(ARG ${ARGN})			# Iterate over each argument
-        if(${ARG} MATCHES "\w+")
+        if(${ARG} (MATCHES ("\w+")))
 			math(EXPR N "${ARG} * 2")
         else()
         						message("${N}") # Print N

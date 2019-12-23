@@ -40,7 +40,7 @@ class CMakeLexer:
         t.lexer.push_state('commandinvocation')
         return t
 
-    def t_commandinvocation_begin_insideparentheses(self, t: lex.Token) -> lex.Token:
+    def t_commandinvocation_insideparentheses_begin_insideparentheses(self, t: lex.Token) -> lex.Token:
         r"""\("""
         t.type = 'BEGIN_PARENTHESIS'
         t.lexer.push_state('insideparentheses')

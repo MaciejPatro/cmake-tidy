@@ -1,6 +1,6 @@
 from tests.unit.test_cmake_parser import TestCMakeParser
 from tests.unit.parser_composite_elements import file, command_invocation, arguments, unquoted_argument, \
-    bracket_argument, quoted_argument, spaces, newlines
+    bracket_argument, quoted_argument, spaces, newlines, parentheses
 
 
 class TestParseCommandInvocation(TestCMakeParser):
@@ -18,7 +18,12 @@ class TestParseCommandInvocation(TestCMakeParser):
 
     def test_with_unquoted_arguments_in_braces(self):
         start_invocation = 'include('
-        root = file().add(command_invocation(start_invocation, arguments().add(unquoted_argument('(some)'))))
+        expected_args = arguments().add(
+            parentheses().add(
+                arguments().add(unquoted_argument('some'))
+            )
+        )
+        root = file().add(command_invocation(start_invocation, expected_args))
 
         self.assertReprEqual(root, self.parser.parse(start_invocation + '(some))'))
 

@@ -11,6 +11,10 @@ def line_ending(comment, newlines_number):
         .add(PrimitiveElement('newlines', newlines_number))
 
 
+def parentheses() -> Element:
+    return ComplexElement('parentheses')
+
+
 def newlines(number: int) -> Element:
     return ComplexElement('line_ending').add(PrimitiveElement('newlines', number))
 

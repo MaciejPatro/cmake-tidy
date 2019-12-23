@@ -5,7 +5,8 @@ class CMakeLexer:
     states = (
         ('commandinvocation', 'exclusive'),
         ('bracketargument', 'exclusive'),
-        ('quotedargument', 'exclusive')
+        ('quotedargument', 'exclusive'),
+        ('insideparentheses', 'exclusive')
     )
     tokens = ['NEWLINES',
               'UNHANDLED_YET',
@@ -19,12 +20,14 @@ class CMakeLexer:
               'QUOTED_ARGUMENT_START',
               'QUOTED_ARGUMENT_CONTENT',
               'QUOTED_ARGUMENT_END',
-              'UNQUOTED_ARGUMENT']
+              'UNQUOTED_ARGUMENT',
+              'BEGIN_PARENTHESIS',
+              'END_PARENTHESIS']
 
     t_LINE_COMMENT = r'\#[^\n]+'
     t_INITIAL_commandinvocation_SPACES = r'[ \t]+'
     t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'\\\"'
-    t_commandinvocation_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\\n]+'
+    t_commandinvocation_insideparentheses_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\\n]+'
 
     def __init__(self) -> None:
         self.bracket_argument_size = -1
@@ -37,14 +40,20 @@ class CMakeLexer:
         t.lexer.push_state('commandinvocation')
         return t
 
-    def t_commandinvocation_begin_bracketargument(self, t: lex.Token) -> lex.Token:
+    def t_commandinvocation_begin_insideparentheses(self, t: lex.Token) -> lex.Token:
+        r"""\("""
+        t.type = 'BEGIN_PARENTHESIS'
+        t.lexer.push_state('insideparentheses')
+        return t
+
+    def t_commandinvocation_insideparentheses_begin_bracketargument(self, t: lex.Token) -> lex.Token:
         r"""\[=*\["""
         t.type = 'BRACKET_ARGUMENT_START'
         self.bracket_argument_size = len(t.value)
         t.lexer.push_state('bracketargument')
         return t
 
-    def t_commandinvocation_begin_quotedargument(self, t: lex.Token) -> lex.Token:
+    def t_commandinvocation_insideparentheses_begin_quotedargument(self, t: lex.Token) -> lex.Token:
         r"""\""""
         t.type = 'QUOTED_ARGUMENT_START'
         t.lexer.push_state('quotedargument')
@@ -54,6 +63,11 @@ class CMakeLexer:
     def t_commandinvocation_end(t: lex.Token) -> lex.Token:
         r"""\)"""
         return _end_state(t, 'COMMAND_INVOCATION_END')
+
+    @staticmethod
+    def t_insideparentheses_end(t: lex.Token) -> lex.Token:
+        r"""\)"""
+        return _end_state(t, 'END_PARENTHESIS')
 
     @staticmethod
     def t_quotedargument_end(t: lex.Token) -> lex.Token:
@@ -70,13 +84,13 @@ class CMakeLexer:
         return t
 
     @staticmethod
-    def t_INITIAL_commandinvocation_NEWLINES(t: lex.LexToken) -> lex.LexToken:
+    def t_INITIAL_commandinvocation_insideparentheses_NEWLINES(t: lex.LexToken) -> lex.LexToken:
         r"""\n+"""
         t.lexer.lineno += len(t.value)
         return t
 
     @staticmethod
-    def t_INITIAL_commandinvocation_error(t: lex.LexToken) -> lex.LexToken:
+    def t_INITIAL_commandinvocation_insideparentheses_error(t: lex.LexToken) -> lex.LexToken:
         return _skip_one_and_return_with(t, 'UNHANDLED_YET')
 
     @staticmethod

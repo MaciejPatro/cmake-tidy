@@ -36,6 +36,14 @@ class CMakeParser:
             p[0].add(element)
 
     @staticmethod
+    def p_parentheses(p):
+        """parentheses : BEGIN_PARENTHESIS arguments END_PARENTHESIS"""
+        p[0] = ComplexElement('parentheses')
+        for element in p[1:]:
+            if isinstance(element, (PrimitiveElement, ComplexElement)):
+                p[0].add(element)
+
+    @staticmethod
     def p_arguments(p):
         """arguments : arguments argument
                      | argument"""
@@ -50,6 +58,7 @@ class CMakeParser:
                     | quoted_argument
                     | unquoted_argument
                     | arguments_separation
+                    | parentheses
                     | empty"""
         p[0] = p[1]
 

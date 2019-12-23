@@ -55,8 +55,8 @@ class TestParseCommandInvocation(TestCMakeParser):
     NAME dbg-${TARGET}-fast
     CONFIGURATIONS Debug
     COMMAND ${Runner_BINARY_DEBUG} $<TARGET_FILE:${TARGET}>
-        "${DATA_PATH_OPTION}"
-        [===[--text]===]
+        ("${DATA_PATH_OPTION}"
+        [===[--text]===])
     )"""
 
         expected_args = arguments() \

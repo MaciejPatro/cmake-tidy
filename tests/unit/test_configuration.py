@@ -1,14 +1,11 @@
 import unittest
 
-from cmake_tidy.app_configuration import Configuration
+from cmake_tidy.utils.configuration import Configuration
 
 
 class TestConfigurationPropertiesHandling(unittest.TestCase):
     def setUp(self) -> None:
         self.config = Configuration({})
-
-    def test_input_should_be_empty_when_no_file_specified(self):
-        self.assertEqual('', self.config.input)
 
     def test_not_existing_property_should_raise(self):
         with self.assertRaises(AttributeError):
@@ -19,7 +16,12 @@ class TestConfigurationPropertiesHandling(unittest.TestCase):
 
      
 class TestConfigurationInheritanceBehavior(unittest.TestCase):
-    class InheritedConfiguration(Configuration):
+    class BasedOnConfiguration(Configuration):
+        @property
+        def a_property(self):
+            return 'a_property'
+
+    class InheritedConfiguration(BasedOnConfiguration):
         def __init__(self, arguments: dict):
             super().__init__(arguments)
             
@@ -35,7 +37,7 @@ class TestConfigurationInheritanceBehavior(unittest.TestCase):
         self.inherited_config = self.InheritedConfiguration({'initialized_property': 'abc'})
 
     def test_should_contain_main_class_property(self):
-        self.assertEqual('', self.inherited_config.input)
+        self.assertEqual('a_property', self.inherited_config.a_property)
 
     def test_should_have_new_property_setup(self):
         self.assertEqual('new', self.inherited_config.new_property)

@@ -1,5 +1,5 @@
-from cmake_tidy.app_configuration.configuration import Configuration
+from cmake_tidy.app_configuration.format_configuration import FormatConfiguration
 
 
 def create_configuration(arguments):
-    return Configuration(arguments=dict(vars(arguments)))
+    return FormatConfiguration(arguments=dict(vars(arguments)))

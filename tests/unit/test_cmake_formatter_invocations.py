@@ -12,6 +12,11 @@ class TestCMakeFormatterCommandInvocations(TestCMakeFormatter):
         invocation = file().add(command_invocation('FUNCTION('))
         self.assertFormatting('FUNCTION()', invocation)
 
+    def test_add_space_between_command_name_and_begin_parentheses_when_decided(self):
+        self.settings['space_between_command_and_begin_parentheses'] = True
+        invocation = file().add(command_invocation('if('))
+        self.assertFormatting('if ()', invocation)
+
     def test_function_declaration_should_indent_correctly_within_its_scope(self):
         function_with_invocation_in_second_line = file() \
             .add(command_invocation('function(')) \

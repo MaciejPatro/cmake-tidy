@@ -20,6 +20,6 @@ class TestCMakeTidyFormat(unittest.TestCase):
 
     @mock.patch('sys.stderr', new_callable=StringIO)
     def test_incorrect_command_should_print_error_with_usage_help(self, stdout):
-        execute_cmake_tidy(command='', arguments=[])
+        execute_cmake_tidy(command='format', arguments=[])
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)

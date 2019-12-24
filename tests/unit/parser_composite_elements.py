@@ -1,4 +1,4 @@
-from cmake_tidy.lex_data.elements import Element, ComplexElement, PrimitiveElement
+from cmake_tidy.lexical_data.elements import Element, ComplexElement, PrimitiveElement
 
 
 def spaces(data: str) -> PrimitiveElement:

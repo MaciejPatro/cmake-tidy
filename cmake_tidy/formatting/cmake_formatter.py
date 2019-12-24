@@ -1,6 +1,6 @@
 from cmake_tidy.formatting import utils
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
-from cmake_tidy.lex_data.elements import Element
+from cmake_tidy.lexical_data.elements import Element
 from cmake_tidy.utils.proxy_visitor import ProxyVisitor
 
 

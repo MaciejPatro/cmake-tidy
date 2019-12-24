@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
 from cmake_tidy.parsing.cmake_lexer import CMakeLexer
-from cmake_tidy.lex_data.elements import PrimitiveElement, ComplexElement
+from cmake_tidy.lexical_data.elements import PrimitiveElement, ComplexElement
 
 
 class CMakeParser:

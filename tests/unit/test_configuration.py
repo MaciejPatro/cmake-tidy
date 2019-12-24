@@ -1,6 +1,6 @@
 import unittest
 
-from cmake_tidy.utils.configuration import Configuration
+from cmake_tidy.utils.app_configuration.configuration import Configuration
 
 
 class TestConfigurationPropertiesHandling(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestConfigurationPropertiesHandling(unittest.TestCase):
     def test_all_properties_should_not_contain_key_with_same_name(self):
         self.assertNotIn('all_properties', self.config.all_properties)
 
-     
+
 class TestConfigurationInheritanceBehavior(unittest.TestCase):
     class BasedOnConfiguration(Configuration):
         @property

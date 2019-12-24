@@ -1,7 +1,5 @@
 import argparse
 
-from cmake_tidy.command_line_handling.format_command import FormatCommand
-
 
 class CommandLineParser:
     def __init__(self):
@@ -12,7 +10,9 @@ class CommandLineParser:
                                                          help='see "cmake-tidy <command> --help" to read more '
                                                               'about a specific sub-command.')
         self.__commands = []
-        self.__commands.append(FormatCommand(self.__sub_parser))
+
+    def add_command(self, class_name):
+        self.__commands.append(class_name(self.__sub_parser))
 
     def parse(self, args=None):
         return self.__parser.parse_args(args)

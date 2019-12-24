@@ -32,7 +32,7 @@ class TestFileFormatting(unittest.TestCase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.command_line_handling.format_command.load_format_settings')
+    @mock.patch('cmake_tidy.commands.format.format_command.load_format_settings')
     def test_format_against_newline_violations_with_custom_settings(self, load_settings, stdout):
         fake_settings = _get_default_format_settings()
         fake_settings['succeeding_newlines'] = 4
@@ -62,7 +62,7 @@ class TestFileFormatting(unittest.TestCase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.command_line_handling.format_command.load_format_settings')
+    @mock.patch('cmake_tidy.commands.format.format_command.load_format_settings')
     def test_format_indentation_when_spaces_after_command_name_are_present(self, load_settings, stdout):
         fake_settings = _get_default_format_settings()
         fake_settings['space_between_command_and_begin_parentheses'] = True

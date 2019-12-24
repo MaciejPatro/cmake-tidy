@@ -1,4 +1,4 @@
-from cmake_tidy.app_configuration.format_configuration import FormatConfiguration
+from cmake_tidy.commands.format.format_configuration import FormatConfiguration
 
 
 def create_configuration(arguments):

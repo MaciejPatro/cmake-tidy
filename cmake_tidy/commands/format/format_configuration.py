@@ -1,4 +1,4 @@
-from cmake_tidy.utils.configuration import Configuration
+from cmake_tidy.utils.app_configuration.configuration import Configuration
 
 
 class FormatConfiguration(Configuration):

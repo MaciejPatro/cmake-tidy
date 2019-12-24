@@ -5,8 +5,7 @@ from approvaltests.approvals import verify
 from approvaltests.reporters.generic_diff_reporter_factory import GenericDiffReporterFactory
 from io import StringIO
 
-from cmake_tidy.formatting import _get_default_format_settings
-from tests.integration.utils import execute_cmake_tidy, normalize, get_input_file
+from tests.integration.utils import execute_cmake_tidy, normalize
 
 
 class TestCMakeTidyFormat(unittest.TestCase):
@@ -22,58 +21,5 @@ class TestCMakeTidyFormat(unittest.TestCase):
     @mock.patch('sys.stderr', new_callable=StringIO)
     def test_incorrect_command_should_print_error_with_usage_help(self, stdout):
         execute_cmake_tidy(command='', arguments=[])
-        normalized_output = normalize(stdout.getvalue())
-        verify(normalized_output, self.reporter)
-
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_command_should_print_file_to_output(self, stdout):
-        execute_cmake_tidy(command='format', arguments=[get_input_file('first_example.cmake')])
-        normalized_output = normalize(stdout.getvalue())
-        verify(normalized_output, self.reporter)
-
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_against_newline_violations(self, stdout):
-        execute_cmake_tidy(command='format', arguments=[get_input_file('newlines_violations.cmake')])
-        normalized_output = normalize(stdout.getvalue())
-        verify(normalized_output, self.reporter)
-
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.command_line_handling.format_command.load_format_settings')
-    def test_format_against_newline_violations_with_custom_settings(self, load_settings, stdout):
-        fake_settings = _get_default_format_settings()
-        fake_settings['succeeding_newlines'] = 4
-        load_settings.return_value = fake_settings
-
-        execute_cmake_tidy(command='format', arguments=[get_input_file('newlines_violations.cmake')])
-
-        normalized_output = normalize(stdout.getvalue())
-        verify(normalized_output, self.reporter)
-
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_tabs_with_spaces_replacement(self, stdout):
-        execute_cmake_tidy(command='format', arguments=[get_input_file('spaces_violations.cmake')])
-        normalized_output = normalize(stdout.getvalue())
-        verify(normalized_output, self.reporter)
-
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_bracket_arguments_handling(self, stdout):
-        execute_cmake_tidy(command='format', arguments=[get_input_file('arguments.cmake')])
-        normalized_output = normalize(stdout.getvalue())
-        verify(normalized_output, self.reporter)
-
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_indentation_of_basic_invocations(self, stdout):
-        execute_cmake_tidy(command='format', arguments=[get_input_file('indentations.cmake')])
-        normalized_output = normalize(stdout.getvalue())
-        verify(normalized_output, self.reporter)
-
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.command_line_handling.format_command.load_format_settings')
-    def test_format_indentation_when_spaces_after_command_name_are_present(self, load_settings, stdout):
-        fake_settings = _get_default_format_settings()
-        fake_settings['space_between_command_and_begin_parentheses'] = True
-        load_settings.return_value = fake_settings
-
-        execute_cmake_tidy(command='format', arguments=[get_input_file('indentations.cmake')])
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)

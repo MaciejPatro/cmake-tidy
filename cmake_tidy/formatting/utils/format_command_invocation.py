@@ -1,3 +1,5 @@
+import re
+
 from cmake_tidy.formatting.utils.tokens import Tokens
 
 
@@ -21,17 +23,18 @@ class FormatCommandInvocation:
             self.__state['indent'] -= 1
         self.__state['keyword_argument'] = False
 
-    @staticmethod
-    def __is_start_of_special_command(original: str) -> bool:
-        return any([original.startswith(f'{token}(') for token in FormatCommandInvocation.__start_tokens])
+    def __is_start_of_special_command(self, original: str) -> bool:
+        return any([self.__matches(token, original) for token in FormatCommandInvocation.__start_tokens])
 
-    @staticmethod
-    def __is_end_of_special_command(original: str) -> bool:
-        return any([original.startswith(f'end{token}(') for token in FormatCommandInvocation.__start_tokens])
+    def __is_end_of_special_command(self, original: str) -> bool:
+        return any([self.__matches('end' + token, original) for token in FormatCommandInvocation.__start_tokens])
 
-    @staticmethod
-    def __add_reindent_tokens_where_needed(data: str) -> str:
-        for reindent_cmd in FormatCommandInvocation.__reindent_commands:
-            if data.startswith(f'{reindent_cmd}('):
+    def __add_reindent_tokens_where_needed(self, data: str) -> str:
+        for token in FormatCommandInvocation.__reindent_commands:
+            if self.__matches(token, data):
                 return Tokens.reindent + data
         return data
+
+    @staticmethod
+    def __matches(token, data) -> bool:
+        return re.match(r'^' + re.escape(token) + r'\s?\(', data) is not None

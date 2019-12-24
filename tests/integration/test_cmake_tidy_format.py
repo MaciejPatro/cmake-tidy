@@ -66,3 +66,14 @@ class TestCMakeTidyFormat(unittest.TestCase):
         execute_cmake_tidy(command='format', arguments=[get_input_file('indentations.cmake')])
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    @mock.patch('cmake_tidy.command_line_handling.format_command.load_format_settings')
+    def test_format_indentation_when_spaces_after_command_name_are_present(self, load_settings, stdout):
+        fake_settings = _get_default_format_settings()
+        fake_settings['space_between_command_and_begin_parentheses'] = True
+        load_settings.return_value = fake_settings
+
+        execute_cmake_tidy(command='format', arguments=[get_input_file('indentations.cmake')])
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)

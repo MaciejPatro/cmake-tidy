@@ -21,8 +21,7 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
-    @unittest.SkipTest
-    @mock.patch('sys.stderr', new_callable=StringIO)
+    @mock.patch('sys.stdout', new_callable=StringIO)
     def test_format_dry_run_should_print_arguments_only(self, stdout):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=['--dry-run', 'dummy.txt']))
         normalized_output = normalize(stdout.getvalue())

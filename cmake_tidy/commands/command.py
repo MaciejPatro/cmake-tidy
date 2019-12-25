@@ -7,5 +7,5 @@ class Command(ABC):
         self._command_parser.set_defaults(func=self.execute_command)
 
     @abstractmethod
-    def execute_command(self, args):
+    def execute_command(self, args) -> int:
         pass

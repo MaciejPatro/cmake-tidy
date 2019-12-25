@@ -1,7 +1,5 @@
-import argparse
-
-
 def input_data(parser):
     parser.add_argument('input',
-                        type=argparse.FileType('r'),
+                        type=str,
+                        nargs='?',
                         help='CMake file to be formatted')

@@ -1,2 +1,1 @@
-usage: cmake-tidy format [-h] input
-cmake-tidy format: error: the following arguments are required: input
+cmake-tidy format: Error - incorrect "input" - please specify existing file to be formatted

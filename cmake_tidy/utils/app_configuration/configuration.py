@@ -1,6 +1,10 @@
 import inspect
 
 
+class ConfigurationError(Exception):
+    pass
+
+
 class Configuration:
     def __init__(self, arguments):
         self._config = {}

@@ -3,11 +3,11 @@ from pathlib import Path
 from cmake_tidy.__main__ import main
 
 
-def execute_cmake_tidy(command: str, arguments: list):
+def execute_cmake_tidy(command: str, arguments: list) -> int:
     try:
         main([command] + arguments)
-    except SystemExit:
-        pass
+    except SystemExit as system_exited:
+        return system_exited.code
 
 
 def normalize(data: str) -> str:

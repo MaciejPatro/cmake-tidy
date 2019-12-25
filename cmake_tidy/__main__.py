@@ -5,14 +5,22 @@ from cmake_tidy.utils.command_line_handling.command_line_parser import CommandLi
 
 
 def main(args=sys.argv[1:]):
+    parser = __init_parser()
+    arguments = parser.parse(args)
+    sys.exit(__execute(arguments, parser))
+
+
+def __init_parser() -> CommandLineParser:
     parser = CommandLineParser()
     parser.add_command(FormatCommand)
-    arguments = parser.parse(args)
+    return parser
+
+
+def __execute(arguments, parser) -> int:
     if arguments.sub_command:
-        arguments.func(arguments)
-    else:
-        parser.print_help()
-    sys.exit(0)
+        return arguments.func(arguments)
+    parser.print_help()
+    return 0
 
 
 if __name__ == "__main__":

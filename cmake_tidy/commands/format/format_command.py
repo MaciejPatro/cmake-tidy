@@ -1,6 +1,6 @@
 import sys
 
-from cmake_tidy.commands.format import try_create_configuration
+from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration
 from cmake_tidy.formatting import CMakeFormatter, load_format_settings
 from cmake_tidy.parsing import CMakeParser
 from cmake_tidy.utils.app_configuration.configuration import ConfigurationError
@@ -12,6 +12,8 @@ class FormatCommand(Command):
     def __init__(self, parser):
         description = 'format file to align it to standard'
         super().__init__(parser, 'format', description)
+
+        arguments.dry_run(self._command_parser)
         arguments.input_data(self._command_parser)
 
     def execute_command(self, args) -> int:
@@ -19,10 +21,14 @@ class FormatCommand(Command):
             config = try_create_configuration(args)
         except ConfigurationError as error:
             return self.__handle_configuration_error(error)
-        return self.__format_file(args, config)
+        return self.__execute(config)
 
-    def __format_file(self, args, config) -> int:
-        print(f'Command<{args.sub_command}>: ')
+    def __execute(self, config: FormatConfiguration) -> int:
+        if config.dry_run:
+            return 0
+        return self.__format_file(config)
+
+    def __format_file(self, config: FormatConfiguration) -> int:
         parsed_input = self.__parse_input(config.input)
         formatted_data = self.__format_input_data(parsed_input)
         print(formatted_data)

@@ -14,7 +14,7 @@ class FormatCommand(Command):
         description = 'format file to align it to standard'
         super().__init__(parser, 'format', description)
 
-        arguments.dry_run(self._command_parser)
+        arguments.dump_config(self._command_parser)
         arguments.input_data(self._command_parser)
 
     def execute_command(self, args) -> int:
@@ -25,8 +25,6 @@ class FormatCommand(Command):
         return self.__execute(config)
 
     def __execute(self, config: FormatConfiguration) -> int:
-        if config.dry_run:
-            return ExitCodes.SUCCESS
         return self.__format_file(config)
 
     def __format_file(self, config: FormatConfiguration) -> int:

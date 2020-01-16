@@ -1,8 +1,8 @@
-usage: cmake-tidy format [-h] [-n] [input]
+usage: cmake-tidy format [-h] [--dump-config] [input]
 
 positional arguments:
   input          CMake file to be formatted
 
 optional arguments:
   -h, --help     show this help message and exit
-  -n, --dry-run  disables execution of formatting of the file
+  --dump-config  dump configuration to stdout and exit

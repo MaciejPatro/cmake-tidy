@@ -13,16 +13,10 @@ class FormatConfiguration(Configuration):
         return self.__input_data
 
     @property
-    def dry_run(self) -> bool:
-        return True if self._config.get(self._property_name()) else False
-
-    @property
     def command(self) -> str:
         return 'format'
 
     def __initialize_input(self, arguments) -> str:
-        if self.dry_run:
-            return ''
         return self.__load_input_data(arguments)
 
     @staticmethod

@@ -1,0 +1,6 @@
+{
+  "succeeding_newlines": 2,
+  "tabs_as_spaces": true,
+  "tab_size": 4,
+  "force_command_lowercase": true
+}

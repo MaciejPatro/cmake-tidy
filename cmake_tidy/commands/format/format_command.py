@@ -46,6 +46,7 @@ class FormatCommand(Command):
         super().__init__(parser, 'format', description)
 
         arguments.dump_config(self._command_parser)
+        arguments.inplace(self._command_parser)
         arguments.input_data(self._command_parser)
 
     def execute_command(self, args) -> int:

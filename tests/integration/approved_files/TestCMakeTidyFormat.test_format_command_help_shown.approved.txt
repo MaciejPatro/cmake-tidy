@@ -1,4 +1,4 @@
-usage: cmake-tidy format [-h] [--dump-config] [input]
+usage: cmake-tidy format [-h] [--dump-config] [-i] [input]
 
 positional arguments:
   input          CMake file to be formatted
@@ -6,3 +6,4 @@ positional arguments:
 optional arguments:
   -h, --help     show this help message and exit
   --dump-config  dump configuration to stdout and exit
+  -i, --inplace  inplace edit specified <input_data> file

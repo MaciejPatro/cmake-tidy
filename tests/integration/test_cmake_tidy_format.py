@@ -26,8 +26,9 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
-    @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_inplace_simple_file(self, file):
+    @mock.patch('cmake_tidy.commands.format.output_writer.OutputWriter.write')
+    def test_format_inplace_simple_file(self, write):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=['-i', get_input_file('arguments.cmake')]))
-        normalized_output = normalize(file.getvalue())
+        write.assert_called_once()
+        normalized_output = normalize(write.call_args[0][0])
         verify(normalized_output, self.reporter)

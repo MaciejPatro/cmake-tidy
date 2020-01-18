@@ -2,6 +2,7 @@ import json
 import sys
 
 from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration
+from cmake_tidy.commands.format.output_writer import OutputWriter
 from cmake_tidy.formatting import CMakeFormatter, load_format_settings
 from cmake_tidy.parsing import CMakeParser
 from cmake_tidy.utils.app_configuration.configuration import ConfigurationError
@@ -14,7 +15,7 @@ def _format(args) -> int:
     def __format_file(configuration: FormatConfiguration) -> int:
         parsed_input = __parse_input(configuration.input)
         formatted_data = __format_input_data(parsed_input)
-        print(formatted_data)
+        OutputWriter(configuration).write(formatted_data)
         return ExitCodes.SUCCESS
 
     def __format_input_data(parsed_input):

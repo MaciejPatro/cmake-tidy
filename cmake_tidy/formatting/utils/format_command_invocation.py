@@ -8,16 +8,23 @@ class FormatCommandInvocation:
     __reindent_commands = ['endfunction', 'endif', 'elseif', 'endwhile', 'endforeach', 'endmacro',
                            'else']
 
-    def __init__(self, state: dict):
+    def __init__(self, state: dict, settings: dict):
         self.__state = state
+        self.__settings = settings
 
     def __call__(self, data: list) -> str:
         self.__update_state(data[0])
         return self.__format_invocation(data)
 
     def __format_invocation(self, data: list) -> str:
-        original = self.__join_all_tokens(data)
-        return self.__add_reindent_tokens_where_needed(original)
+        self.__wrap_to_single_line_if_feasible(data)
+        formatted = self.__join_all_tokens(data)
+        return self.__add_reindent_tokens_where_needed(formatted)
+
+    def __wrap_to_single_line_if_feasible(self, data: list) -> None:
+        whitespaces_pattern = re.compile(r'\A\s\s+\Z')
+        if len(data) == 3 and self.__settings['wrap_short_invocations_to_single_line'] is True:
+            data[1] = [element for element in data[1] if not whitespaces_pattern.match(element)]
 
     @staticmethod
     def __join_all_tokens(data) -> str:

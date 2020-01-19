@@ -9,7 +9,8 @@ class TestCMakeFormatter(unittest.TestCase):
         self.settings = {'succeeding_newlines': 1,
                          'tab_size': 2,
                          'keywords': ['TARGET'],
-                         'force_command_lowercase': True}
+                         'force_command_lowercase': True,
+                         'wrap_short_invocations_to_single_line': False}
 
     def assertFormatting(self, formatted_string, lex_data):
         self.assertEqual(formatted_string, CMakeFormatter(self.settings).format(lex_data))

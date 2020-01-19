@@ -12,14 +12,17 @@ class FormatCommandInvocation:
         self.__state = state
 
     def __call__(self, data) -> str:
-        original = ''.join(data)
-        self.__update_state(original)
+        self.__update_state(data[0])
+        if len(data) == 2:
+            original = data[0] + data[1]
+        else:
+            original = data[0] + ''.join(data[1]) + data[2]
         return self.__add_reindent_tokens_where_needed(original)
 
-    def __update_state(self, formatted):
-        if not self.__is_start_of_special_command(formatted):
+    def __update_state(self, function_name):
+        if not self.__is_start_of_special_command(function_name):
             self.__state['indent'] -= 1
-        if self.__is_end_of_special_command(formatted):
+        if self.__is_end_of_special_command(function_name):
             self.__state['indent'] -= 1
         self.__state['keyword_argument'] = False
 

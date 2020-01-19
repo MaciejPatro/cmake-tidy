@@ -1,3 +1,5 @@
+import unittest
+
 from tests.unit.parser_composite_elements import newlines, spaces, file, command_invocation, line_ending, arguments, \
     unquoted_argument
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
@@ -59,6 +61,7 @@ endif()"""
 
         self.assertFormatting(expected_formatting, root)
 
+    @unittest.SkipTest
     def test_invocation_wrapping_for_short_function(self):
         self.settings['wrap_short_invocations_to_single_line'] = True
         args = arguments() \

@@ -2,5 +2,8 @@
   "succeeding_newlines": 2,
   "tabs_as_spaces": true,
   "tab_size": 4,
-  "force_command_lowercase": true
+  "force_command_lowercase": true,
+  "space_between_command_and_begin_parentheses": false,
+  "line_length": 80,
+  "wrap_short_invocations_to_single_line": false
 }

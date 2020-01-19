@@ -22,4 +22,7 @@ def _get_default_format_settings() -> dict:
     settings['tabs_as_spaces'] = True
     settings['tab_size'] = 4
     settings['force_command_lowercase'] = True
+    settings['space_between_command_and_begin_parentheses'] = False
+    settings['line_length'] = 80
+    settings['wrap_short_invocations_to_single_line'] = False
     return settings

@@ -11,13 +11,20 @@ class FormatCommandInvocation:
     def __init__(self, state: dict):
         self.__state = state
 
-    def __call__(self, data) -> str:
+    def __call__(self, data: list) -> str:
         self.__update_state(data[0])
-        if len(data) == 2:
-            original = data[0] + data[1]
-        else:
-            original = data[0] + ''.join(data[1]) + data[2]
+        return self.__format_invocation(data)
+
+    def __format_invocation(self, data: list) -> str:
+        original = self.__join_all_tokens(data)
         return self.__add_reindent_tokens_where_needed(original)
+
+    @staticmethod
+    def __join_all_tokens(data) -> str:
+        if len(data) == 2:
+            return data[0] + data[1]
+        else:
+            return data[0] + ''.join(data[1]) + data[2]
 
     def __update_state(self, function_name):
         if not self.__is_start_of_special_command(function_name):

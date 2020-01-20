@@ -5,7 +5,7 @@ class FormatFile:
     def __init__(self, settings: dict):
         self.__settings = settings
 
-    def __call__(self, data) -> str:
+    def __call__(self, data: list) -> str:
         return self.__cleanup_end_invocations(''.join(data))
 
     def __cleanup_end_invocations(self, formatted_file: str) -> str:

@@ -8,7 +8,7 @@ class FormatUnquotedArgument:
         self.__state = state
         self.__keyword_argument_already_found = False
 
-    def __call__(self, data) -> str:
+    def __call__(self, data: str) -> str:
         self.__keyword_argument_already_found = self.__state['keyword_argument']
         self.__update_state(data)
         return self.__format_data(data)

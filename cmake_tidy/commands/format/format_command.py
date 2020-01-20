@@ -18,14 +18,14 @@ def _format(args) -> int:
         OutputWriter(configuration).write(formatted_data)
         return ExitCodes.SUCCESS
 
-    def __format_input_data(parsed_input):
+    def __format_input_data(parsed_input) -> str:
         format_settings = load_format_settings()
         return CMakeFormatter(format_settings).format(parsed_input)
 
     def __parse_input(input_data: str):
         return CMakeParser().parse(input_data)
 
-    def __handle_configuration_error(raised_error):
+    def __handle_configuration_error(raised_error: ConfigurationError) -> int:
         print('cmake-tidy format: ' + str(raised_error), file=sys.stderr)
         return ExitCodes.FAILURE
 

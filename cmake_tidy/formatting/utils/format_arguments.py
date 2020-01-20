@@ -8,17 +8,17 @@ class FormatArguments:
     def __init__(self, state: dict):
         self.__state = state
 
-    def __call__(self, data) -> list:
+    def __call__(self, data: list) -> list:
         if data[0]:
             self.__update_state()
             return self.__format_arguments(data)
         return []
 
-    def __update_state(self):
+    def __update_state(self) -> None:
         if self.__state['keyword_argument']:
             self.__state['indent'] -= 1
 
-    def __format_arguments(self, data) -> list:
+    def __format_arguments(self, data: list) -> list:
         data = list(deepflatten(data, types=list))
         data = self.__replace_spacings_between_arguments_with_single_space(data)
         data = self.__remove_spacing_from_first_element(data)

@@ -33,7 +33,7 @@ class FormatCommandInvocation:
         else:
             return data[0] + ''.join(data[1]) + data[2]
 
-    def __update_state(self, function_name):
+    def __update_state(self, function_name: str) -> None:
         if not self.__is_start_of_special_command(function_name):
             self.__state['indent'] -= 1
         if self.__is_end_of_special_command(function_name):
@@ -53,5 +53,5 @@ class FormatCommandInvocation:
         return data
 
     @staticmethod
-    def __matches(token, data) -> bool:
+    def __matches(token: str, data: str) -> bool:
         return re.match(r'^' + re.escape(token) + r'\s?\(', data) is not None

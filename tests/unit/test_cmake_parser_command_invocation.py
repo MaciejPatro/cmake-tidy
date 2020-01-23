@@ -1,6 +1,6 @@
 from tests.unit.test_cmake_parser import TestCMakeParser
 from tests.unit.parser_composite_elements import file, command_invocation, arguments, unquoted_argument, \
-    bracket_argument, quoted_argument, spaces, newlines, parentheses
+    bracket_argument, quoted_argument, spaces, newlines, parentheses, line_ending
 
 
 class TestParseCommandInvocation(TestCMakeParser):
@@ -90,5 +90,23 @@ class TestParseCommandInvocation(TestCMakeParser):
             .add(spaces('    '))
         expected_invocation = command_invocation('add_test(', expected_args)
         expected_parsed_structure = file().add(expected_invocation)
+
+        self.assertReprEqual(expected_parsed_structure, self.parser.parse(command))
+
+    def test_command_with_line_comment(self):
+        command = """add_test(
+    NAME # a name
+    CONFIGURATIONS)"""
+
+        expected_args = arguments() \
+            .add(newlines(1)) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('NAME')) \
+            .add(spaces(' ')) \
+            .add(line_ending(' a name', 1)) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('CONFIGURATIONS'))
+
+        expected_parsed_structure = file().add(command_invocation('add_test(', expected_args))
 
         self.assertReprEqual(expected_parsed_structure, self.parser.parse(command))

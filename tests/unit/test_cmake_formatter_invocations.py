@@ -58,15 +58,3 @@ elseif()
 endif()"""
 
         self.assertFormatting(expected_formatting, root)
-
-    def test_invocation_wrapping_for_short_function(self):
-        self.settings['wrap_short_invocations_to_single_line'] = True
-        args = arguments() \
-                .add(newlines(4)) \
-                .add(spaces('    ')) \
-                .add(unquoted_argument('argument'))
-        root = file().add(command_invocation('function_call(', args))
-
-        expected_formatting = """function_call(argument)"""
-
-        self.assertFormatting(expected_formatting, root)

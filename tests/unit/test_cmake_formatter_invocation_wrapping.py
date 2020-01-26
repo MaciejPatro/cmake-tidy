@@ -1,5 +1,3 @@
-import unittest
-
 from tests.unit.parser_composite_elements import arguments, newlines, spaces, unquoted_argument, file, \
     command_invocation
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
@@ -20,7 +18,6 @@ class TestCMakeFormatterCommandInvocationsWrapping(TestCMakeFormatter):
 
         self.assertFormatting(expected_formatting, root)
 
-    @unittest.SkipTest
     def test_invocation_wrapping_only_when_line_length_is_smaller_than_set_threshold(self):
         self.settings['wrap_short_invocations_to_single_line'] = True
         self.settings['line_length'] = 15

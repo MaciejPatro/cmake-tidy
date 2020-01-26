@@ -13,25 +13,15 @@ class FormatCommandInvocation:
         self.__settings = settings
 
     def __call__(self, data: list) -> str:
-        self.__update_state(data[0])
-        return self.__format_invocation(data)
-
-    def __format_invocation(self, data: list) -> str:
-        self.__wrap_to_single_line_if_feasible(data)
-        formatted = self.__join_all_tokens(data)
-        return self.__add_reindent_tokens_where_needed(formatted)
-
-    def __wrap_to_single_line_if_feasible(self, data: list) -> None:
-        whitespaces_pattern = re.compile(r'\A\s\s+\Z')
-        if len(data) == 3 and self.__settings['wrap_short_invocations_to_single_line'] is True:
-            data[1] = [element for element in data[1] if not whitespaces_pattern.match(element)]
+        command_invocation = self.__prepare_data(data)
+        self.__update_state(command_invocation['function_name'])
+        return self.__format_invocation(command_invocation)
 
     @staticmethod
-    def __join_all_tokens(data) -> str:
-        if len(data) == 2:
-            return data[0] + data[1]
-        else:
-            return data[0] + ''.join(data[1]) + data[2]
+    def __prepare_data(data: list) -> dict:
+        return {'function_name': data[0],
+                'arguments': data[1] if len(data) == 3 else [],
+                'closing': data[2] if len(data) == 3 else data[1]}
 
     def __update_state(self, function_name: str) -> None:
         if not self.__is_start_of_special_command(function_name):
@@ -45,6 +35,33 @@ class FormatCommandInvocation:
 
     def __is_end_of_special_command(self, original: str) -> bool:
         return any([self.__matches('end' + token, original) for token in FormatCommandInvocation.__start_tokens])
+
+    def __format_invocation(self, invocation: dict) -> str:
+        invocation['arguments'] = self.__prepare_arguments(invocation)
+        formatted = self.__join_command_invocation(invocation)
+        return self.__add_reindent_tokens_where_needed(formatted)
+
+    def __prepare_arguments(self, invocation: dict) -> list:
+        if self.__is_wrappable(invocation):
+            return self.__wrap_arguments_if_possible(invocation)
+        return invocation['arguments']
+
+    def __wrap_arguments_if_possible(self, invocation):
+        line_length = self.__settings['line_length']
+        command_invocation = invocation.copy()
+        command_invocation['arguments'] = [element for element in invocation['arguments'] if not re.compile(r'\A\s\s+\Z').match(element)]
+        wrapped_length = len(self.__join_command_invocation(command_invocation)) - len(Tokens.reindent)
+        if wrapped_length >= line_length:
+            return invocation['arguments']
+        return command_invocation['arguments']
+
+    def __is_wrappable(self, invocation: dict) -> bool:
+        return len(invocation['arguments']) > 0 and self.__settings['wrap_short_invocations_to_single_line'] is True
+
+    @staticmethod
+    def __join_command_invocation(invocation: dict) -> str:
+        formatted = invocation['function_name'] + ''.join(invocation['arguments']) + invocation['closing']
+        return formatted
 
     def __add_reindent_tokens_where_needed(self, data: str) -> str:
         for token in FormatCommandInvocation.__reindent_commands:

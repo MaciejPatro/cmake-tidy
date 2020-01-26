@@ -47,13 +47,24 @@ class FormatCommandInvocation:
         return invocation['arguments']
 
     def __wrap_arguments_if_possible(self, invocation):
-        line_length = self.__settings['line_length']
-        command_invocation = invocation.copy()
-        command_invocation['arguments'] = [element for element in invocation['arguments'] if not re.compile(r'\A\s\s+\Z').match(element)]
-        wrapped_length = len(self.__join_command_invocation(command_invocation)) - len(Tokens.reindent)
-        if wrapped_length >= line_length:
+        command_invocation = self.__wrap_invocation(invocation)
+        if self.__is_fitting_in_line(command_invocation):
             return invocation['arguments']
-        return command_invocation['arguments']
+        else:
+            return command_invocation['arguments']
+
+    def __is_fitting_in_line(self, command_invocation: dict) -> bool:
+        return self.__invocation_length(command_invocation) >= self.__settings['line_length']
+
+    def __invocation_length(self, command_invocation: dict) -> int:
+        return len(self.__join_command_invocation(command_invocation)) - len(Tokens.reindent)
+
+    @staticmethod
+    def __wrap_invocation(invocation: dict) -> dict:
+        newline_pattern = re.compile(r'\A\s\s+\Z')
+        command_invocation = invocation.copy()
+        command_invocation['arguments'] = [e for e in command_invocation['arguments'] if not newline_pattern .match(e)]
+        return command_invocation
 
     def __is_wrappable(self, invocation: dict) -> bool:
         return len(invocation['arguments']) > 0 and self.__settings['wrap_short_invocations_to_single_line'] is True

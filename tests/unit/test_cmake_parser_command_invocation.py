@@ -103,7 +103,7 @@ class TestParseCommandInvocation(TestCMakeParser):
             .add(spaces('    ')) \
             .add(unquoted_argument('NAME')) \
             .add(spaces(' ')) \
-            .add(line_ending(' a name', 1)) \
+            .add(line_ending('# a name', 1)) \
             .add(spaces('    ')) \
             .add(unquoted_argument('CONFIGURATIONS'))
 

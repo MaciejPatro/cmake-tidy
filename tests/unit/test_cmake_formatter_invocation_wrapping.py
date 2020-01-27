@@ -34,3 +34,16 @@ a_very_long_name_command(
   abc)"""
 
         self.assertFormatting(expected_formatting, root)
+
+    def test_invocation_splitting_when_line_length_exceeded(self):
+        self.settings['line_length'] = 15
+        args = arguments().add(unquoted_argument('abc')) \
+                          .add(spaces('    ')) \
+                          .add(unquoted_argument('def'))
+        root = file().add(command_invocation('a_very_long_name(', args))
+
+        expected_formatting = """a_very_long_name(
+  abc
+  def)"""
+
+        self.assertFormatting(expected_formatting, root)

@@ -1,5 +1,6 @@
 import re
 
+from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.tokens import Tokens
 
 
@@ -14,8 +15,9 @@ class FormatCommandInvocation:
 
     def __call__(self, data: list) -> str:
         command_invocation = self.__prepare_data(data)
+        formatted = self.__format_invocation(command_invocation)
         self.__update_state(command_invocation['function_name'])
-        return self.__format_invocation(command_invocation)
+        return formatted
 
     @staticmethod
     def __prepare_data(data: list) -> dict:
@@ -44,17 +46,20 @@ class FormatCommandInvocation:
     def __prepare_arguments(self, invocation: dict) -> list:
         if self.__is_wrappable(invocation):
             return self.__wrap_arguments_if_possible(invocation)
+        if not self.__is_fitting_in_line(invocation):
+            return self.__split_command_to_newlines(invocation)
         return invocation['arguments']
 
-    def __wrap_arguments_if_possible(self, invocation):
+    def __wrap_arguments_if_possible(self, invocation: dict) -> list:
         command_invocation = self.__wrap_invocation(invocation)
         if self.__is_fitting_in_line(command_invocation):
-            return invocation['arguments']
-        else:
             return command_invocation['arguments']
+        else:
+            return invocation['arguments']
 
     def __is_fitting_in_line(self, command_invocation: dict) -> bool:
-        return self.__invocation_length(command_invocation) >= self.__settings['line_length']
+        length = self.__invocation_length(command_invocation)
+        return length < self.__settings['line_length']
 
     def __invocation_length(self, command_invocation: dict) -> int:
         return len(self.__join_command_invocation(command_invocation)) - len(Tokens.reindent)
@@ -68,6 +73,11 @@ class FormatCommandInvocation:
 
     def __is_wrappable(self, invocation: dict) -> bool:
         return len(invocation['arguments']) > 0 and self.__settings['wrap_short_invocations_to_single_line'] is True
+
+    def __split_command_to_newlines(self, invocation: dict) -> list:
+        newline = FormatNewline(self.__state, self.__settings)(1)
+        invocation['arguments'] = [newline if argument is ' ' else argument for argument in invocation['arguments']]
+        return invocation['arguments']
 
     @staticmethod
     def __join_command_invocation(invocation: dict) -> str:

@@ -42,8 +42,7 @@ a_very_long_name_command(
                           .add(unquoted_argument('def'))
         root = file().add(command_invocation('a_very_long_name(', args))
 
-        expected_formatting = """a_very_long_name(
-  abc
+        expected_formatting = """a_very_long_name(abc
   def)"""
 
         self.assertFormatting(expected_formatting, root)

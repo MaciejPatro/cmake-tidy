@@ -63,5 +63,17 @@ class TestFileFormatting(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    @mock.patch('cmake_tidy.commands.format.format_command.load_format_settings')
+    def test_format_line_splitting(self, load_settings, stdout):
+        fake_settings = _get_default_format_settings()
+        fake_settings['wrap_short_invocations_to_single_line'] = True
+        load_settings.return_value = fake_settings
+
+        self.format_file('line_length_handling.cmake')
+
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)
+
     def format_file(self, file: str):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=[get_input_file(file)]))

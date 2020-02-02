@@ -12,5 +12,6 @@ class FormatFile:
         indent = self.__settings['tab_size'] * ' '
         formatted_file = formatted_file.replace(2 * indent + Tokens.reindent_2, '')
         formatted_file = formatted_file.replace(indent + Tokens.reindent, '')
+        formatted_file = formatted_file.replace(Tokens.reindent_2, '')
         formatted_file = formatted_file.replace(Tokens.reindent, '')
         return formatted_file

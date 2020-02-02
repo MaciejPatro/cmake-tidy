@@ -58,11 +58,17 @@ a_very_long_name_command(
             .add(spaces('    ')) \
             .add(unquoted_argument('TARGET')) \
             .add(spaces('    ')) \
+            .add(unquoted_argument('def')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('TARGET')) \
+            .add(spaces('    ')) \
             .add(unquoted_argument('def'))
 
         root = file().add(command_invocation('function(', args))
 
         expected_formatting = """function(abc
+  TARGET
+    def
   TARGET
     def)"""
 

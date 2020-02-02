@@ -2,6 +2,7 @@ import re
 
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.tokens import Tokens
+from cmake_tidy.utils.keyword_verifier import KeywordVerifier
 
 _newline_pattern = re.compile(r'\A\s\s+\Z')
 
@@ -14,6 +15,7 @@ class FormatCommandInvocation:
     def __init__(self, state: dict, settings: dict):
         self.__state = state
         self.__settings = settings
+        self.__verifier = KeywordVerifier(settings)
 
     def __call__(self, data: list) -> str:
         command_invocation = self.__prepare_data(data)
@@ -89,9 +91,18 @@ class FormatCommandInvocation:
         return len(invocation['arguments']) > 0 and self.__settings['wrap_short_invocations_to_single_line'] is True
 
     def __split_command_to_newlines(self, invocation: dict) -> list:
-        newline = FormatNewline(self.__state, self.__settings)(1)
-        invocation['arguments'] = [newline if argument is ' ' else argument for argument in invocation['arguments']]
-        return invocation['arguments']
+        initial_indent = self.__state['indent']
+        arguments = []
+        for arg in invocation['arguments']:
+            newline = FormatNewline(self.__state, self.__settings)(1)
+            if arg is ' ':
+                arguments.append(newline)
+            else:
+                if self.__verifier.is_keyword(arg):
+                    self.__state['indent'] = initial_indent + 1
+                arguments.append(arg)
+        self.__state['indent'] = initial_indent
+        return arguments
 
     @staticmethod
     def __join_command_invocation(invocation: dict) -> str:

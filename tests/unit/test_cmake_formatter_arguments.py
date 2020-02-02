@@ -54,12 +54,12 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
             .add(newlines(4)) \
             .add(unquoted_argument('TARGET')) \
             .add(newlines(4)) \
-            .add(bracket_argument(2, 'text')) \
+            .add(unquoted_argument('text')) \
             .add(newlines(4)) \
             .add(unquoted_argument('TARGET')) \
             .add(newlines(4)) \
             .add(bracket_argument(2, 'text')) \
             .add(newlines(4))
 
-        expected_formatting = 'abc(\n  TARGET\n    [==[text]==]\n  TARGET\n    [==[text]==]\n)'
+        expected_formatting = 'abc(\n  TARGET\n    text\n  TARGET\n    [==[text]==]\n)'
         self.assertFormattingArguments(expected_formatting, function_arguments)

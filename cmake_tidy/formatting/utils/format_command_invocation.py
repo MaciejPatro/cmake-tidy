@@ -69,8 +69,8 @@ class FormatCommandInvocation:
                len(Tokens.reindent)
 
     def __newline_indent(self) -> str:
-        ident = max(self.__state['indent'] - 1, 0)
-        return ident * self.__settings['tab_size'] * ' '
+        indent = max(self.__state['indent'] - 1, 0)
+        return indent * self.__settings['tab_size'] * ' '
 
     @staticmethod
     def __wrap_invocation(invocation: dict) -> dict:

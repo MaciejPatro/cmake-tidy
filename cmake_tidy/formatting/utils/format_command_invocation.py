@@ -4,6 +4,9 @@ from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.tokens import Tokens
 
 
+_newline_pattern = re.compile(r'\A\s\s+\Z')
+
+
 class FormatCommandInvocation:
     __start_tokens = ['macro', 'while', 'foreach', 'if', 'function']
     __reindent_commands = ['endfunction', 'endif', 'elseif', 'endwhile', 'endforeach', 'endmacro',
@@ -45,9 +48,9 @@ class FormatCommandInvocation:
 
     def __prepare_arguments(self, invocation: dict) -> list:
         if self.__is_wrappable(invocation):
-            return self.__wrap_arguments_if_possible(invocation)
+            invocation['arguments'] = self.__wrap_arguments_if_possible(invocation)
         if not self.__is_fitting_in_line(invocation):
-            return self.__split_command_to_newlines(invocation)
+            invocation['arguments'] = self.__split_command_to_newlines(invocation)
         return invocation['arguments']
 
     def __wrap_arguments_if_possible(self, invocation: dict) -> list:
@@ -66,10 +69,16 @@ class FormatCommandInvocation:
 
     @staticmethod
     def __wrap_invocation(invocation: dict) -> dict:
-        newline_pattern = re.compile(r'\A\s\s+\Z')
-        command_invocation = invocation.copy()
-        command_invocation['arguments'] = [e for e in command_invocation['arguments'] if not newline_pattern .match(e)]
-        return command_invocation
+        wrapped_invoke = FormatCommandInvocation.__prepare_wrapped_invocation(invocation)
+        wrapped_invoke['arguments'] = [e if not _newline_pattern.match(e) else ' ' for e in wrapped_invoke['arguments']]
+        return wrapped_invoke
+
+    @staticmethod
+    def __prepare_wrapped_invocation(invocation: dict) -> dict:
+        new_invoke = invocation.copy()
+        if _newline_pattern.match(new_invoke['arguments'][0]):
+            new_invoke['arguments'] = new_invoke['arguments'][1:]
+        return new_invoke
 
     def __is_wrappable(self, invocation: dict) -> bool:
         return len(invocation['arguments']) > 0 and self.__settings['wrap_short_invocations_to_single_line'] is True

@@ -1,3 +1,4 @@
+import unittest
 from unittest import mock
 
 from approvaltests.approvals import verify
@@ -63,6 +64,7 @@ class TestFileFormatting(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
+    @unittest.SkipTest
     @mock.patch('sys.stdout', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.format_command.load_format_settings')
     def test_format_line_splitting(self, load_settings, stdout):

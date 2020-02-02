@@ -3,7 +3,6 @@ import re
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.tokens import Tokens
 
-
 _newline_pattern = re.compile(r'\A\s\s+\Z')
 
 
@@ -65,7 +64,13 @@ class FormatCommandInvocation:
         return length < self.__settings['line_length']
 
     def __invocation_length(self, command_invocation: dict) -> int:
-        return len(self.__join_command_invocation(command_invocation)) - len(Tokens.reindent)
+        return len(self.__join_command_invocation(command_invocation)) + \
+               len(self.__newline_indent()) - \
+               len(Tokens.reindent)
+
+    def __newline_indent(self) -> str:
+        ident = max(self.__state['indent'] - 1, 0)
+        return ident * self.__settings['tab_size'] * ' '
 
     @staticmethod
     def __wrap_invocation(invocation: dict) -> dict:

@@ -11,7 +11,8 @@ class TestCMakeFormatterCommandInvocationsWrapping(TestCMakeFormatter):
             .add(spaces('    ')) \
             .add(unquoted_argument('argument1')) \
             .add(spaces('    ')) \
-            .add(unquoted_argument('argument2'))
+            .add(unquoted_argument('argument2')) \
+            .add(newlines(4))
         root = file().add(command_invocation('function_call(', args))
 
         expected_formatting = """function_call(argument1 argument2)"""

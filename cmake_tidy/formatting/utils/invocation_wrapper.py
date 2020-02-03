@@ -14,4 +14,6 @@ class InvocationWrapper:
         new_invoke = invocation.copy()
         if self.__newline_pattern.match(new_invoke['arguments'][0]):
             new_invoke['arguments'] = new_invoke['arguments'][1:]
+        if self.__newline_pattern.match(new_invoke['arguments'][-1]):
+            new_invoke['arguments'] = new_invoke['arguments'][:-1]
         return new_invoke

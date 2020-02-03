@@ -25,4 +25,6 @@ def _get_default_format_settings() -> dict:
     settings['space_between_command_and_begin_parentheses'] = False
     settings['line_length'] = 80
     settings['wrap_short_invocations_to_single_line'] = False
+    settings['unquoted_uppercase_as_keyword'] = False
+    settings['keywords'] = []
     return settings

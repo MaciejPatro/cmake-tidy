@@ -4,6 +4,6 @@ class FormatSpaces:
         self.__state = state
 
     def __call__(self, data: str) -> str:
-        if self.__state['last'] is 'line_ending':
+        if self.__state['last'] == 'line_ending':
             return ''
         return data.replace('\t', ' ' * self.__settings['tab_size'])

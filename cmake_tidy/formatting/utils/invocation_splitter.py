@@ -13,7 +13,7 @@ class InvocationSplitter:
         arguments = []
         for arg in invocation['arguments']:
             newline = FormatNewline(self.__state, self.__settings)(1)
-            if arg is ' ':
+            if arg == ' ':
                 arguments.append(newline)
             else:
                 if self.__verifier.is_keyword(arg):

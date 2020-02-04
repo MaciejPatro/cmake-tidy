@@ -38,7 +38,7 @@ class PrimitiveElement(Element):
         self._values = values
 
     def __repr__(self) -> str:
-        return f'{self.name}: {self.values}' if self.name is not '' else ''
+        return f'{self.name}: {self.values}' if self.name != '' else ''
 
     @property
     def values(self):
@@ -62,7 +62,7 @@ class ComplexElement(Element):
         self._name = name
 
     def __repr__(self) -> str:
-        children_repr = [f'{self.name}.{self.__ident(str(child))}' for child in self._children if str(child) is not '']
+        children_repr = [f'{self.name}.{self.__ident(str(child))}' for child in self._children if str(child) != '']
         return '\n'.join(children_repr)
 
     def __ident(self, representation: str) -> str:

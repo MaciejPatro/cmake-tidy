@@ -2,6 +2,7 @@ import re
 
 from cmake_tidy.formatting.utils.invocation_splitter import InvocationSplitter
 from cmake_tidy.formatting.utils.invocation_wrapper import InvocationWrapper
+from cmake_tidy.formatting.utils.single_indent import get_single_indent
 from cmake_tidy.formatting.utils.tokens import Tokens
 
 
@@ -69,7 +70,7 @@ class FormatCommandInvocation:
 
     def __newline_indent(self) -> str:
         indent = max(self.__state['indent'] - 1, 0)
-        return indent * self.__settings['tab_size'] * ' '
+        return indent * get_single_indent(self.__settings)
 
     def __is_wrappable(self, invocation: dict) -> bool:
         return len(invocation['arguments']) > 0 and self.__settings['wrap_short_invocations_to_single_line'] is True

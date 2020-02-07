@@ -1,3 +1,6 @@
+from cmake_tidy.formatting.utils.single_indent import get_single_indent
+
+
 class FormatSpaces:
     def __init__(self, settings: dict, state: dict):
         self.__settings = settings
@@ -6,4 +9,4 @@ class FormatSpaces:
     def __call__(self, data: str) -> str:
         if self.__state['last'] == 'line_ending':
             return ''
-        return data.replace('\t', ' ' * self.__settings['tab_size'])
+        return data.replace('\t', get_single_indent(self.__settings))

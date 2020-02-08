@@ -64,9 +64,9 @@ class FormatCommandInvocation:
         return length < self.__settings['line_length']
 
     def __invocation_length(self, command_invocation: dict) -> int:
-        return len(self.__join_command_invocation(command_invocation)) + \
-               len(self.__newline_indent()) - \
-               len(Tokens.reindent)
+        invoke = self.__join_command_invocation(command_invocation) + self.__newline_indent()
+        invoke = invoke.replace('\t', ' ' * self.__settings['tab_size'])
+        return len(invoke) - len(Tokens.reindent)
 
     def __newline_indent(self) -> str:
         indent = max(self.__state['indent'] - 1, 0)

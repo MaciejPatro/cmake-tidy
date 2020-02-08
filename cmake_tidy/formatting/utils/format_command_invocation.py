@@ -60,8 +60,7 @@ class FormatCommandInvocation:
             return invocation['arguments']
 
     def __is_fitting_in_line(self, command_invocation: dict) -> bool:
-        length = self.__invocation_length(command_invocation)
-        return length < self.__settings['line_length']
+        return self.__invocation_length(command_invocation) < self.__settings['line_length']
 
     def __invocation_length(self, command_invocation: dict) -> int:
         invoke = self.__join_command_invocation(command_invocation) + self.__newline_indent()

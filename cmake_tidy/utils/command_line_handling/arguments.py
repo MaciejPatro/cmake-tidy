@@ -8,7 +8,8 @@ def input_data(parser):
 def dump_config(parser):
     parser.add_argument('--dump-config',
                         action='store_true',
-                        help='dump configuration to stdout and exit')
+                        help='dump to stdout current settings. Script tries to read settings from `.cmake-tidy.json` '
+                             'file existing in a current directory or provides default settings.')
 
 
 def inplace(parser):

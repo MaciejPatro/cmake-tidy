@@ -5,5 +5,7 @@ positional arguments:
 
 optional arguments:
   -h, --help     show this help message and exit
-  --dump-config  dump configuration to stdout and exit
+  --dump-config  dump to stdout current settings. Script tries to read
+                 settings from `.cmake-tidy.json` file existing in a current
+                 directory or provides default settings.
   -i, --inplace  inplace edit specified <input_data> file

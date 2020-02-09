@@ -50,7 +50,19 @@ a_very_long_name_command(
 
         expected_formatting = """a_very_long_name(abc
   def)"""
+        self.assertFormatting(expected_formatting, root)
 
+    def test_invocation_splitting_with_closing_parentheses_in_newline(self):
+        self.settings['line_length'] = 15
+        self.settings['closing_parentheses_in_newline_when_splitted'] = True
+        args = arguments().add(unquoted_argument('abc')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('def'))
+        root = file().add(command_invocation('a_very_long_name(', args))
+
+        expected_formatting = """a_very_long_name(abc
+  def
+)"""
         self.assertFormatting(expected_formatting, root)
 
     def test_invocation_splitting_with_keywords_inside(self):

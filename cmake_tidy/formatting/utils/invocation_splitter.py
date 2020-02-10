@@ -19,5 +19,7 @@ class InvocationSplitter:
                 if self.__verifier.is_keyword(arg):
                     self.__state['indent'] = initial_indent + 1
                 arguments.append(arg)
+        if self.__settings['closing_parentheses_in_newline_when_splitted']:
+            arguments.append(FormatNewline(self.__state, self.__settings)(1))
         self.__state['indent'] = initial_indent
         return arguments

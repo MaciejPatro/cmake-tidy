@@ -1,0 +1,12 @@
+{
+  "succeeding_newlines": 2,
+  "tabs_as_spaces": false,
+  "tab_size": 4,
+  "force_command_lowercase": true,
+  "space_between_command_and_begin_parentheses": false,
+  "line_length": 80,
+  "wrap_short_invocations_to_single_line": false,
+  "closing_parentheses_in_newline_when_splitted": false,
+  "unquoted_uppercase_as_keyword": false,
+  "keywords": []
+}

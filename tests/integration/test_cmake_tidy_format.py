@@ -26,6 +26,13 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
+    @mock.patch('cmake_tidy.formatting._read_settings', return_value={'tabs_as_spaces': False})
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    def test_format_should_dump_full_config_even_if_file_overrides_only_one(self, stdout, file_settings):
+        self.assertSuccess(execute_cmake_tidy(command='format', arguments=['--dump-config', 'dummy.txt']))
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)
+
     @mock.patch('cmake_tidy.commands.format.output_writer.OutputWriter.write')
     def test_format_inplace_simple_file(self, write):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=['-i', get_input_file('arguments.cmake')]))

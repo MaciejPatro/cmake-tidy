@@ -54,7 +54,7 @@ a_very_long_name_command(
 
     def test_invocation_splitting_with_closing_parentheses_in_newline(self):
         self.settings['line_length'] = 15
-        self.settings['closing_parentheses_in_newline_when_splitted'] = True
+        self.settings['closing_parentheses_in_newline_when_split'] = True
         args = arguments().add(unquoted_argument('abc')) \
             .add(spaces('    ')) \
             .add(unquoted_argument('def'))
@@ -67,7 +67,7 @@ a_very_long_name_command(
 
     def test_invocation_splitting_with_closing_parentheses_in_newline_and_keyword(self):
         self.settings['line_length'] = 15
-        self.settings['closing_parentheses_in_newline_when_splitted'] = True
+        self.settings['closing_parentheses_in_newline_when_split'] = True
         args = arguments().add(unquoted_argument('abc')) \
             .add(spaces('    ')) \
             .add(unquoted_argument('TARGET')) \

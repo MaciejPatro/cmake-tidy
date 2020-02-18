@@ -2,3 +2,4 @@ approvaltests
 mock
 ply
 iteration_utilities
+jsonschema

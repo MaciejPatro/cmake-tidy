@@ -11,7 +11,7 @@ class TestCMakeFormatter(unittest.TestCase):
                          'keywords': ['TARGET'],
                          'force_command_lowercase': True,
                          'wrap_short_invocations_to_single_line': False,
-                         'closing_parentheses_in_newline_when_splitted': False,
+                         'closing_parentheses_in_newline_when_split': False,
                          'line_length': 80,
                          'tabs_as_spaces': True}
 

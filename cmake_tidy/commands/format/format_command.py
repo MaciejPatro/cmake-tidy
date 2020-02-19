@@ -3,7 +3,7 @@ import sys
 
 from cmake_tidy.commands import Command
 from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration, OutputWriter
-from cmake_tidy.formatting import CMakeFormatter, load_format_settings
+from cmake_tidy.formatting import CMakeFormatter, SettingsReader
 from cmake_tidy.parsing import CMakeParser
 from cmake_tidy.utils.app_configuration import ConfigurationError
 from cmake_tidy.utils.command_line_handling import arguments
@@ -18,7 +18,7 @@ def _format(args) -> int:
         return ExitCodes.SUCCESS
 
     def __format_input_data(parsed_input) -> str:
-        format_settings = load_format_settings()
+        format_settings = SettingsReader.load_format_settings()
         return CMakeFormatter(format_settings).format(parsed_input)
 
     def __parse_input(input_data: str):
@@ -36,7 +36,7 @@ def _format(args) -> int:
 
 
 def _dump_config() -> int:
-    print(json.dumps(load_format_settings(), indent=2))
+    print(json.dumps(SettingsReader.load_format_settings(), indent=2))
     return ExitCodes.SUCCESS
 
 

@@ -1,14 +1,13 @@
 import json
 import sys
 
-from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration
-from cmake_tidy.commands.format.output_writer import OutputWriter
+from cmake_tidy.commands import Command
+from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration, OutputWriter
 from cmake_tidy.formatting import CMakeFormatter, load_format_settings
 from cmake_tidy.parsing import CMakeParser
-from cmake_tidy.utils.app_configuration.configuration import ConfigurationError
+from cmake_tidy.utils.app_configuration import ConfigurationError
 from cmake_tidy.utils.command_line_handling import arguments
-from cmake_tidy.commands.command import Command
-from cmake_tidy.utils.exit_codes import ExitCodes
+from cmake_tidy.utils import ExitCodes
 
 
 def _format(args) -> int:

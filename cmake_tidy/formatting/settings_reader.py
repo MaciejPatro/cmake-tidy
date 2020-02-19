@@ -29,3 +29,9 @@ def _get_default_format_settings() -> dict:
     settings['unquoted_uppercase_as_keyword'] = False
     settings['keywords'] = []
     return settings
+
+
+class SettingsReader:
+    @staticmethod
+    def load_format_settings() -> dict:
+        return load_format_settings()

@@ -1,2 +1,2 @@
 from cmake_tidy.formatting.cmake_formatter import CMakeFormatter
-from cmake_tidy.formatting.settings_reader import load_format_settings
+from cmake_tidy.formatting.settings_reader import SettingsReader

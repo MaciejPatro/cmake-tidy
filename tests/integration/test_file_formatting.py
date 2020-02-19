@@ -3,7 +3,7 @@ from unittest import mock
 from approvaltests.approvals import verify
 from io import StringIO
 
-from cmake_tidy.formatting import _get_default_format_settings
+from cmake_tidy.formatting.settings_reader import _get_default_format_settings
 from tests.integration.test_integration_base import TestIntegrationBase
 from tests.integration.utils import execute_cmake_tidy, normalize, get_input_file
 

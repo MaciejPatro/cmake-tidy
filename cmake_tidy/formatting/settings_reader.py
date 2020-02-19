@@ -5,7 +5,7 @@ from pathlib import Path
 class SettingsReader:
     @staticmethod
     def load_format_settings() -> dict:
-        settings = SettingsReader._get_default_format_settings()
+        settings = SettingsReader.get_default_format_settings()
         settings.update(SettingsReader._read_settings())
         return settings
 
@@ -18,7 +18,7 @@ class SettingsReader:
         return dict()
 
     @staticmethod
-    def _get_default_format_settings() -> dict:
+    def get_default_format_settings() -> dict:
         settings = dict()
         settings['succeeding_newlines'] = 2
         settings['tabs_as_spaces'] = True

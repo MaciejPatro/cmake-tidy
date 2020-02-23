@@ -3,7 +3,7 @@ import sys
 
 from cmake_tidy.commands import Command
 from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration, OutputWriter
-from cmake_tidy.formatting import CMakeFormatter, SettingsReader
+from cmake_tidy.formatting import try_read_settings, CMakeFormatter
 from cmake_tidy.parsing import CMakeParser
 from cmake_tidy.utils.app_configuration import ConfigurationError
 from cmake_tidy.utils.command_line_handling import arguments
@@ -18,7 +18,7 @@ def _format(args) -> int:
         return ExitCodes.SUCCESS
 
     def __format_input_data(parsed_input) -> str:
-        format_settings = SettingsReader.load_format_settings()
+        format_settings = try_read_settings()
         return CMakeFormatter(format_settings).format(parsed_input)
 
     def __parse_input(input_data: str):
@@ -35,11 +35,6 @@ def _format(args) -> int:
     return __format_file(config)
 
 
-def _dump_config() -> int:
-    print(json.dumps(SettingsReader.load_format_settings(), indent=2))
-    return ExitCodes.SUCCESS
-
-
 class FormatCommand(Command):
     def __init__(self, parser):
         description = 'format file to align it to standard'
@@ -51,5 +46,10 @@ class FormatCommand(Command):
 
     def execute_command(self, args) -> int:
         if args.dump_config:
-            return _dump_config()
+            return self.__dump_config()
         return _format(args)
+
+    @staticmethod
+    def __dump_config() -> int:
+        print(json.dumps(try_read_settings(), indent=2))
+        return ExitCodes.SUCCESS

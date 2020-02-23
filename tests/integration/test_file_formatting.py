@@ -22,7 +22,7 @@ class TestFileFormatting(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.commands.format.format_command.SettingsReader.load_format_settings')
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_format_against_newline_violations_with_custom_settings(self, load_settings, stdout):
         fake_settings = SettingsReader.get_default_format_settings()
         fake_settings['succeeding_newlines'] = 4
@@ -52,7 +52,7 @@ class TestFileFormatting(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.commands.format.format_command.SettingsReader.load_format_settings')
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_format_indentation_when_spaces_after_command_name_are_present(self, load_settings, stdout):
         fake_settings = SettingsReader.get_default_format_settings()
         fake_settings['space_between_command_and_begin_parentheses'] = True
@@ -64,7 +64,7 @@ class TestFileFormatting(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.commands.format.format_command.SettingsReader.load_format_settings')
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_format_line_splitting(self, load_settings, stdout):
         fake_settings = SettingsReader.get_default_format_settings()
         fake_settings['wrap_short_invocations_to_single_line'] = True
@@ -76,7 +76,7 @@ class TestFileFormatting(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    @mock.patch('cmake_tidy.commands.format.format_command.SettingsReader.load_format_settings')
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_formatting_with_tabs(self, load_settings, stdout):
         fake_settings = SettingsReader.get_default_format_settings()
         fake_settings['tabs_as_spaces'] = False

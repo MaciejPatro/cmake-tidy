@@ -2,77 +2,61 @@
   "title": "JSON schema for the cmake-tidy settings",
   "$schema": "http://json-schema.org/draft-06/schema#",
   "type": "object",
-  "definitions": {
-    "formatting": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/formatting"
-        }
-      ]
+  "properties": {
+    "succeeding_newlines": {
+      "type": "integer",
+      "description": "Describes the maximum number of succeeding newlines that can appear in formatted file"
     },
-    "formattingContent": {
-      "properties": {
-        "succeeding_newlines": {
-          "type": "integer",
-          "description": "Describes the maximum number of succeeding newlines that can appear in formatted file",
-          "default": 2
-        },
-        "tabs_as_spaces": {
-          "type": "boolean",
-          "description": "Indentation in the code should be done by spaces (True) or tabs (False)",
-          "default": true
-        },
-        "tab_size": {
-          "type": "integer",
-          "description": "Size of one tab in spaces",
-          "default": 2
-        },
-        "force_command_lowercase": {
-          "type": "boolean",
-          "description": "Convert all command invocations to lowercase eg. \"SET()\" to \"set()\"",
-          "default": true
-        },
-        "space_between_command_and_begin_parentheses": {
-          "type": "boolean",
-          "description": "Insert space between command name and begin parentheses eg. \"if()\" to \"if ()\"",
-          "default": false
-        },
-        "line_length": {
-          "type": "integer",
-          "description": "Maximum line length that will not be splitted",
-          "default": 80
-        },
-        "wrap_short_invocations_to_single_line": {
-          "type": "boolean",
-          "description": "Wrap multiline command invocations that fit into single line",
-          "default": false
-        },
-        "closing_parentheses_in_newline_when_split": {
-          "type": "boolean",
-          "description": "Move closing parentheses of command invocation to new line when split",
-          "default": false
-        },
-        "unquoted_uppercase_as_keyword": {
-          "type": "boolean",
-          "description": "Treat unquoted uppercase arguments as keywords",
-          "default": false
-        },
-        "keywords": {
-          "type": "array",
-          "description": "Array of unquoted arguments to be treated as keywords",
-          "default": []
-        }
-      }
+    "tabs_as_spaces": {
+      "type": "boolean",
+      "description": "Indentation in the code should be done by spaces (True) or tabs (False)"
+    },
+    "tab_size": {
+      "type": "integer",
+      "description": "Size of one tab in spaces"
+    },
+    "force_command_lowercase": {
+      "type": "boolean",
+      "description": "Convert all command invocations to lowercase eg. \"SET()\" to \"set()\""
+    },
+    "space_between_command_and_begin_parentheses": {
+      "type": "boolean",
+      "description": "Insert space between command name and begin parentheses eg. \"if()\" to \"if ()\""
+    },
+    "line_length": {
+      "type": "integer",
+      "description": "Maximum line length that will not be splitted"
+    },
+    "wrap_short_invocations_to_single_line": {
+      "type": "boolean",
+      "description": "Wrap multiline command invocations that fit into single line"
+    },
+    "closing_parentheses_in_newline_when_split": {
+      "type": "boolean",
+      "description": "Move closing parentheses of command invocation to new line when split"
+    },
+    "unquoted_uppercase_as_keyword": {
+      "type": "boolean",
+      "description": "Treat unquoted uppercase arguments as keywords"
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Array of unquoted arguments to be treated as keywords"
     }
   },
-  "properties": {
-    "format_settings": {
-      "type": "object",
-      "description": "cmake-tidy formatting settings",
-      "additionalProperties": {
-        "$ref": "#/definitions/formatting"
-      }
-    }
+  "propertyNames": {
+    "type": "string",
+    "enum": [
+      "succeeding_newlines",
+      "tabs_as_spaces",
+      "tab_size",
+      "force_command_lowercase",
+      "space_between_command_and_begin_parentheses",
+      "line_length",
+      "wrap_short_invocations_to_single_line",
+      "closing_parentheses_in_newline_when_split",
+      "unquoted_uppercase_as_keyword",
+      "keywords"
+    ]
   }
 }

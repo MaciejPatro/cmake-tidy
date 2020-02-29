@@ -3,4 +3,4 @@ from cmake_tidy.formatting.settings_reader import SettingsReader
 
 
 def try_read_settings() -> dict:
-    return SettingsReader.load_format_settings()
+    return SettingsReader().try_loading_format_settings()

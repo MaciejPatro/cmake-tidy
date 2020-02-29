@@ -1,0 +1,9 @@
+cmake-tidy format: 33 is not of type 'boolean'
+
+Failed validating 'type' in schema['properties']['tabs_as_spaces']:
+    {'description': 'Indentation in the code should be done by spaces '
+                    '(True) or tabs (False)',
+     'type': 'boolean'}
+
+On instance['tabs_as_spaces']:
+    33

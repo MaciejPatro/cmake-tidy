@@ -1,5 +1,4 @@
 import json
-import sys
 
 from cmake_tidy.commands import Command
 from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration, OutputWriter

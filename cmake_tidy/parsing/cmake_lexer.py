@@ -46,6 +46,7 @@ class CMakeLexer:
         t.lexer.push_state('insideparentheses')
         return t
 
+    @staticmethod
     def t_commandinvocation_insideparentheses_begin_bracketargument(self, t: lex.Token) -> lex.Token:
         r"""\[=*\["""
         t.type = 'BRACKET_ARGUMENT_START'
@@ -53,6 +54,7 @@ class CMakeLexer:
         t.lexer.push_state('bracketargument')
         return t
 
+    @staticmethod
     def t_commandinvocation_insideparentheses_begin_quotedargument(self, t: lex.Token) -> lex.Token:
         r"""\""""
         t.type = 'QUOTED_ARGUMENT_START'

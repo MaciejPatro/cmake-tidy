@@ -36,7 +36,7 @@ def unquoted_argument(data='') -> PrimitiveElement:
 
 
 def command_invocation(func_name: str, args=None):
-    return  ComplexElement('command_invocation') \
+    return ComplexElement('command_invocation') \
         .add(start_cmd(func_name)) \
         .add(args) \
         .add(end_cmd())

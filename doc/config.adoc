@@ -28,4 +28,34 @@
 |`True`
 | Convert all command invocations to lowercase (including keywords) eg. `SOME_FUNC()` to `some_func()` and `IF(...)` to `if(...)`.
 
+|`space_between_command_and_begin_parentheses`
+|`boolean`
+|`False`
+| Insert space between command name and begin parentheses eg. `if()` to ``\"``if ()` or `set()` to `set ()`.
+
+|`line_length`
+|`integer`
+|`80`
+| Maximum line length that will not cause `command invocation` splitting.
+
+|`wrap_short_invocations_to_single_line`
+|`boolean`
+|`False`
+| Wrap command invocations into single line when they fit in `line_length`.
+
+|`closing_parentheses_in_newline_when_split`
+|`boolean`
+|`False`
+| Force closing parentheses to new line when command invocation splitting is needed.
+
+|`unquoted_uppercase_as_keyword`
+|`boolean`
+|`False`
+| Consider all unquoted uppercase arguments as keywords. eg `PROPERTIES`,  `SOMETEXT`.
+
+|`keywords`
+|`array`
+|`[]`
+| Consider list of provided arguments as keywords when formatting.
+
 |===

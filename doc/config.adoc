@@ -1,1 +1,31 @@
-TBD
+= `format` subcommand settings
+
+[cols="2,1,1, 6", options="header"]
+.Settings
+|===
+|Name
+|Type
+|Default Value
+|Detailed description
+
+|`succeeding_newlines`
+|`integer`
+|`2`
+| Describes the maximum number of succeeding newlines that can appear in formatted file.
+
+|`tabs_as_spaces`
+|`boolean`
+|`True`
+| Dictates whether code indentation should be done using spaces (`True`) or tabs (`False`).
+
+|`tab_size`
+|`integer`
+|`4`
+| When `tabs_as_spaces` is `True` this option defines the amount of spaces used for a single `TAB`.
+
+|`force_command_lowercase`
+|`boolean`
+|`True`
+| Convert all command invocations to lowercase (including keywords) eg. `SOME_FUNC()` to `some_func()` and `IF(...)` to `if(...)`.
+
+|===

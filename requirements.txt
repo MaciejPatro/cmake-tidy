@@ -1,5 +1,5 @@
-approvaltests
-mock
-ply
-iteration_utilities
-jsonschema
+approvaltests==0.2.6
+mock==4.0.1
+ply==3.11
+iteration_utilities==0.10.1
+jsonschema==3.2.0

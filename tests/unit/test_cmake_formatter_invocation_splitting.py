@@ -1,4 +1,5 @@
-from tests.unit.parser_composite_elements import arguments, spaces, unquoted_argument, file, command_invocation
+from tests.unit.parser_composite_elements import arguments, spaces, unquoted_argument, file, command_invocation, \
+    line_ending
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
@@ -60,6 +61,23 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
         expected_formatting = """function(abc
   TARGET
     def
+  TARGET
+    def)"""
+
+        self.assertFormatting(expected_formatting, root)
+
+    def test_invocation_splitting_with_line_comments(self):
+        self.settings['line_length'] = 5
+        args = arguments().add(unquoted_argument('abc')) \
+            .add(spaces('    ')) \
+            .add(line_ending('# comment', 1)) \
+            .add(unquoted_argument('TARGET')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('def'))
+
+        root = file().add(command_invocation('function(', args))
+
+        expected_formatting = """function(abc # comment
   TARGET
     def)"""
 

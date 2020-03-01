@@ -1,0 +1,54 @@
+= cmake-tidy
+
+:numbered:
+
+== Introduction
+The goal of project is to provide a set of tools that will ease the development process for build systems code written
+in `CMake`. Main ideas of the tool are but not limited to:
+
+- `CMake` code formatting - based on language syntax analysis
+- modern `CMake` static analysis - basic code analysis with possible auto-fixing.
+- large flexibility of configuration - as coding styles differ quite a lot.
+- easy to use - mimic usage and parameters with other state-of-the-art tools to reduce learning curve for users.
+
+== Application usage
+
+`cmake-tidy` is a command-line application written in `python3`.
+
+Available subcommands:
+[source,text]
+----
+usage: cmake-tidy [-h] {format} ...
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+sub-commands:
+  {format}    see "cmake-tidy <command> --help" to read more about a specific
+              sub-command.
+    format    format file to align it to standard
+----
+
+=== `format` subcommand
+
+==== usage
+
+[source,text]
+----
+usage: cmake-tidy format [-h] [--dump-config] [-i] [input]
+
+positional arguments:
+  input          CMake file to be formatted
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --dump-config  dump to stdout current settings. Script tries to read
+                 settings from `.cmake-tidy.json` file existing in a current
+                 directory or provides default settings.
+  -i, --inplace  inplace edit specified <input_data> file
+----
+
+==== configuration
+
+User can provide alternative settings to an application by providing custom `.cmake-tidy.json` file.
+For more information about available parameters and values visit link:doc/config.adoc[here].

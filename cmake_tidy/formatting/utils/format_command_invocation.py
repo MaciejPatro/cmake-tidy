@@ -33,6 +33,7 @@ class FormatCommandInvocation:
         if self.__is_end_of_special_command(function_name):
             self.__state['indent'] -= 1
         self.__state['keyword_argument'] = False
+        self.__state['has_properties_keyword'] = False
 
     def __is_start_of_special_command(self, original: str) -> bool:
         return any([self.__matches(token, original) for token in FormatCommandInvocation.__start_tokens])

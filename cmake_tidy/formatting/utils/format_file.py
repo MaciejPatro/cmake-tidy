@@ -11,7 +11,8 @@ class FormatFile:
 
     def __cleanup_end_invocations(self, formatted_file: str) -> str:
         indent = get_single_indent(self.__settings)
-        for pattern in [2 * indent + Tokens.reindent_2,
+        for pattern in [3 * indent + Tokens.reindent_3,
+                        2 * indent + Tokens.reindent_2,
                         indent + Tokens.reindent_2,
                         indent + Tokens.reindent,
                         Tokens.reindent_2,

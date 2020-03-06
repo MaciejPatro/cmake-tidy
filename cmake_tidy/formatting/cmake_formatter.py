@@ -8,7 +8,7 @@ class CMakeFormatter:
     __settings: dict
 
     def __init__(self, format_settings: dict):
-        self.__state = {'indent': 0, 'last': None, 'keyword_argument': False}
+        self.__state = {'indent': 0, 'last': None, 'keyword_argument': False, 'has_properties_keyword': False}
         self.__settings = format_settings
 
         self.__formatters = CMakeFormatDispatcher(self.__state)

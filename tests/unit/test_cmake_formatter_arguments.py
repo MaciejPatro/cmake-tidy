@@ -63,3 +63,28 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
 
         expected_formatting = 'abc(\n  TARGET\n    text\n  TARGET\n    [==[text]==]\n)'
         self.assertFormattingArguments(expected_formatting, function_arguments)
+
+    def test_ident_set_target_properties_example(self):
+        self.settings['keywords'] = ['INTERFACE_LINK_DEPENDS', 'JOB_POOL_COMPILE']
+        function_arguments = arguments() \
+            .add(unquoted_argument('target_name')) \
+            .add(newlines(4)) \
+            .add(unquoted_argument('PROPERTIES')) \
+            .add(newlines(4)) \
+            .add(unquoted_argument('INTERFACE_LINK_DEPENDS')) \
+            .add(newlines(4)) \
+            .add(unquoted_argument('${VALUE}')) \
+            .add(newlines(4)) \
+            .add(unquoted_argument('JOB_POOL_COMPILE')) \
+            .add(newlines(4)) \
+            .add(unquoted_argument('${VALUE2}')) \
+            .add(newlines(4))
+
+        expected_formatting = """abc(target_name
+  PROPERTIES
+    INTERFACE_LINK_DEPENDS
+      ${VALUE}
+    JOB_POOL_COMPILE
+      ${VALUE2}
+)"""
+        self.assertFormattingArguments(expected_formatting, function_arguments)

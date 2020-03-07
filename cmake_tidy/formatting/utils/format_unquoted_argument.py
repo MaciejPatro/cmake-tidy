@@ -24,5 +24,5 @@ class FormatUnquotedArgument:
 
     def __format_data(self, data: str) -> str:
         if self.__keyword_argument_already_found and self.__verifier.is_keyword(data):
-            return Tokens.reindent + data
+            return Tokens.reindent(1) + data
         return data

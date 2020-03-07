@@ -7,7 +7,7 @@ class FormatEndCommandInvocation:
 
     def __call__(self, data: str) -> str:
         if self.__state['has_properties_keyword']:
-            return Tokens.reindent_3 + data
+            return Tokens.reindent(3) + data
         if self.__state['keyword_argument']:
-            return Tokens.reindent_2 + data
-        return Tokens.reindent + data
+            return Tokens.reindent(2) + data
+        return Tokens.reindent(1) + data

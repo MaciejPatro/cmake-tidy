@@ -15,7 +15,7 @@ class FormatUnquotedArgument:
 
     def __update_state(self, data: str) -> None:
         if self.__verifier.is_first_class_keyword(data):
-            self.__state['has_properties_keyword'] = True
+            self.__state['has_first_class_keyword'] = True
             self.__state['indent'] += 1
         elif self.__verifier.is_keyword(data):
             if not self.__state['keyword_argument']:

@@ -30,12 +30,12 @@ class FormatCommandInvocation:
     def __update_state(self, function_name: str) -> None:
         self.__update_indent_state(function_name)
         self.__state['keyword_argument'] = False
-        self.__state['has_properties_keyword'] = False
+        self.__state['has_first_class_keyword'] = False
 
     def __update_indent_state(self, function_name: str) -> None:
         if not self.__is_start_of_special_command(function_name):
             self.__state['indent'] -= 1
-        if self.__state['has_properties_keyword']:
+        if self.__state['has_first_class_keyword']:
             self.__state['indent'] -= 1
         if self.__is_end_of_special_command(function_name):
             self.__state['indent'] -= 1

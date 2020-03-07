@@ -89,3 +89,15 @@ class TestFileFormatting(TestIntegrationBase):
 
     def format_file(self, file: str):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=[get_input_file(file)]))
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
+    def test_formatting_file_with_multiple_settings(self, load_settings, stdout):
+        fake_settings = SettingsReader.get_default_format_settings()
+        fake_settings['tabs_as_spaces'] = False
+        load_settings.return_value = fake_settings
+
+        self.format_file('target_setting.cmake')
+
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)

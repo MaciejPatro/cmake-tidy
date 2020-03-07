@@ -1,3 +1,5 @@
+import re
+
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
 from cmake_tidy.formatting.utils.tokens import Tokens
 
@@ -11,14 +13,6 @@ class FormatFile:
 
     def __cleanup_end_invocations(self, formatted_file: str) -> str:
         indent = get_single_indent(self.__settings)
-        for pattern in [3 * indent + Tokens.reindent(3),
-                        2 * indent + Tokens.reindent(3),
-                        2 * indent + Tokens.reindent(2),
-                        indent + Tokens.reindent(3),
-                        indent + Tokens.reindent(2),
-                        indent + Tokens.reindent(1),
-                        Tokens.reindent(3),
-                        Tokens.reindent(2),
-                        Tokens.reindent(1)]:
-            formatted_file = formatted_file.replace(pattern, '')
+        for pattern in Tokens.get_reindent_patterns_list(3, indent):
+            formatted_file = re.sub(pattern, '', formatted_file)
         return formatted_file

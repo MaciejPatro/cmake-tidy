@@ -12,7 +12,6 @@ class FormatFile:
         return self.__cleanup_end_invocations(''.join(data))
 
     def __cleanup_end_invocations(self, formatted_file: str) -> str:
-        indent = get_single_indent(self.__settings)
-        for pattern in Tokens.get_reindent_patterns_list(3, indent):
+        for pattern in Tokens.get_reindent_patterns_list(3, get_single_indent(self.__settings)):
             formatted_file = re.sub(pattern, '', formatted_file)
         return formatted_file

@@ -14,7 +14,7 @@ class FormatUnquotedArgument:
         return self.__format_data(data)
 
     def __update_state(self, data: str) -> None:
-        if data == 'PROPERTIES' or data == 'PROPERTY':
+        if self.__verifier.is_first_class_keyword(data):
             self.__state['has_properties_keyword'] = True
             self.__state['indent'] += 1
         elif self.__verifier.is_keyword(data):

@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 from cmake_tidy.formatting import utils
 from cmake_tidy.formatting.cmake_format_dispatcher import CMakeFormatDispatcher
 from cmake_tidy.lexical_data.elements import Element

@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 import ply.yacc as yacc
 
 from cmake_tidy.parsing.cmake_lexer import CMakeLexer

@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 from tests.unit.parser_composite_elements import newlines, spaces, file, command_invocation, line_ending, arguments, \
     unquoted_argument
 from tests.unit.test_cmake_formatter import TestCMakeFormatter

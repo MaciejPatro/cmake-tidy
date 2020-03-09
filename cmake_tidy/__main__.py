@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 import sys
 
 from cmake_tidy.commands.format.format_command import FormatCommand

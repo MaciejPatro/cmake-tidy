@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.utils.keyword_verifier import KeywordVerifier
 

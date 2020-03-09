@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 import unittest
 
 from cmake_tidy.lexical_data.elements import PrimitiveElement, ComplexElement

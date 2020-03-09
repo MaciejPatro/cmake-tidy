@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 from cmake_tidy.lexical_data.elements import Element, ComplexElement, PrimitiveElement
 
 

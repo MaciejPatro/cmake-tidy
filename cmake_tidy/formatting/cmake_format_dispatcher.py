@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 class _Executor:
     def __init__(self, state: dict, name: str, to_be_called):
         self.__state = state

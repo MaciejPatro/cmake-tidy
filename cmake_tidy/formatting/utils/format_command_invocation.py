@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 import re
 
 from cmake_tidy.formatting.utils.invocation_splitter import InvocationSplitter

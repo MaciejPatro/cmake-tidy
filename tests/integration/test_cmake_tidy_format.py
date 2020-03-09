@@ -31,9 +31,9 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('cmake_tidy.formatting.settings_reader.SettingsReader._read_settings',
-                return_value={'tabs_as_spaces': False})
+                mock.MagicMock(return_value={'tabs_as_spaces': False}))
     @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_should_dump_full_config_even_if_file_overrides_only_one(self, stdout, file_settings):
+    def test_format_should_dump_full_config_even_if_file_overrides_only_one(self, stdout):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=['--dump-config', 'file.txt']))
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
@@ -46,18 +46,17 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('cmake_tidy.formatting.settings_reader.SettingsReader._read_settings',
-                return_value={'tabs_as_spaces': 33})
+                mock.MagicMock(return_value={'tabs_as_spaces': 33}))
     @mock.patch('sys.stderr', new_callable=StringIO)
-    def test_format_should_fail_with_warning_about_incorrect_settings_when_dump_invoked(self, stdout, file_settings):
+    def test_format_should_fail_with_warning_about_incorrect_settings_when_dump_invoked(self, stdout):
         self.assertFail(execute_cmake_tidy(command='format', arguments=['--dump-config', 'file.txt']))
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
     @mock.patch('cmake_tidy.formatting.settings_reader.SettingsReader._read_settings',
-                return_value={'tabs_as_spaces': 33})
+                mock.MagicMock(return_value={'tabs_as_spaces': 33}))
     @mock.patch('sys.stderr', new_callable=StringIO)
-    def test_format_should_fail_with_warning_about_incorrect_settings_when_trying_to_format(self, stdout,
-                                                                                            file_settings):
+    def test_format_should_fail_with_warning_about_incorrect_settings_when_trying_to_format(self, stdout):
         self.assertFail(execute_cmake_tidy(command='format', arguments=[get_input_file('arguments.cmake')]))
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)

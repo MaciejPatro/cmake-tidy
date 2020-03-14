@@ -12,6 +12,10 @@ class Tokens:
         return ['elseif', 'else'] + Tokens.end_tokens()
 
     @staticmethod
+    def conditional_tokens() -> list:
+        return ['if', 'while', 'foreach', 'elseif']
+
+    @staticmethod
     def reindent(count: int) -> str:
         return f'<cmake-tidy-reindent{count}>'
 

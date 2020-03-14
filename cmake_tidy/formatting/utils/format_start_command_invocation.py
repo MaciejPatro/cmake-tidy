@@ -1,5 +1,7 @@
 import re
 
+from cmake_tidy.formatting.utils.tokens import Tokens
+
 
 class FormatStartCommandInvocation:
     def __init__(self, state: dict, settings: dict):
@@ -23,6 +25,9 @@ class FormatStartCommandInvocation:
     def __add_spacing_if_needed(self, formatted: str) -> str:
         if self.__settings.get('space_between_command_and_begin_parentheses'):
             return formatted.replace('(', ' (')
+        if self.__settings.get('space_after_loop_condition'):
+            if any([token == formatted[:-1] for token in Tokens.conditional_tokens()]):
+                return formatted.replace('(', ' (')
         return formatted
 
     @staticmethod

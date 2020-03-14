@@ -11,7 +11,7 @@ class TestCMakeFormatterElementsInteractions(TestCMakeFormatter):
         self.assertFormatting('abc() # a comment\n', invocation)
 
     def test_if_statement_with_space_while_other_invocations_are_not_affected(self):
-        self.settings['space_after_loop_condition_name'] = True
+        self.settings['space_after_loop_condition'] = True
         invocation = file() \
             .add(command_invocation('if(')) \
             .add(newlines(1)) \

@@ -11,10 +11,6 @@ from cmake_tidy.formatting.utils.tokens import Tokens
 
 
 class FormatCommandInvocation:
-    __start_tokens = ['macro', 'while', 'foreach', 'if', 'function']
-    __reindent_commands = ['endfunction', 'endif', 'elseif', 'endwhile', 'endforeach', 'endmacro',
-                           'else']
-
     def __init__(self, state: dict, settings: dict):
         self.__state = state
         self.__settings = settings
@@ -45,10 +41,10 @@ class FormatCommandInvocation:
             self.__state['indent'] -= 1
 
     def __is_start_of_special_command(self, original: str) -> bool:
-        return any([self.__matches(token, original) for token in FormatCommandInvocation.__start_tokens])
+        return any([self.__matches(token, original) for token in Tokens.start_tokens()])
 
     def __is_end_of_special_command(self, original: str) -> bool:
-        return any([self.__matches('end' + token, original) for token in FormatCommandInvocation.__start_tokens])
+        return any([self.__matches(token, original) for token in Tokens.end_tokens()])
 
     def __format_invocation(self, invocation: dict) -> str:
         invocation['arguments'] = self.__prepare_arguments(invocation)
@@ -93,7 +89,7 @@ class FormatCommandInvocation:
         return formatted
 
     def __add_reindent_tokens_where_needed(self, data: str) -> str:
-        for token in FormatCommandInvocation.__reindent_commands:
+        for token in Tokens.reindent_commands_tokens():
             if self.__matches(token, data):
                 return Tokens.reindent(1) + data
         return data

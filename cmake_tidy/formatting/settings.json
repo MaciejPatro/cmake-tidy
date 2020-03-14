@@ -39,6 +39,10 @@
       "type": "boolean",
       "description": "Treat unquoted uppercase arguments as keywords"
     },
+    "space_after_loop_condition": {
+      "type": "boolean",
+      "description": "Introduces spaces after all conditional invocations only"
+    },
     "keywords": {
       "type": "array",
       "description": "Array of unquoted arguments to be treated as keywords"
@@ -56,6 +60,7 @@
       "wrap_short_invocations_to_single_line",
       "closing_parentheses_in_newline_when_split",
       "unquoted_uppercase_as_keyword",
+      "space_after_loop_condition",
       "keywords"
     ]
   }

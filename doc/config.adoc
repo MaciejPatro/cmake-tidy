@@ -53,6 +53,11 @@
 |`False`
 | Consider all unquoted uppercase arguments as keywords. eg `PROPERTIES`,  `SOMETEXT`.
 
+|`space_after_loop_condition`
+|`boolean`
+|`False`
+| Introduces spaces after all conditional invocations only eg. `if (...)` but `set(...)`
+
 |`keywords`
 |`array`
 |`[]`

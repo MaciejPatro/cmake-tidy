@@ -27,12 +27,17 @@ class FormatStartCommandInvocation:
         return formatted
 
     def __add_spacing_if_needed(self, formatted: str) -> str:
-        if self.__settings.get('space_between_command_and_begin_parentheses'):
+        if self.__is_spacing_needed(formatted):
             return formatted.replace('(', ' (')
-        if self.__settings.get('space_after_loop_condition'):
-            if any([token == formatted[:-1] for token in Tokens.conditional_tokens()]):
-                return formatted.replace('(', ' (')
         return formatted
+
+    def __is_spacing_needed(self, formatted: str) -> bool:
+        return self.__settings.get('space_between_command_and_begin_parentheses') or \
+               (self.__settings.get('space_after_loop_condition') and self.__is_conditional(formatted))
+
+    @staticmethod
+    def __is_conditional(formatted: str) -> bool:
+        return any([token == formatted[:-1] for token in Tokens.conditional_tokens()])
 
     @staticmethod
     def __remove_whitespaces_after_name(original: str) -> str:

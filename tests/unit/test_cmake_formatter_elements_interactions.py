@@ -24,8 +24,7 @@ class TestCMakeFormatterElementsInteractions(TestCMakeFormatter):
             .add(line_ending('# a comment', 1)) \
             .add(command_invocation('endif('))
 
-        expectedFormatting = """
-if ()
+        expectedFormatting = """if ()
   abc() # a comment
 endif()"""
 

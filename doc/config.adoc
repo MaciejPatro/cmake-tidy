@@ -1,6 +1,6 @@
 = `format` subcommand settings
 
-[cols="2,1,1, 6", options="header"]
+[cols="2,1,1, 6a", options="header"]
 .Settings
 |===
 |Name
@@ -57,6 +57,22 @@
 |`boolean`
 |`False`
 | Introduces spaces after all conditional invocations only eg. `if (...)` but `set(...)`
+
+|`keep_property_and_value_in_one_line`
+|`boolean`
+|`True`
+| Forces no splitting between property and value even if the line is too long. eg.
+
+[source,cmake]
+----
+set_property(
+	SOURCE
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/File.cpp
+	PROPERTY
+		COMPILE_FLAGS $<$<CXX_COMPILER_ID:MSVC>:/Y-> # ignore precompiled headers
+)
+----
+
 
 |`keywords`
 |`array`

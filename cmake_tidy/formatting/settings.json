@@ -41,7 +41,11 @@
     },
     "space_after_loop_condition": {
       "type": "boolean",
-      "description": "Introduces spaces after all conditional invocations only"
+      "description": "Introduce spaces after all conditional invocations only"
+    },
+    "keep_property_and_value_in_one_line": {
+      "type": "boolean",
+      "description": "Keep properties and its value within single line - doesn't split over multiple line"
     },
     "keywords": {
       "type": "array",
@@ -61,6 +65,7 @@
       "closing_parentheses_in_newline_when_split",
       "unquoted_uppercase_as_keyword",
       "space_after_loop_condition",
+      "keep_property_and_value_in_one_line",
       "keywords"
     ]
   }

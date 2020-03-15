@@ -68,5 +68,6 @@ class SettingsReader:
         settings['closing_parentheses_in_newline_when_split'] = False
         settings['unquoted_uppercase_as_keyword'] = False
         settings['space_after_loop_condition'] = False
+        settings['keep_property_and_value_in_one_line'] = True
         settings['keywords'] = []
         return settings

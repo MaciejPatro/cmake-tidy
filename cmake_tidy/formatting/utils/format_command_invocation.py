@@ -4,6 +4,7 @@
 ###############################################################################
 import re
 
+from cmake_tidy.formatting.utils.command_invocatin_state_updater import CommandInvocationStateUpdater
 from cmake_tidy.formatting.utils.invocation_splitter import InvocationSplitter
 from cmake_tidy.formatting.utils.invocation_wrapper import InvocationWrapper
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
@@ -13,12 +14,13 @@ from cmake_tidy.formatting.utils.tokens import Tokens
 class FormatCommandInvocation:
     def __init__(self, state: dict, settings: dict):
         self.__state = state
+        self.__state_handler = CommandInvocationStateUpdater(state)
         self.__settings = settings
 
     def __call__(self, data: list) -> str:
         command_invocation = self.__prepare_data(data)
         formatted = self.__format_invocation(command_invocation)
-        self.__update_state(command_invocation['function_name'])
+        self.__state_handler.update_state(command_invocation['function_name'])
         return formatted
 
     @staticmethod
@@ -26,25 +28,6 @@ class FormatCommandInvocation:
         return {'function_name': data[0],
                 'arguments': data[1] if len(data) == 3 else [],
                 'closing': data[2] if len(data) == 3 else data[1]}
-
-    def __update_state(self, function_name: str) -> None:
-        self.__update_indent_state(function_name)
-        self.__state['keyword_argument'] = False
-        self.__state['has_first_class_keyword'] = False
-
-    def __update_indent_state(self, function_name: str) -> None:
-        if not self.__is_start_of_special_command(function_name):
-            self.__state['indent'] -= 1
-        if self.__state['has_first_class_keyword']:
-            self.__state['indent'] -= 1
-        if self.__is_end_of_special_command(function_name):
-            self.__state['indent'] -= 1
-
-    def __is_start_of_special_command(self, original: str) -> bool:
-        return any([self.__matches(token, original) for token in Tokens.start_tokens()])
-
-    def __is_end_of_special_command(self, original: str) -> bool:
-        return any([self.__matches(token, original) for token in Tokens.end_tokens()])
 
     def __format_invocation(self, invocation: dict) -> str:
         invocation['arguments'] = self.__prepare_arguments(invocation)
@@ -88,12 +71,8 @@ class FormatCommandInvocation:
         formatted = invocation['function_name'] + ''.join(invocation['arguments']) + invocation['closing']
         return formatted
 
-    def __add_reindent_tokens_where_needed(self, data: str) -> str:
-        for token in Tokens.reindent_commands_tokens():
-            if self.__matches(token, data):
-                return Tokens.reindent(1) + data
-        return data
-
     @staticmethod
-    def __matches(token: str, data: str) -> bool:
-        return re.match(r'^' + re.escape(token) + r'\s?\(', data) is not None
+    def __add_reindent_tokens_where_needed(data: str) -> str:
+        if any(data.startswith(token) for token in Tokens.reindent_commands_tokens()):
+            return Tokens.reindent(1) + data
+        return data

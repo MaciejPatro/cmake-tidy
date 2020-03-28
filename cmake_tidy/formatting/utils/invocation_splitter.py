@@ -16,39 +16,37 @@ class InvocationSplitter:
     def split(self, invocation: dict) -> list:
         self.__initial_indent = self.__state['indent']
         arguments = self.__split_args_to_newlines(invocation) + self.__add_closing_bracket_separator()
+        arguments = self.__fix_line_comments(arguments)
         self.__rollback_indent_state()
         return arguments
 
     def __split_args_to_newlines(self, invocation: dict) -> list:
-        arguments = []
-        for arg in invocation['arguments']:
-            if arg == ' ':
-                arguments += self.__get_converted_whitespace()
-            else:
-                self.__handle_non_whitespace_arguments(arg, arguments)
-        return arguments
+        return [self.__handle_argument(arg) for arg in invocation['arguments']]
 
-    def __get_converted_whitespace(self) -> list:
-        return [(FormatNewline(self.__state, self.__settings)(1))]
+    def __handle_argument(self, arg: str) -> str:
+        self.__update_indent_state(arg)
+        if arg == ' ':
+            return self.__get_converted_whitespace()
+        return arg
 
-    def __rollback_indent_state(self) -> None:
-        self.__state['indent'] = self.__initial_indent
+    def __update_indent_state(self, arg: str):
+        if self.__verifier.is_keyword(arg):
+            self.__state['indent'] = self.__initial_indent + 1
 
     def __add_closing_bracket_separator(self) -> list:
         if self.__settings['closing_parentheses_in_newline_when_split']:
             return [FormatNewline(self.__state, self.__settings)(1)]
         return []
 
-    def __handle_non_whitespace_arguments(self, arg: str, arguments: list) -> None:
-        self.__update_indent_state(arg)
-        self.__fix_line_comment(arg, arguments)
-        arguments.append(arg)
+    def __get_converted_whitespace(self) -> str:
+        return FormatNewline(self.__state, self.__settings)(1)
 
-    def __update_indent_state(self, arg: str):
-        if self.__verifier.is_keyword(arg):
-            self.__state['indent'] = self.__initial_indent + 1
+    def __rollback_indent_state(self) -> None:
+        self.__state['indent'] = self.__initial_indent
 
     @staticmethod
-    def __fix_line_comment(current_argument, arguments):
-        if current_argument.startswith('#'):
-            arguments[-1] = ' '
+    def __fix_line_comments(arguments: list) -> list:
+        for i in range(len(arguments)):
+            if arguments[i].startswith('#'):
+                arguments[i-1] = ' '
+        return arguments

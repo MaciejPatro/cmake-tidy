@@ -27,9 +27,7 @@ class InvocationSplitter:
 
     def __handle_argument(self, arg: str) -> str:
         self.__update_indent_state(arg)
-        if arg == ' ':
-            return self.__get_converted_whitespace()
-        return arg
+        return self.__get_converted_whitespace() if arg == ' ' else arg
 
     def __update_indent_state(self, arg: str):
         if self.__verifier.is_keyword(arg):

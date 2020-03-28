@@ -3,7 +3,7 @@
 # MIT License
 ###############################################################################
 from tests.unit.parser_composite_elements import spaces, file, command_invocation, unquoted_argument, \
-    arguments, quoted_argument, newlines, bracket_argument
+    arguments, quoted_argument, newlines, bracket_argument, line_ending
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
@@ -92,3 +92,26 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
       ${VALUE2}
 )"""
         self.assertFormattingArguments(expected_formatting, function_arguments)
+
+    def test_invocation_splitting_with_properties_staying_in_one_line(self):
+        self.settings['line_length'] = 30
+        self.settings['closing_parentheses_in_newline_when_split'] = True
+        self.settings['keywords'] = ['TARGET']
+
+        args = arguments().add(unquoted_argument('abcd')) \
+            .add(spaces('    ')) \
+            .add(line_ending('# comment', 1)) \
+            .add(unquoted_argument('PROPERTIES')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('TARGET')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('def'))
+
+        root = file().add(command_invocation('some_name(', args))
+
+        expected_formatting = """some_name(abcd # comment
+  PROPERTIES
+    TARGET
+      def
+)"""
+        self.assertFormatting(expected_formatting, root)

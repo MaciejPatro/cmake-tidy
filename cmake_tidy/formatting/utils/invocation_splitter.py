@@ -9,16 +9,18 @@ from cmake_tidy.utils.keyword_verifier import KeywordVerifier
 class InvocationSplitter:
     def __init__(self, state: dict, settings: dict):
         self.__state = state
-        self.__initial_indent = self.__state['indent']
         self.__settings = settings
         self.__verifier = KeywordVerifier(settings)
 
     def split(self, invocation: dict) -> list:
-        self.__initial_indent = self.__state['indent']
+        self.__save_initial_indent()
         arguments = self.__split_args_to_newlines(invocation) + self.__add_closing_bracket_separator()
         arguments = self.__fix_line_comments(arguments)
         self.__rollback_indent_state()
         return arguments
+
+    def __save_initial_indent(self):
+        self.__initial_indent = self.__state['indent']
 
     def __split_args_to_newlines(self, invocation: dict) -> list:
         return [self.__handle_argument(arg) for arg in invocation['arguments']]

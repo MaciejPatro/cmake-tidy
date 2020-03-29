@@ -17,6 +17,7 @@ class TestCMakeFormatter(unittest.TestCase):
                          'wrap_short_invocations_to_single_line': False,
                          'closing_parentheses_in_newline_when_split': False,
                          'line_length': 80,
+                         'keep_property_and_value_in_one_line': False,
                          'tabs_as_spaces': True}
 
     def assertFormatting(self, formatted_string, lex_data):

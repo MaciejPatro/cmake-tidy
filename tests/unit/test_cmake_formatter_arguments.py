@@ -126,10 +126,13 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
         self.assertFormatting(expected_formatting, root)
 
     def test_splitting_while_properties_keep_same_line(self):
+        self.settings['keep_property_and_value_in_one_line'] = True
         self.settings['line_length'] = 10
-        self.settings['keywords'] = ['TARGET', 'FOO']
+        self.settings['keywords'] = ['BAR', 'TARGET', 'FOO']
 
-        args = arguments().add(unquoted_argument('abcd')) \
+        args = arguments().add(unquoted_argument('TARGET')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('abcd')) \
             .add(spaces('    ')) \
             .add(unquoted_argument('PROPERTIES')) \
             .add(spaces('    ')) \
@@ -137,14 +140,14 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
             .add(spaces('    ')) \
             .add(unquoted_argument('def')) \
             .add(spaces('    ')) \
-            .add(unquoted_argument('TARGET')) \
+            .add(unquoted_argument('BAR')) \
             .add(spaces('    ')) \
-            .add(unquoted_argument('def'))
+            .add(unquoted_argument('def2'))
 
-        root = file().add(command_invocation('some_name(', args))
+        root = file().add(command_invocation('set_property(', args))
 
-        expected_formatting = """some_name(abcd
+        expected_formatting = """set_property(TARGET abcd
   PROPERTIES
     FOO def
-    TARGET def)"""
+    BAR def2)"""
         self.assertFormatting(expected_formatting, root)

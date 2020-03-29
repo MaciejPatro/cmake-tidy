@@ -105,6 +105,10 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
             .add(spaces('    ')) \
             .add(unquoted_argument('TARGET')) \
             .add(spaces('    ')) \
+            .add(unquoted_argument('def')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('TARGET')) \
+            .add(spaces('    ')) \
             .add(unquoted_argument('def'))
 
         root = file().add(command_invocation('some_name(', args))

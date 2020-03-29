@@ -117,5 +117,7 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
   PROPERTIES
     TARGET
       def
+    TARGET
+      def
 )"""
         self.assertFormatting(expected_formatting, root)

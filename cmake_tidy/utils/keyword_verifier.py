@@ -4,6 +4,8 @@
 ###############################################################################
 import re
 
+from cmake_tidy.formatting.utils.tokens import Tokens
+
 
 class KeywordVerifier:
     __FIRST_CLASS_KEYWORDS = ['PROPERTIES', 'PROPERTY']
@@ -13,6 +15,7 @@ class KeywordVerifier:
 
     @staticmethod
     def is_first_class_keyword(data: str) -> bool:
+        data = data.replace(Tokens.reindent(1), '')
         return data in KeywordVerifier.__FIRST_CLASS_KEYWORDS
 
     def is_keyword(self, data: str) -> bool:

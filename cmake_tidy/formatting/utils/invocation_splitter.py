@@ -8,19 +8,14 @@ from cmake_tidy.utils.keyword_verifier import KeywordVerifier
 
 class InvocationSplitter:
     def __init__(self, state: dict, settings: dict):
-        self.__state = state
+        self.__state = state.copy()
         self.__settings = settings
         self.__verifier = KeywordVerifier(settings)
 
     def split(self, invocation: dict) -> list:
-        self.__save_initial_state()
         arguments = self.__split_args_to_newlines(invocation) + self.__add_closing_bracket_separator()
         arguments = self.__fix_line_comments(arguments)
-        self.__rollback_state()
         return arguments
-
-    def __save_initial_state(self):
-        self.__initial_state = self.__state.copy()
 
     def __split_args_to_newlines(self, invocation: dict) -> list:
         return [self.__handle_argument(arg) for arg in invocation['arguments']]
@@ -31,7 +26,7 @@ class InvocationSplitter:
 
     def __update_indent_state(self, arg: str):
         if self.__verifier.is_keyword(arg):
-            self.__state['indent'] = self.__initial_state['indent'] + 1
+            self.__state['indent'] = self.__state['indent'] + 1
 
     def __add_closing_bracket_separator(self) -> list:
         if self.__settings['closing_parentheses_in_newline_when_split']:
@@ -40,9 +35,6 @@ class InvocationSplitter:
 
     def __get_converted_whitespace(self) -> str:
         return FormatNewline(self.__state, self.__settings)(1)
-
-    def __rollback_state(self) -> None:
-        self.__state.update(self.__initial_state)
 
     @staticmethod
     def __fix_line_comments(arguments: list) -> list:

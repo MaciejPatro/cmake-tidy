@@ -19,6 +19,7 @@ class KeywordVerifier:
         return data in KeywordVerifier.__FIRST_CLASS_KEYWORDS
 
     def is_keyword(self, data: str) -> bool:
+        data = data.replace(Tokens.reindent(1), '')
         return self.__is_one_of_defined_keywords(data) or \
                self.__should_be_handled_as_keyword(data) or \
                self.is_first_class_keyword(data)

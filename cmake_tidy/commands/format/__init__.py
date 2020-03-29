@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from cmake_tidy.commands.format.format_configuration import FormatConfiguration
 from cmake_tidy.commands.format.output_writer import OutputWriter
 

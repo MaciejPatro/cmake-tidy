@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 class ProxyVisitor:
     def __init__(self, proxies: dict):
         self.__proxies = proxies

@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 import re
 
 from cmake_tidy.formatting.utils.single_indent import get_single_indent

@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from cmake_tidy.formatting.utils.tokens import Tokens
 
 

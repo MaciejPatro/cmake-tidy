@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from tests.unit.test_cmake_parser import TestCMakeParser
 from tests.unit.parser_composite_elements import file, command_invocation, arguments, unquoted_argument, \
     bracket_argument, quoted_argument, spaces, newlines, parentheses, line_ending

@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
 from tests.unit.parser_composite_elements import file, command_invocation, spaces, line_ending, newlines
 

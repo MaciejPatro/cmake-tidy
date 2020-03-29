@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 import unittest
 
 from cmake_tidy.utils.app_configuration.configuration import Configuration

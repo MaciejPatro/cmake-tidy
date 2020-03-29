@@ -93,7 +93,7 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
 )"""
         self.assertFormattingArguments(expected_formatting, function_arguments)
 
-    def test_invocation_splitting_with_properties_staying_in_one_line(self):
+    def test_splitting_long_line_with_multiple_arguments_and_properties(self):
         self.settings['line_length'] = 30
         self.settings['closing_parentheses_in_newline_when_split'] = True
         self.settings['keywords'] = ['TARGET']
@@ -101,6 +101,8 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
         args = arguments().add(unquoted_argument('abcd')) \
             .add(spaces('    ')) \
             .add(line_ending('# comment', 1)) \
+            .add(unquoted_argument('some_target')) \
+            .add(spaces('    ')) \
             .add(unquoted_argument('PROPERTIES')) \
             .add(spaces('    ')) \
             .add(unquoted_argument('TARGET')) \
@@ -114,10 +116,35 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
         root = file().add(command_invocation('some_name(', args))
 
         expected_formatting = """some_name(abcd # comment
+  some_target
   PROPERTIES
     TARGET
       def
     TARGET
       def
 )"""
+        self.assertFormatting(expected_formatting, root)
+
+    def test_splitting_while_properties_keep_same_line(self):
+        self.settings['line_length'] = 10
+        self.settings['keywords'] = ['TARGET', 'FOO']
+
+        args = arguments().add(unquoted_argument('abcd')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('PROPERTIES')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('FOO')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('def')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('TARGET')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('def'))
+
+        root = file().add(command_invocation('some_name(', args))
+
+        expected_formatting = """some_name(abcd
+  PROPERTIES
+    FOO def
+    TARGET def)"""
         self.assertFormatting(expected_formatting, root)

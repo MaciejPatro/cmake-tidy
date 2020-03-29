@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from cmake_tidy.formatting.utils.keyword_state_updater import KeywordStateUpdater
 from cmake_tidy.formatting.utils.tokens import Tokens
 from cmake_tidy.utils.keyword_verifier import KeywordVerifier

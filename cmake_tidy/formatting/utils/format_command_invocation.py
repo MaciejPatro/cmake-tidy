@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from cmake_tidy.formatting.utils.command_invocatin_state_updater import CommandInvocationStateUpdater
 from cmake_tidy.formatting.utils.invocation_splitter import InvocationSplitter
 from cmake_tidy.formatting.utils.invocation_wrapper import InvocationWrapper

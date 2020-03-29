@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from unittest import mock, TestCase
 
 from cmake_tidy.formatting.settings_reader import InvalidSchemaError, SettingsReader, SchemaValidationError

@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from typing import List
 
 from cmake_tidy.formatting.utils.format_newline import FormatNewline

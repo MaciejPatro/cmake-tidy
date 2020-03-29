@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from cmake_tidy.formatting.utils.format_arguments import FormatArguments
 from cmake_tidy.formatting.utils.format_command_invocation import FormatCommandInvocation
 from cmake_tidy.formatting.utils.format_end_command_invocation import FormatEndCommandInvocation

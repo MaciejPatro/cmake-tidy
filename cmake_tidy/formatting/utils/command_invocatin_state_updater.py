@@ -1,3 +1,7 @@
+###############################################################################
+# Copyright Maciej Patro (maciej.patro@gmail.com)
+# MIT License
+###############################################################################
 import re
 
 from cmake_tidy.formatting.utils.tokens import Tokens

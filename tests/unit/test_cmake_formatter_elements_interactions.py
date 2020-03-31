@@ -22,12 +22,34 @@ class TestCMakeFormatterElementsInteractions(TestCMakeFormatter):
             .add(command_invocation('if(')) \
             .add(newlines(1)) \
             .add(command_invocation('abc(')) \
-            .add(spaces('   \t')) \
-            .add(line_ending('# a comment', 1)) \
+            .add(newlines(1)) \
             .add(command_invocation('endif('))
 
-        expectedFormatting = """if ()
-  abc() # a comment
+        expected_formatting = """if ()
+  abc()
 endif()"""
 
-        self.assertFormatting(expectedFormatting, invocation)
+        self.assertFormatting(expected_formatting, invocation)
+
+    def test_uppercase_if_statement_handled_correctly_like_lowercase(self):
+        self.settings['space_after_loop_condition'] = True
+        self.settings['force_command_lowercase'] = False
+
+        invocation = file() \
+            .add(command_invocation('IF(')) \
+            .add(newlines(1)) \
+            .add(command_invocation('abc(')) \
+            .add(newlines(1)) \
+            .add(command_invocation('ELSEIF (')) \
+            .add(newlines(1)) \
+            .add(command_invocation('def(')) \
+            .add(newlines(1)) \
+            .add(command_invocation('ENDIF('))
+
+        expected_formatting = """IF ()
+  abc()
+ELSEIF ()
+  def()
+ENDIF()"""
+
+        self.assertFormatting(expected_formatting, invocation)

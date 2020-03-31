@@ -50,7 +50,7 @@ class SettingsReader:
             return json.load(file)
 
     @staticmethod
-    def _read_settings():
+    def _read_settings() -> dict:
         settings_file = Path.cwd() / '.cmake-tidy.json'
         if settings_file.exists():
             with settings_file.open() as file:

@@ -27,10 +27,10 @@ class CommandInvocationStateUpdater:
             self.__state['indent'] -= 1
 
     def __is_start_of_special_command(self, original: str) -> bool:
-        return any([self.__matches(token, original) for token in Tokens.start_tokens()])
+        return any([self.__matches(token, original.lower()) for token in Tokens.start_tokens()])
 
     def __is_end_of_special_command(self, original: str) -> bool:
-        return any([self.__matches(token, original) for token in Tokens.end_tokens()])
+        return any([self.__matches(token, original.lower()) for token in Tokens.end_tokens()])
 
     @staticmethod
     def __matches(token: str, data: str) -> bool:

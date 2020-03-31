@@ -73,6 +73,7 @@ class FormatCommandInvocation:
 
     @staticmethod
     def __add_reindent_tokens_where_needed(data: str) -> str:
-        if any(data.startswith(token) for token in Tokens.reindent_commands_tokens()):
+        data_lower = data.lower()
+        if any(data_lower.startswith(token) for token in Tokens.reindent_commands_tokens()):
             return Tokens.reindent(1) + data
         return data

@@ -39,7 +39,7 @@ class FormatStartCommandInvocation:
 
     @staticmethod
     def __is_conditional(formatted: str) -> bool:
-        return any([token == formatted[:-1] for token in Tokens.conditional_tokens()])
+        return any([token == formatted[:-1].lower() for token in Tokens.conditional_tokens()])
 
     @staticmethod
     def __remove_whitespaces_after_name(original: str) -> str:

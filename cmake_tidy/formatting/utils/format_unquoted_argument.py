@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-from cmake_tidy.formatting.utils.keyword_state_updater import KeywordStateUpdater
+from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordStateUpdater
 from cmake_tidy.formatting.utils.tokens import Tokens
 from cmake_tidy.utils.keyword_verifier import KeywordVerifier
 

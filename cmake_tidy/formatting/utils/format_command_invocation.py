@@ -4,9 +4,9 @@
 ###############################################################################
 
 
-from cmake_tidy.formatting.utils.command_invocatin_state_updater import CommandInvocationStateUpdater
-from cmake_tidy.formatting.utils.invocation_splitter import InvocationSplitter
-from cmake_tidy.formatting.utils.invocation_wrapper import InvocationWrapper
+from cmake_tidy.formatting.utils.updaters.command_invocatin_state_updater import CommandInvocationStateUpdater
+from cmake_tidy.formatting.utils.invocation.invocation_splitter import InvocationSplitter
+from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
 from cmake_tidy.formatting.utils.tokens import Tokens
 

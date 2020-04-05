@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-from cmake_tidy.utils.keyword_verifier import KeywordVerifier
+from cmake_tidy.lexical_data import KeywordVerifier
 
 
 class KeywordStateUpdater:

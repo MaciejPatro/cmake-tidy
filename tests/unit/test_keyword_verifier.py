@@ -6,7 +6,7 @@
 
 import unittest
 
-from cmake_tidy.utils.keyword_verifier import KeywordVerifier
+from cmake_tidy.lexical_data import KeywordVerifier
 
 
 class TestKeywordVerifier(unittest.TestCase):

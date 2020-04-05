@@ -8,7 +8,7 @@ from typing import List
 
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordStateUpdater
-from cmake_tidy.utils.keyword_verifier import KeywordVerifier
+from cmake_tidy.lexical_data import KeywordVerifier
 
 
 class InvocationSplitter:

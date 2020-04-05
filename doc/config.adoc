@@ -42,11 +42,49 @@
 |`boolean`
 |`False`
 | Wrap command invocations into single line when they fit in `line_length`.
+from:
+
+[source,cmake]
+----
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        file1.cpp
+)
+----
+
+to:
+
+[source,cmake]
+----
+target_sources(${PROJECT_NAME} PRIVATE file1.cpp)
+----
 
 |`closing_parentheses_in_newline_when_split`
 |`boolean`
 |`False`
 | Force closing parentheses to new line when command invocation splitting is needed.
+from:
+
+[source,cmake]
+----
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Source/file1.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Source/file2.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Source/file3.cpp)
+----
+
+to:
+
+[source,cmake]
+----
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Source/file1.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Source/file2.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Source/file3.cpp
+)
+----
 
 |`unquoted_uppercase_as_keyword`
 |`boolean`
@@ -56,7 +94,16 @@
 |`space_after_loop_condition`
 |`boolean`
 |`False`
-| Introduces spaces after all conditional invocations only eg. `if (...)` but `set(...)`
+| Introduces spaces after all conditional invocations only eg.
+
+[source,cmake]
+----
+if (Linux STREQUAL ${CMAKE_SYSTEM_NAME})
+	target_sources(${PROJECT_NAME} PRIVATE file.cpp)
+elseif (Windows STREQUAL ${CMAKE_SYSTEM_NAME})
+	target_sources(${PROJECT_NAME} PRIVATE different.cpp)
+endif()
+----
 
 |`keep_property_and_value_in_one_line`
 |`boolean`

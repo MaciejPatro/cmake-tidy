@@ -1,6 +1,6 @@
 {
   "cmake_version": "3.17.0",
-  "full_names": [
+  "properties_full_names": [
     "ALLOW_DUPLICATE_CUSTOM_TARGETS",
     "AUTOGEN_SOURCE_GROUP",
     "AUTOGEN_TARGETS_FOLDER",
@@ -421,7 +421,7 @@
     "PRE_INSTALL_SCRIPT",
     "ALLOW_DUPLICATE_CUSTOM_TARGETS"
   ],
-  "starting_with": [
+  "properties_starting_with": [
     "VS_GLOBAL_SECTION_POST_",
     "VS_GLOBAL_SECTION_PRE_",
     "INTERPROCEDURAL_OPTIMIZATION_",
@@ -462,7 +462,7 @@
     "XCODE_ATTRIBUTE_",
     "COMPILE_DEFINITIONS_"
   ],
-  "ends_with": [
+  "properties_ending_with": [
     "_OUTPUT_NAME",
     "_POSTFIX",
     "_CLANG_TIDY",

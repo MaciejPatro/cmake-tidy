@@ -16,7 +16,7 @@ class KeywordVerifier:
     @staticmethod
     def __init_properties():
         if not KeywordVerifier.__PROPERTIES:
-            with (Path(__file__).parent / 'property_list.json').open() as file:
+            with (Path(__file__).parent / 'keyword_list.json').open() as file:
                 KeywordVerifier.__PROPERTIES = json.load(file)
 
     def __init__(self, settings: dict):
@@ -45,9 +45,9 @@ class KeywordVerifier:
         return self.__settings.get('keywords') and data in self.__settings.get('keywords')
 
     def is_property(self, data: str) -> bool:
-        return data in self.__PROPERTIES.get("full_names") or \
+        return data in self.__PROPERTIES.get("properties_full_names") or \
                self.__is_property_regex_starting(data)
 
     @staticmethod
     def __is_property_regex_starting(data):
-        return any([data.startswith(token) for token in KeywordVerifier.__PROPERTIES.get('starting_with')])
+        return any([data.startswith(token) for token in KeywordVerifier.__PROPERTIES.get('properties_starting_with')])

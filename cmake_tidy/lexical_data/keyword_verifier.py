@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 import json
 import re
 from pathlib import Path
@@ -38,15 +40,20 @@ class KeywordVerifier:
                self.__should_be_handled_as_keyword(data) or \
                self.is_first_class_keyword(data)
 
-    def __should_be_handled_as_keyword(self, data: str) -> bool:
-        return self.__settings.get('unquoted_uppercase_as_keyword') and re.match(r'^[A-Z]+$', data)
-
     def __is_one_of_defined_keywords(self, data: str) -> bool:
         return self.__settings.get('keywords') and data in self.__settings.get('keywords')
 
+    def __should_be_handled_as_keyword(self, data: str) -> bool:
+        return self.__settings.get('unquoted_uppercase_as_keyword') and re.match(r'^[A-Z]+$', data)
+
     def is_property(self, data: str) -> bool:
         return data in self.__PROPERTIES.get("properties_full_names") or \
-               self.__is_property_regex_starting(data)
+               self.__is_property_regex_starting(data) or \
+               self.__is_property_ending_with(data)
+
+    @staticmethod
+    def __is_property_ending_with(data):
+        return any([data.endswith(token) for token in KeywordVerifier.__PROPERTIES.get('properties_ending_with')])
 
     @staticmethod
     def __is_property_regex_starting(data):

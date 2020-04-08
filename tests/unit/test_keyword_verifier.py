@@ -63,3 +63,8 @@ class TestKeywordVerifier(unittest.TestCase):
         self.assertFalse(self.verify.is_property('IMPORTED_NO_SONAME123'))
         self.assertFalse(self.verify.is_property('123_IMPORTED_NO_SONAME_123'))
         self.assertFalse(self.verify.is_property('IMPORTED_NO_SONAM'))
+
+    def test_cmake_properties_ending_with(self):
+        self.assertTrue(self.verify.is_property('_OUTPUT_NAME'))
+        self.assertTrue(self.verify.is_property('VALUE_OUTPUT_NAME'))
+        self.assertFalse(self.verify.is_property('_OUTPUT_NAME_VALUE'))

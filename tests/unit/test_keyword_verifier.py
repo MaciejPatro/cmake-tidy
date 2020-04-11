@@ -64,3 +64,6 @@ class TestKeywordVerifier(unittest.TestCase):
         self.assertTrue(self.verify.is_property('_OUTPUT_NAME'))
         self.assertTrue(self.verify.is_property('VALUE_OUTPUT_NAME'))
         self.assertFalse(self.verify.is_property('_OUTPUT_NAME_VALUE'))
+
+    def test_cmake_properties_with_reindent_token(self):
+        self.assertTrue(self.verify.is_property(Tokens.reindent(1) + 'LINK_DIRECTORIES'))

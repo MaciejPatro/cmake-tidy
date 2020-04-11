@@ -14,7 +14,6 @@ class TestCMakeFormatter(unittest.TestCase):
     def setUp(self) -> None:
         self.settings = {'succeeding_newlines': 1,
                          'tab_size': 2,
-                         'keywords': ['TARGET'],
                          'force_command_lowercase': True,
                          'wrap_short_invocations_to_single_line': False,
                          'closing_parentheses_in_newline_when_split': False,

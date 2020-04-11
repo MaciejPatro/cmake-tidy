@@ -23,10 +23,6 @@ class TestKeywordVerifier(unittest.TestCase):
         self.assertFalse(self.verify.is_keyword('TARGET2'))
         self.assertFalse(self.verify.is_keyword('${TARGET}'))
 
-    def test_no_keywords_should_only_return_false(self):
-        self.verify = KeywordVerifier({})
-        self.assertFalse(self.verify.is_keyword('TARGET'))
-
     def test_unquoted_arguments_with_uppercase_letters_only_are_keywords(self):
         self.settings['unquoted_uppercase_as_keyword'] = True
         self.verify = KeywordVerifier(self.settings)

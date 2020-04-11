@@ -22,6 +22,9 @@ class FormatUnquotedArgument:
         return self.__format_data(data)
 
     def __format_data(self, data: str) -> str:
-        if self.__keyword_argument_already_found and self.__verifier.is_keyword(data):
+        if self.__keyword_argument_already_found and self.__is_reindent_needed(data):
             return Tokens.reindent(1) + data
         return data
+
+    def __is_reindent_needed(self, data):
+        return self.__verifier.is_keyword(data) or self.__verifier.is_property(data)

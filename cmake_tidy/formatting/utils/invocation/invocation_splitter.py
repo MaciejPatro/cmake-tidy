@@ -58,7 +58,7 @@ class InvocationSplitter:
         return self.__settings['keep_property_and_value_in_one_line'] and self.__state['has_first_class_keyword']
 
     def __is_property(self, argument: str) -> bool:
-        return not self.__verifier.is_first_class_keyword(argument) and self.__verifier.is_keyword(argument)
+        return not self.__verifier.is_first_class_keyword(argument) and self.__verifier.is_keyword_or_property(argument)
 
     @staticmethod
     def __fix_line_comments(arguments: list) -> list:

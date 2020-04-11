@@ -34,6 +34,9 @@ class KeywordVerifier:
     def get_cmake_properties_version() -> str:
         return KeywordVerifier.__PROPERTIES.get("cmake_version")
 
+    def is_keyword_or_property(self, data: str) -> bool:
+        return self.is_property(data) or self.is_keyword(data)
+
     def is_keyword(self, data: str) -> bool:
         data = data.replace(Tokens.reindent(1), '')
         return self.__is_one_of_defined_keywords(data) or \
@@ -48,6 +51,7 @@ class KeywordVerifier:
         return self.__settings.get('unquoted_uppercase_as_keyword') and re.match(r'^[A-Z]+$', data)
 
     def is_property(self, data: str) -> bool:
+        data = data.replace(Tokens.reindent(1), '')
         return data in KeywordVerifier.__PROPERTIES.get("properties_full_names") or \
                self.__is_property_regex_starting(data) or \
                self.__is_property_ending_with(data)

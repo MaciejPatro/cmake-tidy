@@ -101,6 +101,7 @@ class TestFileFormatting(TestIntegrationBase):
     def test_formatting_file_with_multiple_settings(self, load_settings, stdout):
         fake_settings = SettingsReader.get_default_format_settings()
         fake_settings['tabs_as_spaces'] = False
+        fake_settings['keywords'] = ['GROUP']
         load_settings.return_value = fake_settings
 
         self.format_file('target_setting.cmake')

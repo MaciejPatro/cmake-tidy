@@ -37,13 +37,13 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
         function_arguments = arguments() \
             .add(newlines(4)) \
             .add(spaces('    ')) \
-            .add(unquoted_argument('NAME')) \
+            .add(unquoted_argument('NAMING')) \
             .add(newlines(4)) \
             .add(spaces('    ')) \
             .add(quoted_argument('XYZ')) \
             .add(spaces(' '))
 
-        expected_formatting = f'abc(\n  NAME\n  \"XYZ\")'
+        expected_formatting = f'abc(\n  NAMING\n  \"XYZ\")'
         self.assertFormattingArguments(expected_formatting, function_arguments)
 
     def test_indentation_should_not_apply_to_content_of_bracket_argument_endif_should_be_indented(self):
@@ -71,7 +71,6 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
         self.assertFormattingArguments(expected_formatting, function_arguments)
 
     def test_ident_set_target_properties_example(self):
-        self.settings['keywords'] = ['INTERFACE_LINK_DEPENDS', 'JOB_POOL_COMPILE']
         function_arguments = arguments() \
             .add(unquoted_argument('target_name')) \
             .add(newlines(4)) \
@@ -98,7 +97,6 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
     def test_splitting_long_line_with_multiple_arguments_and_properties(self):
         self.settings['line_length'] = 30
         self.settings['closing_parentheses_in_newline_when_split'] = True
-        self.settings['keywords'] = ['TARGET']
 
         args = arguments().add(unquoted_argument('abcd')) \
             .add(spaces('    ')) \

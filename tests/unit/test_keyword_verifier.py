@@ -14,29 +14,34 @@ from cmake_tidy.lexical_data import KeywordVerifier
 
 class TestKeywordVerifier(unittest.TestCase):
     def setUp(self) -> None:
-        self.settings = {'keywords': ['TARGET', 'some'], 'unquoted_uppercase_as_keyword': False}
+        self.settings = {'keywords': ['some'], 'unquoted_uppercase_as_keyword': False}
         self.verify = KeywordVerifier(self.settings)
 
+    @mock.patch('builtins.open')
+    def test_ensure_properties_are_read_only_once(self, mock_open: MagicMock):
+        self.verify = KeywordVerifier(self.settings)
+        self.assertFalse(mock_open.called)
+
     def test_should_accept_keyword_when_on_the_list(self):
-        self.assertTrue(self.verify.is_keyword('TARGET'))
         self.assertTrue(self.verify.is_keyword('some'))
-        self.assertFalse(self.verify.is_keyword('TARGET2'))
-        self.assertFalse(self.verify.is_keyword('${TARGET}'))
+        self.assertTrue(self.verify.is_keyword(Tokens.reindent(1) + 'some'))
+        self.assertFalse(self.verify.is_keyword('some2'))
+        self.assertFalse(self.verify.is_keyword('${some}'))
 
     def test_unquoted_arguments_with_uppercase_letters_only_are_keywords(self):
         self.settings['unquoted_uppercase_as_keyword'] = True
         self.verify = KeywordVerifier(self.settings)
 
-        self.assertTrue(self.verify.is_keyword('TARGET'))
         self.assertTrue(self.verify.is_keyword('OTHER'))
         self.assertTrue(self.verify.is_keyword(Tokens.reindent(1) + 'OTHER'))
-        self.assertFalse(self.verify.is_keyword('WITH_SEPARATION'))
-        self.assertFalse(self.verify.is_keyword('"$OTHER"'))
+        self.assertTrue(self.verify.is_keyword('WITH_SEPARATION'))
 
-    @mock.patch('builtins.open')
-    def test_ensure_properties_read_only_once(self, mock_open: MagicMock):
-        self.verify = KeywordVerifier(self.settings)
-        self.assertFalse(mock_open.called)
+        self.assertFalse(self.verify.is_keyword('"$OTHER"'))
+        self.assertFalse(self.verify.is_keyword('SOMeARG'))
+        self.assertFalse(self.verify.is_keyword('a_ARGUMENT'))
+        self.assertFalse(self.verify.is_keyword('NOT_'))
+        self.assertFalse(self.verify.is_keyword('_SOME'))
+
 
     def test_whether_token_is_first_class_keyword(self):
         self.assertTrue(self.verify.is_first_class_keyword('PROPERTY'))

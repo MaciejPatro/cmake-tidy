@@ -48,7 +48,8 @@ class KeywordVerifier:
         return self.__settings.get('keywords') and data in self.__settings.get('keywords')
 
     def __should_be_handled_as_keyword(self, data: str) -> bool:
-        return self.__settings.get('unquoted_uppercase_as_keyword') and re.match(r'^[A-Z]+$', data)
+        upper_case_regex = r'^([A-Z]+_?)+[A-Z]$'
+        return self.__settings.get('unquoted_uppercase_as_keyword') and re.match(upper_case_regex, data)
 
     def is_property(self, data: str) -> bool:
         data = data.replace(Tokens.reindent(1), '')

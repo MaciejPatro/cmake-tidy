@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-from unittest import mock
+from unittest import mock, skip
 
 from approvaltests.approvals import verify
 from io import StringIO
@@ -105,6 +105,21 @@ class TestFileFormatting(TestIntegrationBase):
         load_settings.return_value = fake_settings
 
         self.format_file('target_setting.cmake')
+
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)
+
+    @skip("Currently this is not handled correctly - appropriate Issues were created")
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
+    def test_formatting_of_install_commands(self, load_settings, stdout):
+        fake_settings = SettingsReader.get_default_format_settings()
+        fake_settings['tabs_as_spaces'] = False
+        fake_settings['closing_parentheses_in_newline_when_split'] = True
+        fake_settings['wrap_short_invocations_to_single_line'] = True
+        load_settings.return_value = fake_settings
+
+        self.format_file('install.cmake')
 
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)

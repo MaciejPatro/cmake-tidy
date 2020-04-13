@@ -19,7 +19,7 @@ class InvocationSplitter:
         self.__settings = settings
 
     def split(self, invocation: dict) -> list:
-        arguments = self.__split_args_to_newlines(invocation) + self.__add_closing_bracket_separator()
+        arguments = self.__split_args_to_newlines(invocation) + self.__add_closing_bracket_separator(invocation)
         arguments = self.__fix_line_comments(arguments)
         arguments = self.__realign_properties(arguments)
         return arguments
@@ -31,10 +31,15 @@ class InvocationSplitter:
         self.__state_updater.update_state(arg)
         return self.__get_converted_whitespace() if arg == ' ' else arg
 
-    def __add_closing_bracket_separator(self) -> list:
-        if self.__settings['closing_parentheses_in_newline_when_split']:
+    def __add_closing_bracket_separator(self, invocation: dict) -> list:
+        if self.__settings['closing_parentheses_in_newline_when_split'] and \
+                not self.__is_last_element_newline(invocation):
             return [FormatNewline(self.__state, self.__settings)(1)]
         return []
+
+    @staticmethod
+    def __is_last_element_newline(invocation: dict) -> bool:
+        return invocation['arguments'][-1].startswith('\n')
 
     def __get_converted_whitespace(self) -> str:
         return FormatNewline(self.__state, self.__settings)(1)
@@ -64,5 +69,5 @@ class InvocationSplitter:
     def __fix_line_comments(arguments: list) -> list:
         for i in range(len(arguments)):
             if arguments[i].startswith('#'):
-                arguments[i-1] = ' '
+                arguments[i - 1] = ' '
         return arguments

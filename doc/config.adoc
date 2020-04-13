@@ -89,7 +89,24 @@ target_sources(${PROJECT_NAME}
 |`unquoted_uppercase_as_keyword`
 |`boolean`
 |`False`
-| Consider all unquoted uppercase arguments as keywords. eg `PROPERTIES`,  `SOMETEXT`.
+| Consider all unquoted uppercase arguments as keywords. eg.
+`keywords`:
+[source,cmake]
+----
+SOME
+TEXT_IS_KEYWORD
+----
+
+treated as normal arguments:
+[source,cmake]
+----
+_SOME
+TEXT__IS_KEYWORD
+NOT_
+a_ARGUMENT
+SOMeARG
+----
+
 
 |`space_after_loop_condition`
 |`boolean`

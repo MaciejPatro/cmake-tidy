@@ -105,7 +105,7 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
         self.assertFormatting(expected_formatting, root)
 
     def test_invocation_when_keyword_and_single_values_keep_in_single_line(self):
-        self.settings['when_keyword_is_followed_by_single_value_keep_in_line'] = True
+        self.settings['keyword_and_single_value_in_one_line'] = True
         args = arguments().add(newlines(1)) \
             .add(unquoted_argument('FILES')) \
             .add(spaces('    ')) \

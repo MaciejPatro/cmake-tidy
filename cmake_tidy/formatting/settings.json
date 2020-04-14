@@ -47,6 +47,10 @@
       "type": "boolean",
       "description": "Keep properties and its value within single line - doesn't split over multiple line"
     },
+    "keyword_and_single_value_in_one_line": {
+      "type": "boolean",
+      "description": "Keep in single line property/keyword with single value"
+    },
     "keywords": {
       "type": "array",
       "description": "Array of unquoted arguments to be treated as keywords"
@@ -66,6 +70,7 @@
       "unquoted_uppercase_as_keyword",
       "space_after_loop_condition",
       "keep_property_and_value_in_one_line",
+      "keyword_and_single_value_in_one_line",
       "keywords"
     ]
   }

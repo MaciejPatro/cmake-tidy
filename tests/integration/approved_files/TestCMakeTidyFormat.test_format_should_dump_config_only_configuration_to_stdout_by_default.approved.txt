@@ -10,5 +10,6 @@
   "unquoted_uppercase_as_keyword": false,
   "space_after_loop_condition": false,
   "keep_property_and_value_in_one_line": true,
+  "keyword_and_single_value_in_one_line": false,
   "keywords": []
 }

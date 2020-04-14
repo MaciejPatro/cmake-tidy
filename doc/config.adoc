@@ -137,6 +137,31 @@ set_property(
 )
 ----
 
+|`keyword_and_single_value_in_one_line`
+|`boolean`
+|`False`
+| Enforces keyword and its value to be in single line. Disabled:
+
+[source,cmake]
+----
+install(
+	FILES
+		file.cpp
+		file.hpp
+	DESTINATION
+		"include/folder"
+)
+----
+Enabled:
+[source,cmake]
+----
+install(
+	FILES
+		file.cpp
+		file.hpp
+	DESTINATION "include/folder"
+)
+----
 
 |`keywords`
 |`array`

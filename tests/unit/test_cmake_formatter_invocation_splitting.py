@@ -5,7 +5,7 @@
 
 
 from tests.unit.parser_composite_elements import arguments, spaces, unquoted_argument, file, command_invocation, \
-    line_ending, newlines
+    line_ending, newlines, quoted_argument
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
@@ -102,4 +102,26 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
   TARGET
     def)"""
 
+        self.assertFormatting(expected_formatting, root)
+
+    def test_invocation_when_keyword_and_values_fit_line_dont_break(self):
+        self.settings['when_keyword_and_values_fit_single_line_dont_break'] = True
+        args = arguments().add(newlines(1)) \
+            .add(unquoted_argument('FILES')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('file.cpp')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('file.hpp')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('DESTINATION')) \
+            .add(spaces('    ')) \
+            .add(quoted_argument('include/folder')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('install(', args))
+
+        expected_formatting = """install(
+  FILES file.cpp file.hpp
+  DESTINATION "include/folder"
+)"""
         self.assertFormatting(expected_formatting, root)

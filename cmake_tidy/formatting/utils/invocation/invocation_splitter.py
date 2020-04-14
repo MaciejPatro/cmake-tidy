@@ -19,10 +19,14 @@ class InvocationSplitter:
         self.__settings = settings
 
     def split(self, invocation: dict) -> list:
-        arguments = self.__split_args_to_newlines(invocation) + self.__add_closing_bracket_separator(invocation)
+        arguments = self.__split_args_to_newlines(invocation)
         arguments = self.__fix_line_comments(arguments)
-        arguments = self.__realign_properties(arguments)
-        return arguments
+        arguments = self.__realign(arguments)
+        return arguments + self.__add_closing_bracket_separator(invocation)
+
+    def __realign(self, arguments: List[str]) -> list:
+        arguments = self.__realign_properties_if_needed(arguments)
+        return self.__realign_keyword_values(arguments)
 
     def __split_args_to_newlines(self, invocation: dict) -> list:
         return [self.__handle_argument(arg) for arg in invocation['arguments']]
@@ -51,15 +55,19 @@ class InvocationSplitter:
         self.__state['has_first_class_keyword'] = False
         self.__state['keyword_argument'] = False
 
+    def __realign_properties_if_needed(self, arguments: List[str]) -> list:
+        return self.__realign_properties(arguments) if self.__should_realign_properties() else arguments
+
     def __realign_properties(self, arguments: List[str]) -> list:
-        if not self.__should_realign():
-            return arguments
         for i in range(len(arguments) - 1):
             if self.__is_property(arguments[i]) and arguments[i + 1].startswith('\n'):
                 arguments[i + 1] = ' '
         return arguments
 
-    def __should_realign(self) -> bool:
+    def __realign_keyword_values(self, arguments: List[str]) -> list:
+        return arguments
+
+    def __should_realign_properties(self) -> bool:
         return self.__settings['keep_property_and_value_in_one_line'] and self.__state['has_first_class_keyword']
 
     def __is_property(self, argument: str) -> bool:

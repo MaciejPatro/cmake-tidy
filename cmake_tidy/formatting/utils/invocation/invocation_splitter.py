@@ -26,7 +26,7 @@ class InvocationSplitter:
 
     def __realign(self, arguments: List[str]) -> list:
         arguments = self.__realign_properties_if_needed(arguments)
-        return self.__realign_keyword_values(arguments)
+        return self.__realign_keyword_values_if_needed(arguments)
 
     def __split_args_to_newlines(self, invocation: dict) -> list:
         return [self.__handle_argument(arg) for arg in invocation['arguments']]
@@ -64,14 +64,22 @@ class InvocationSplitter:
                 arguments[i + 1] = ' '
         return arguments
 
-    def __realign_keyword_values(self, arguments: List[str]) -> list:
-        return arguments
-
     def __should_realign_properties(self) -> bool:
         return self.__settings['keep_property_and_value_in_one_line'] and self.__state['has_first_class_keyword']
 
     def __is_property(self, argument: str) -> bool:
         return not self.__verifier.is_first_class_keyword(argument) and self.__verifier.is_keyword_or_property(argument)
+
+    def __realign_keyword_values_if_needed(self, arguments: List[str]) -> list:
+        return self.__realign_keyword_values(arguments) if self.__should_realign_keyword_values(
+            arguments) else arguments
+
+    def __should_realign_keyword_values(self, arguments):
+        return self.__settings['keyword_and_single_value_in_one_line'] and len(arguments) > 3
+
+    def __realign_keyword_values(self, arguments):
+        # TODO: put implementation here
+        return arguments
 
     @staticmethod
     def __fix_line_comments(arguments: list) -> list:

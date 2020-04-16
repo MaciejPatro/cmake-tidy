@@ -115,6 +115,7 @@ class TestFileFormatting(TestIntegrationBase):
         self.fake_settings['tabs_as_spaces'] = False
         self.fake_settings['closing_parentheses_in_newline_when_split'] = True
         self.fake_settings['wrap_short_invocations_to_single_line'] = True
+        self.fake_settings['keyword_and_single_value_in_one_line'] = True
         load_settings.return_value = self.fake_settings
 
         self.format_file('install.cmake')

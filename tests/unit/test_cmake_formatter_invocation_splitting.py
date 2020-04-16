@@ -170,3 +170,15 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
   NAMESPACE unofficial::graphicsmagick::
 )"""
         self.assertFormatting(expected_formatting, root)
+
+    def test_invocation_when_keyword_is_first_argument_move_to_newline(self):
+        self.settings['keyword_and_single_value_in_one_line'] = True
+        self.settings['line_length'] = 5
+        args = arguments() \
+            .add(unquoted_argument('FILES')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('file.cpp')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('install(', args))
+        self.assertFormatting('install(\n  FILES file.cpp\n)', root)

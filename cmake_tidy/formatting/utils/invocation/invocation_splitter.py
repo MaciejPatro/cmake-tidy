@@ -31,7 +31,10 @@ class InvocationSplitter:
         return self.__realign_keyword_values_if_needed(args)
 
     def __split_args_to_newlines(self, invocation: dict) -> list:
-        return list(filter(len, [self.__handle_argument(arg) for arg in invocation['arguments']]))
+        args = list(filter(len, invocation['arguments']))
+        if self.__verifier.is_keyword_or_property(args[0]):
+            args = [FormatNewline(self.__state, self.__settings)(1)] + args
+        return [self.__handle_argument(arg) for arg in args]
 
     def __handle_argument(self, arg: str) -> str:
         self.__state_updater.update_state(arg)

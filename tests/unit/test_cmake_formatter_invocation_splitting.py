@@ -121,8 +121,8 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
         root = file().add(command_invocation('install(', args))
 
         expected_formatting = """install(
-  FILES 
-    file.cpp 
+  FILES
+    file.cpp
     file.hpp
   DESTINATION "include/folder"
 )"""

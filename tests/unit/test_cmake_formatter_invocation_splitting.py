@@ -116,6 +116,10 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
             .add(unquoted_argument('DESTINATION')) \
             .add(spaces('    ')) \
             .add(quoted_argument('include/folder')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('NAMESPACE')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('unofficial::graphicsmagick::')) \
             .add(newlines(1))
 
         root = file().add(command_invocation('install(', args))
@@ -125,5 +129,6 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
     file.cpp
     file.hpp
   DESTINATION "include/folder"
+  NAMESPACE unofficial::graphicsmagick::
 )"""
         self.assertFormatting(expected_formatting, root)

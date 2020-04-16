@@ -12,7 +12,7 @@ from cmake_tidy.lexical_data import KeywordVerifier
 
 
 class InvocationSplitter:
-    __DIFF_BETWEEN_KEYWORD_AND_VALUE = 3
+    __DIFF_BETWEEN_KEYWORD_AND_VALUE = 2
 
     def __init__(self, state: dict, settings: dict):
         self.__prepare_state(state)
@@ -31,7 +31,7 @@ class InvocationSplitter:
         return self.__realign_keyword_values_if_needed(args)
 
     def __split_args_to_newlines(self, invocation: dict) -> list:
-        return [self.__handle_argument(arg) for arg in invocation['arguments']]
+        return list(filter(len, [self.__handle_argument(arg) for arg in invocation['arguments']]))
 
     def __handle_argument(self, arg: str) -> str:
         self.__state_updater.update_state(arg)

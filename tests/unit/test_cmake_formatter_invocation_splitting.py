@@ -132,3 +132,41 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
   NAMESPACE unofficial::graphicsmagick::
 )"""
         self.assertFormatting(expected_formatting, root)
+
+    def test_invocation_when_keyword_and_single_values_keep_in_single_line_comments_case_at_the_end(self):
+        self.settings['keyword_and_single_value_in_one_line'] = True
+        args = arguments().add(newlines(1)) \
+            .add(unquoted_argument('FILES')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('file.cpp')) \
+            .add(spaces('    ')) \
+            .add(line_ending('# comment', 1))
+
+        root = file().add(command_invocation('install(', args))
+
+        expected_formatting = """install(
+  FILES file.cpp # comment
+)"""
+        self.assertFormatting(expected_formatting, root)
+
+    def test_invocation_when_keyword_and_single_values_keep_in_single_line_comments_case_in_the_middle(self):
+        self.settings['keyword_and_single_value_in_one_line'] = True
+        args = arguments().add(newlines(1)) \
+            .add(unquoted_argument('DESTINATION')) \
+            .add(spaces('    ')) \
+            .add(quoted_argument('include/folder')) \
+            .add(spaces('    ')) \
+            .add(line_ending('# comment', 1)) \
+            .add(unquoted_argument('NAMESPACE')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('unofficial::graphicsmagick::')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('install(', args))
+
+        expected_formatting = """install(
+  DESTINATION
+    "include/folder" # comment
+  NAMESPACE unofficial::graphicsmagick::
+)"""
+        self.assertFormatting(expected_formatting, root)

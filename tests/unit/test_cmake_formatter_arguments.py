@@ -146,7 +146,8 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
 
         root = file().add(command_invocation('set_property(', args))
 
-        expected_formatting = """set_property(TARGET abcd
+        expected_formatting = """set_property(
+  TARGET abcd
   PROPERTIES
     FOO def
     BAR def2)"""

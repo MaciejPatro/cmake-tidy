@@ -472,6 +472,11 @@
     "_INCLUDE_WHAT_YOU_USE",
     "_VISIBILITY_PRESET"
   ],
+  "double-keywords": [
+    "ARCHIVE DESTINATION",
+    "RUNTIME DESTINATION",
+    "LIBRARY DESTINATION"
+  ],
   "keywords": [
     "RESULT",
     "QUERY",

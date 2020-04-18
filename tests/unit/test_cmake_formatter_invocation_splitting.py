@@ -182,3 +182,21 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
 
         root = file().add(command_invocation('install(', args))
         self.assertFormatting('install(\n  FILES file.cpp\n)', root)
+
+    def test_invocation_when_double_keyword_occurs_should_keep_it_in_one_line(self):
+        self.settings['keyword_and_single_value_in_one_line'] = True
+        self.settings['line_length'] = 5
+        args = arguments().add(newlines(1)) \
+            .add(unquoted_argument('ARCHIVE')) \
+            .add(newlines(1)) \
+            .add(unquoted_argument('DESTINATION')) \
+            .add(spaces('    ')) \
+            .add(quoted_argument('include/folder')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('install(', args))
+
+        expected_formatting = """install(
+  ARCHIVE DESTINATION "include/folder"
+)"""
+        self.assertFormatting(expected_formatting, root)

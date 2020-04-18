@@ -72,3 +72,10 @@ class TestKeywordVerifier(unittest.TestCase):
 
     def test_cmake_properties_with_reindent_token(self):
         self.assertTrue(self.verify.is_property(Tokens.reindent(1) + 'LINK_DIRECTORIES'))
+
+    def test_double_keywords(self):
+        self.assertTrue(self.verify.is_double_keyword(Tokens.reindent(1) + 'RUNTIME', 'DESTINATION'))
+        self.assertTrue(self.verify.is_double_keyword('ARCHIVE', Tokens.reindent(1) + 'DESTINATION'))
+        self.assertTrue(self.verify.is_double_keyword('LIBRARY', 'DESTINATION'))
+        self.assertFalse(self.verify.is_double_keyword('OUTPUT', 'DESTINATION'))
+        self.assertFalse(self.verify.is_double_keyword('LIBRARY', 'OUTPUT'))

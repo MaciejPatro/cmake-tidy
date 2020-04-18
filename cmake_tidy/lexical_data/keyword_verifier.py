@@ -32,7 +32,7 @@ class KeywordVerifier:
 
     @staticmethod
     def get_cmake_properties_version() -> str:
-        return KeywordVerifier.__PROPERTIES.get("cmake_version")
+        return KeywordVerifier.__PROPERTIES["cmake_version"]
 
     def is_keyword_or_property(self, data: str) -> bool:
         return self.is_property(data) or self.is_keyword(data)
@@ -44,8 +44,15 @@ class KeywordVerifier:
                self.is_first_class_keyword(data) or \
                self.__is_keyword_in_cmake(data)
 
+    @staticmethod
+    def is_double_keyword(first: str, second: str) -> bool:
+        first = first.replace(Tokens.reindent(1), '')
+        second = second.replace(Tokens.reindent(1), '')
+        return any(keyword.startswith(first) and keyword.endswith(second) \
+                   for keyword in KeywordVerifier.__PROPERTIES['double-keywords'])
+
     def __is_one_of_defined_keywords(self, data: str) -> bool:
-        return self.__settings.get('keywords') and data in self.__settings.get('keywords')
+        return self.__settings.get('keywords') and data in self.__settings['keywords']
 
     def __should_be_handled_as_keyword(self, data: str) -> bool:
         upper_case_regex = r'^([A-Z]+_?)+[A-Z]$'
@@ -53,18 +60,18 @@ class KeywordVerifier:
 
     def is_property(self, data: str) -> bool:
         data = data.replace(Tokens.reindent(1), '')
-        return data in KeywordVerifier.__PROPERTIES.get("properties_full_names") or \
+        return data in KeywordVerifier.__PROPERTIES["properties_full_names"] or \
                self.__is_property_regex_starting(data) or \
                self.__is_property_ending_with(data)
 
     @staticmethod
-    def __is_keyword_in_cmake(data):
-        return any([data in KeywordVerifier.__PROPERTIES.get("keywords")])
+    def __is_keyword_in_cmake(data: str) -> bool:
+        return any([data in KeywordVerifier.__PROPERTIES["keywords"]])
 
     @staticmethod
-    def __is_property_ending_with(data):
-        return any([data.endswith(token) for token in KeywordVerifier.__PROPERTIES.get('properties_ending_with')])
+    def __is_property_ending_with(data: str) -> bool:
+        return any([data.endswith(token) for token in KeywordVerifier.__PROPERTIES['properties_ending_with']])
 
     @staticmethod
-    def __is_property_regex_starting(data):
-        return any([data.startswith(token) for token in KeywordVerifier.__PROPERTIES.get('properties_starting_with')])
+    def __is_property_regex_starting(data: str) -> bool:
+        return any([data.startswith(token) for token in KeywordVerifier.__PROPERTIES['properties_starting_with']])

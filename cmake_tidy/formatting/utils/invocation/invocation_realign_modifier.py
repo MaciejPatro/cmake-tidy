@@ -19,10 +19,14 @@ class InvocationRealignModifier:
 
     def realign(self, args: List[str]) -> list:
         args = self.__realign_properties_if_needed(args)
+        args = self.__realign_double_keywords(args)
         return self.__realign_keyword_values_if_needed(args)
 
     def __realign_properties_if_needed(self, args: List[str]) -> list:
         return self.__realign_properties(args) if self.__should_realign_properties() else args
+
+    def __should_realign_properties(self) -> bool:
+        return self.__settings['keep_property_and_value_in_one_line'] and self.__state['has_first_class_keyword']
 
     def __realign_properties(self, args: List[str]) -> list:
         for i in range(len(args) - 1):
@@ -30,11 +34,14 @@ class InvocationRealignModifier:
                 args[i + 1] = ' '
         return args
 
-    def __should_realign_properties(self) -> bool:
-        return self.__settings['keep_property_and_value_in_one_line'] and self.__state['has_first_class_keyword']
-
     def __is_property(self, argument: str) -> bool:
         return not self.__verifier.is_first_class_keyword(argument) and self.__verifier.is_keyword_or_property(argument)
+
+    def __realign_double_keywords(self, args: List[str]) -> list:
+        for i in range(len(args) - self.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
+            if self.__verifier.is_double_keyword(args[i], args[i + self.__DIFF_BETWEEN_KEYWORD_AND_VALUE]):
+                args[i + 1] = ' '
+        return args
 
     def __realign_keyword_values_if_needed(self, args: List[str]) -> list:
         return self.__realign_keyword_values(args) if self.__should_realign_keyword_values(args) else args
@@ -55,7 +62,7 @@ class InvocationRealignModifier:
                not self.__verifier.is_keyword_or_property(args[current_index + 2]) and \
                self.__is_single_value(args, current_index)
 
-    def __is_single_value(self, args, current_index):
+    def __is_single_value(self, args: List[str], current_index: int) -> bool:
         tokens_diff = 4  # keyword, space, value, space, keyword
         return current_index + tokens_diff >= len(args) or \
                self.__verifier.is_keyword_or_property(args[current_index + tokens_diff])

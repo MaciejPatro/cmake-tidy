@@ -35,11 +35,16 @@ class FormatCommandInvocation:
         return self.__add_reindent_tokens_where_needed(formatted)
 
     def __prepare_arguments(self, invocation: dict) -> list:
+        invocation['arguments'] = self.__remove_empty_arguments(invocation)
         if self.__is_wrappable(invocation):
             invocation['arguments'] = self.__wrap_arguments_if_possible(invocation)
         if not self.__is_fitting_in_line(invocation):
             invocation['arguments'] = self.__split_command_to_newlines(invocation)
         return invocation['arguments']
+
+    @staticmethod
+    def __remove_empty_arguments(invocation: dict) -> list:
+        return list(filter(len, invocation['arguments']))
 
     def __wrap_arguments_if_possible(self, invocation: dict) -> list:
         command_invocation = InvocationWrapper().wrap(invocation)

@@ -1,0 +1,59 @@
+
+install(
+	TARGETS
+		gtest
+		gtest_main
+	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+	ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+)
+
+install(
+	TARGETS mylibapp
+	RUNTIME DESTINATION bin
+	COMPONENT applications
+)
+install(
+	FILES "${PYLON_BINARY_DIRS}/PylonUsb_MD_VC120_V5_0_TL.dll"
+	DESTINATION ${CMAKE_INSTALL_BINARY}
+	CONFIGURATIONS
+		Release
+		RelWithDebInfo
+)
+
+install(
+	EXPORT graphicsmagick-targets
+	FILE unofficial-graphicsmagick-targets.cmake
+	NAMESPACE unofficial::graphicsmagick::
+	DESTINATION share/unofficial-graphicsmagick
+)
+
+install(
+	FILES $<TARGET_FILE:testLib1>.genex
+	DESTINATION $<1:lib>$<0:/wrong>
+)
+
+install(
+	TARGETS tinyfiledialogs
+	EXPORT tinyfiledialogsConfig
+	ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+)
+install(
+	FILES tinyfiledialogs.h
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/include/tinyfiledialogs"
+)
+
+export(
+	TARGETS tinyfiledialogs
+	NAMESPACE tinyfiledialogs::
+	FILE "${CMAKE_CURRENT_BINARY_DIR}/tinyfiledialogsConfig.cmake"
+)
+
+install(
+	EXPORT tinyfiledialogsConfig
+	NAMESPACE tinyfiledialogs::
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/tinyfiledialogs"
+)
+

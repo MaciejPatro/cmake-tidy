@@ -108,7 +108,6 @@ class TestFileFormatting(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
-    @skip("Currently this is not handled correctly - appropriate Issues were created")
     @mock.patch('sys.stdout', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_formatting_of_install_commands(self, load_settings, stdout):

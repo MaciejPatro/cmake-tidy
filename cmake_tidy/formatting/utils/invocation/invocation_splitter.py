@@ -20,13 +20,12 @@ class InvocationSplitter:
         self.__settings = settings
 
     def split(self, invocation: dict) -> list:
-        args = self.__split_args_to_newlines(invocation)
+        args = self.__split_args_to_newlines(invocation['arguments'])
         args = self.__fix_line_comments(args)
         args = InvocationRealignModifier(self.__state, self.__settings).realign(args)
         return args + self.__add_closing_bracket_separator(invocation)
 
-    def __split_args_to_newlines(self, invocation: dict) -> list:
-        args = list(filter(len, invocation['arguments']))
+    def __split_args_to_newlines(self, args: list) -> list:
         if self.__verifier.is_keyword_or_property(args[0]):
             args = [FormatNewline(self.__state, self.__settings)(1)] + args
         return [self.__handle_argument(arg) for arg in args]

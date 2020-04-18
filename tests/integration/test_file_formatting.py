@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-from unittest import mock, skip
+from unittest import mock
 
 from approvaltests.approvals import verify
 from io import StringIO

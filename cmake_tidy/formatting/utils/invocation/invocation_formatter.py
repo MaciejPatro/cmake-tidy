@@ -2,15 +2,23 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
+from abc import ABC, abstractmethod
+
 from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
 from cmake_tidy.formatting.utils.tokens import Tokens
 
 
-class InvocationFormatter:
+class InvocationFormatter(ABC):
     def __init__(self, state: dict, settings: dict):
         self._settings = settings
         self._state = state
+
+    @abstractmethod
+    def format(self, invocation: dict) -> str:
+        pass
 
     @staticmethod
     def _remove_empty_arguments(invocation: dict) -> list:

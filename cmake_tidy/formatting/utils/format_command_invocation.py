@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-from cmake_tidy.formatting.utils.invocation.command_formatter import CommandFormatter
+from cmake_tidy.formatting.utils.invocation import format_command_invocation
 from cmake_tidy.formatting.utils.updaters.command_invocatin_state_updater import CommandInvocationStateUpdater
 
 
@@ -16,7 +16,7 @@ class FormatCommandInvocation:
 
     def __call__(self, data: list) -> str:
         command_invocation = self.__prepare_data(data)
-        formatted = self.__format_invocation(command_invocation)
+        formatted = format_command_invocation(self.__state, self.__settings, command_invocation)
         self.__state_handler.update_state(command_invocation['function_name'])
         return formatted
 
@@ -25,6 +25,3 @@ class FormatCommandInvocation:
         return {'function_name': data[0],
                 'arguments': data[1] if len(data) == 3 else [],
                 'closing': data[2] if len(data) == 3 else data[1]}
-
-    def __format_invocation(self, invocation: dict) -> str:
-        return CommandFormatter(self.__state, self.__settings).format_invocation(invocation)

@@ -2,6 +2,8 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
+
+
 from cmake_tidy.formatting.utils.invocation.invocation_formatter import InvocationFormatter
 from cmake_tidy.formatting.utils.invocation.invocation_splitter import InvocationSplitter
 from cmake_tidy.formatting.utils.tokens import Tokens
@@ -11,7 +13,7 @@ class CommandFormatter(InvocationFormatter):
     def __init__(self, state: dict, settings: dict):
         super().__init__(state, settings)
 
-    def format_invocation(self, invocation: dict) -> str:
+    def format(self, invocation: dict) -> str:
         invocation['arguments'] = self.__prepare_arguments(invocation)
         formatted = self._join_command_invocation(invocation)
         return self.__add_reindent_tokens_where_needed(formatted)

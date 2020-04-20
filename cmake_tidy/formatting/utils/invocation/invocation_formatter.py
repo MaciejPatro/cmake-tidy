@@ -46,7 +46,13 @@ class InvocationFormatter(ABC):
         invoke = invoke.replace('\t', ' ' * self._settings['tab_size'])
         return len(invoke) - len(Tokens.reindent(1))
 
-    @staticmethod
-    def _join_command_invocation(invocation: dict) -> str:
+    def _join_command_invocation(self, invocation: dict) -> str:
         formatted = invocation['function_name'] + ''.join(invocation['arguments']) + invocation['closing']
-        return formatted
+        return self.__add_reindent_tokens_where_needed(formatted)
+
+    @staticmethod
+    def __add_reindent_tokens_where_needed(data: str) -> str:
+        data_lower = data.lower()
+        if any(data_lower.startswith(token) for token in Tokens.reindent_commands_tokens()):
+            return Tokens.reindent(1) + data
+        return data

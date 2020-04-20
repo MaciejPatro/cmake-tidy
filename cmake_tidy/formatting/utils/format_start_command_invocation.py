@@ -6,7 +6,7 @@
 
 import re
 
-from cmake_tidy.formatting.utils.tokens import Tokens
+from cmake_tidy.lexical_data import KeywordVerifier
 
 
 class FormatStartCommandInvocation:
@@ -35,11 +35,11 @@ class FormatStartCommandInvocation:
 
     def __is_spacing_needed(self, formatted: str) -> bool:
         return self.__settings.get('space_between_command_and_begin_parentheses') or \
-               (self.__settings.get('space_after_loop_condition') and self.__is_conditional(formatted))
+               self.__should_add_space_for_conditional(formatted)
 
-    @staticmethod
-    def __is_conditional(formatted: str) -> bool:
-        return any([token == formatted[:-1].lower() for token in Tokens.conditional_tokens()])
+    def __should_add_space_for_conditional(self, formatted: str) -> bool:
+        return self.__settings.get('space_after_loop_condition') and \
+               KeywordVerifier.is_conditional_invocation(formatted)
 
     @staticmethod
     def __remove_whitespaces_after_name(original: str) -> str:

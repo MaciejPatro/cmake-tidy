@@ -12,4 +12,4 @@ class ConditionalFormatter(InvocationFormatter):
         super().__init__(state, settings)
 
     def format(self, invocation: dict) -> str:
-        pass
+        return self._join_command_invocation(invocation)

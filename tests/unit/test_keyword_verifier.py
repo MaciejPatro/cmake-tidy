@@ -79,3 +79,10 @@ class TestKeywordVerifier(unittest.TestCase):
         self.assertTrue(self.verify.is_double_keyword('LIBRARY', 'DESTINATION'))
         self.assertFalse(self.verify.is_double_keyword('OUTPUT', 'DESTINATION'))
         self.assertFalse(self.verify.is_double_keyword('LIBRARY', 'OUTPUT'))
+
+    def test_recognition_of_conditional_invocation(self):
+        self.assertTrue(KeywordVerifier.is_conditional_invocation('If('))
+        self.assertTrue(KeywordVerifier.is_conditional_invocation('while('))
+        self.assertTrue(KeywordVerifier.is_conditional_invocation('foreach ('))
+        self.assertFalse(KeywordVerifier.is_conditional_invocation('if2('))
+        self.assertFalse(KeywordVerifier.is_conditional_invocation('if*'))

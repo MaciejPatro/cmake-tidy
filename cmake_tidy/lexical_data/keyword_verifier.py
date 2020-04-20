@@ -45,6 +45,11 @@ class KeywordVerifier:
                self.__is_keyword_in_cmake(data)
 
     @staticmethod
+    def is_conditional_invocation(data: str) -> bool:
+        data = data.lower().replace(' ', '')
+        return any([token == data[:-1] for token in Tokens.conditional_tokens()]) and data[-1] == '('
+
+    @staticmethod
     def is_double_keyword(first: str, second: str) -> bool:
         first = first.replace(Tokens.reindent(1), '')
         second = second.replace(Tokens.reindent(1), '')

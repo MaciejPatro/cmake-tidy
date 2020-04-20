@@ -2,7 +2,7 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
-from unittest import skip
+
 
 from cmake_tidy.lexical_data.elements import Element
 from tests.unit.parser_composite_elements import arguments, unquoted_argument, spaces, file, command_invocation, \
@@ -23,7 +23,6 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
 
         self.assertConditionFormatting('if(abc OR def)', args)
 
-    @skip('First refactor than fix')
     def test_splitting_only_after_logical_operations(self):
         self.settings['line_length'] = 100
 

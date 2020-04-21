@@ -8,7 +8,7 @@ from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.invocation_formatter import InvocationFormatter
 
 
-class ConditionalFormatter(InvocationFormatter):
+class ConditionFormatter(InvocationFormatter):
     def __init__(self, state: dict, settings: dict):
         super().__init__(state, settings)
 

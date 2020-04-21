@@ -13,9 +13,7 @@ class ConditionalFormatter(InvocationFormatter):
         super().__init__(state, settings)
 
     def format(self, invocation: dict) -> str:
-        invocation['arguments'] = self._remove_empty_arguments(invocation)
-        if self._is_wrappable(invocation):
-            invocation['arguments'] = self._wrap_arguments_if_possible(invocation)
+        invocation['arguments'] = self._prepare_arguments(invocation)
         if not self._is_fitting_in_line(invocation):
             self._state['indent'] += 1
             args = invocation['arguments']

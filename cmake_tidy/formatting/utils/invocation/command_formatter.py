@@ -13,16 +13,10 @@ class CommandFormatter(InvocationFormatter):
         super().__init__(state, settings)
 
     def format(self, invocation: dict) -> str:
-        invocation['arguments'] = self.__prepare_arguments(invocation)
-        return self._join_command_invocation(invocation)
-
-    def __prepare_arguments(self, invocation: dict) -> list:
-        invocation['arguments'] = self._remove_empty_arguments(invocation)
-        if self._is_wrappable(invocation):
-            invocation['arguments'] = self._wrap_arguments_if_possible(invocation)
+        invocation['arguments'] = self._prepare_arguments(invocation)
         if not self._is_fitting_in_line(invocation):
             invocation['arguments'] = self.__split_command_to_newlines(invocation)
-        return invocation['arguments']
+        return self._join_command_invocation(invocation)
 
     def __split_command_to_newlines(self, invocation: dict) -> list:
         return InvocationSplitter(self._state, self._settings).split(invocation)

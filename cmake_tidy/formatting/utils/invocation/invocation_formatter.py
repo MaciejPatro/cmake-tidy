@@ -20,20 +20,6 @@ class InvocationFormatter(ABC):
     def format(self, invocation: dict) -> str:
         pass
 
-    @staticmethod
-    def _remove_empty_arguments(invocation: dict) -> list:
-        return list(filter(len, invocation['arguments']))
-
-    def _is_wrappable(self, invocation: dict) -> bool:
-        return len(invocation['arguments']) > 0 and self._settings['wrap_short_invocations_to_single_line'] is True
-
-    def _wrap_arguments_if_possible(self, invocation: dict) -> list:
-        command_invocation = InvocationWrapper().wrap(invocation)
-        if self._is_fitting_in_line(command_invocation):
-            return command_invocation['arguments']
-        else:
-            return invocation['arguments']
-
     def _is_fitting_in_line(self, command_invocation: dict) -> bool:
         return self._invocation_length(command_invocation) < self._settings['line_length']
 
@@ -50,9 +36,29 @@ class InvocationFormatter(ABC):
         formatted = invocation['function_name'] + ''.join(invocation['arguments']) + invocation['closing']
         return self.__add_reindent_tokens_where_needed(formatted)
 
+    def _prepare_arguments(self, invocation: dict) -> list:
+        invocation['arguments'] = self.__remove_empty_arguments(invocation)
+        if self.__is_wrappable(invocation):
+            invocation['arguments'] = self.__wrap_arguments_if_possible(invocation)
+        return invocation['arguments']
+
     @staticmethod
     def __add_reindent_tokens_where_needed(data: str) -> str:
         data_lower = data.lower()
         if any(data_lower.startswith(token) for token in Tokens.reindent_commands_tokens()):
             return Tokens.reindent(1) + data
         return data
+
+    def __is_wrappable(self, invocation: dict) -> bool:
+        return len(invocation['arguments']) > 0 and self._settings['wrap_short_invocations_to_single_line'] is True
+
+    def __wrap_arguments_if_possible(self, invocation: dict) -> list:
+        command_invocation = InvocationWrapper().wrap(invocation)
+        if self._is_fitting_in_line(command_invocation):
+            return command_invocation['arguments']
+        else:
+            return invocation['arguments']
+
+    @staticmethod
+    def __remove_empty_arguments(invocation: dict) -> list:
+        return list(filter(len, invocation['arguments']))

@@ -4,6 +4,7 @@
 ###############################################################################
 
 
+from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.invocation_formatter import InvocationFormatter
 
 
@@ -12,4 +13,14 @@ class ConditionalFormatter(InvocationFormatter):
         super().__init__(state, settings)
 
     def format(self, invocation: dict) -> str:
+        invocation['arguments'] = self._remove_empty_arguments(invocation)
+        if self._is_wrappable(invocation):
+            invocation['arguments'] = self._wrap_arguments_if_possible(invocation)
+        if not self._is_fitting_in_line(invocation):
+            self._state['indent'] += 1
+            args = invocation['arguments']
+            for i in range(1, len(args) - 1):
+                if args[i] == 'OR' or args[i] == 'AND':
+                    args[i + 1] = FormatNewline(self._state, self._settings)(1)
+            self._state['indent'] -= 1
         return self._join_command_invocation(invocation)

@@ -24,7 +24,7 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
         self.assertConditionFormatting('if(abc OR def)', args)
 
     def test_splitting_only_after_logical_operations(self):
-        self.settings['line_length'] = 100
+        self.settings['line_length'] = 10
 
         args = arguments() \
             .add(unquoted_argument('CMAKE_C_COMPILER_ID')).add(spaces(' ')) \
@@ -35,7 +35,6 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
             .add(unquoted_argument('STREQUAL')).add(spaces(' ')) \
             .add(quoted_argument('GNU'))
 
-        expected_formatting = """if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND 
-    CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
-)"""
+        expected_formatting = """if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND
+    CMAKE_CXX_COMPILER_ID STREQUAL "GNU")"""
         self.assertConditionFormatting(expected_formatting, args)

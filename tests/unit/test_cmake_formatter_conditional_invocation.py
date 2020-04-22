@@ -2,7 +2,7 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
-from unittest import skip
+
 
 from cmake_tidy.lexical_data.elements import Element
 from tests.unit.parser_composite_elements import arguments, unquoted_argument, spaces, file, command_invocation, \
@@ -54,7 +54,6 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
     CMAKE_CXX_COMPILER_ID STREQUAL "GNU")"""
         self.assertConditionFormatting(expected_formatting, args)
 
-    @skip('First new test is needed')
     def test_splitting_only_after_logical_operations_comments_excluded(self):
         self.settings['line_length'] = 10
 

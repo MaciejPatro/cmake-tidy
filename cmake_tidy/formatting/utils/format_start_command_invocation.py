@@ -15,8 +15,13 @@ class FormatStartCommandInvocation:
         self.__settings = settings
 
     def __call__(self, data: str) -> str:
-        self.__state['indent'] += 1
+        self.__update_state(data)
         return self.__format_data(data)
+
+    def __update_state(self, data: str):
+        if KeywordVerifier.is_conditional_invocation(data):
+            self.__state['indent'] += 1
+        self.__state['indent'] += 1
 
     def __format_data(self, original: str) -> str:
         formatted = self.__remove_whitespaces_after_name(original)

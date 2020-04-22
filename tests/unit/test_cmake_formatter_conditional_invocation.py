@@ -44,7 +44,7 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
             .add(unquoted_argument('CMAKE_C_COMPILER_ID')).add(spaces(' ')) \
             .add(unquoted_argument('STREQUAL')).add(spaces(' ')) \
             .add(quoted_argument('GNU')).add(spaces(' ')) \
-            .add(unquoted_argument('AND')).add(spaces(' ')) \
+            .add(unquoted_argument('AND')) \
             .add(newlines(1)) \
             .add(unquoted_argument('CMAKE_CXX_COMPILER_ID')).add(spaces(' ')) \
             .add(unquoted_argument('STREQUAL')).add(spaces(' ')) \

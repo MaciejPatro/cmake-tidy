@@ -6,6 +6,7 @@
 
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.invocation_realign_modifier import InvocationRealignModifier
+from cmake_tidy.formatting.utils.invocation.utils import fix_line_comments
 from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordStateUpdater
 from cmake_tidy.lexical_data import KeywordVerifier
 
@@ -19,7 +20,7 @@ class InvocationSplitter:
 
     def split(self, invocation: dict) -> list:
         args = self.__split_args_to_newlines(invocation['arguments'])
-        args = self.__fix_line_comments(args)
+        args = fix_line_comments(args)
         args = InvocationRealignModifier(self.__state, self.__settings).realign(args)
         return args + self.__add_closing_bracket_separator(invocation)
 
@@ -51,10 +52,3 @@ class InvocationSplitter:
             self.__state['indent'] -= 1
         self.__state['has_first_class_keyword'] = False
         self.__state['keyword_argument'] = False
-
-    @staticmethod
-    def __fix_line_comments(args: list) -> list:
-        for i in range(len(args)):
-            if args[i].startswith('#'):
-                args[i - 1] = ' '
-        return args

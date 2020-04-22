@@ -25,19 +25,7 @@ class ConditionFormatter(InvocationFormatter):
         return invocation['arguments']
 
     def __split_invocation(self, args: List[str]) -> list:
-        self.__increment_indent()
-        args = self.__split_arguments_after_logical_operands(args)
-        self.__rollback_indent()
-        return args
-
-    def __split_arguments_after_logical_operands(self, args: List[str]) -> list:
         for i in range(1, len(args) - 1):
-            if args[i] == 'OR' or args[i] == 'AND':
+            if (args[i] == 'OR' or args[i] == 'AND') and args[i + 1] == ' ':
                 args[i + 1] = FormatNewline(self._state, self._settings)(1)
         return args
-
-    def __increment_indent(self):
-        self._state['indent'] += 1
-
-    def __rollback_indent(self):
-        self._state['indent'] -= 1

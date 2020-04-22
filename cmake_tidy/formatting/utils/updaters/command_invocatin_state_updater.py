@@ -7,6 +7,7 @@
 import re
 
 from cmake_tidy.formatting.utils.tokens import Tokens
+from cmake_tidy.lexical_data import KeywordVerifier
 
 
 class CommandInvocationStateUpdater:
@@ -24,6 +25,8 @@ class CommandInvocationStateUpdater:
         if self.__state['has_first_class_keyword']:
             self.__state['indent'] -= 1
         if self.__is_end_of_special_command(function_name):
+            self.__state['indent'] -= 1
+        if KeywordVerifier.is_conditional_invocation(function_name):
             self.__state['indent'] -= 1
 
     def __is_start_of_special_command(self, original: str) -> bool:

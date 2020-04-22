@@ -4,8 +4,6 @@
 ###############################################################################
 
 
-from typing import List
-
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.invocation_realign_modifier import InvocationRealignModifier
 from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordStateUpdater

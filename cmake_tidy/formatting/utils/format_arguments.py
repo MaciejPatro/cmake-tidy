@@ -15,14 +15,7 @@ class FormatArguments:
         self.__state = state
 
     def __call__(self, data: list) -> list:
-        if data[0]:
-            self.__update_state()
-            return self.__format_arguments(data)
-        return []
-
-    def __update_state(self) -> None:
-        if self.__state['keyword_argument']:
-            self.__state['indent'] -= 1
+        return self.__format_arguments(data) if data[0] else []
 
     def __format_arguments(self, data: list) -> list:
         data = list(deepflatten(data, types=list))

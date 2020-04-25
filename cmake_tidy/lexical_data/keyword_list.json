@@ -475,7 +475,8 @@
   "double-keywords": [
     "ARCHIVE DESTINATION",
     "RUNTIME DESTINATION",
-    "LIBRARY DESTINATION"
+    "LIBRARY DESTINATION",
+    "INCLUDES DESTINATION"
   ],
   "keywords": [
     "RESULT",
@@ -704,6 +705,7 @@
     "CACHED_VARIABLE",
     "INHERITED",
     "EXPORT",
+    "INCLUDES",
     "FILE",
     "EXPORT_LINK_INTERFACE_LIBRARIES",
     "PACKAGE",

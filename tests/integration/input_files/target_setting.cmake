@@ -73,3 +73,9 @@ if(COMMAND target_set)
 			${CMAKE_CURRENT_SOURCE_DIR}/Source/File.cpp
 	)
 endif()
+
+add_custom_command(
+TARGET
+        ${_TARGET}
+        POST_BUILD
+        )

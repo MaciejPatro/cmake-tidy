@@ -74,3 +74,8 @@ if(COMMAND target_set)
 	)
 endif()
 
+add_custom_command(
+	TARGET
+		${_TARGET}
+	POST_BUILD
+)

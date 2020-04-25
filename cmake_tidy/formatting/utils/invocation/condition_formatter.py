@@ -8,6 +8,7 @@ from typing import List
 
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.invocation_formatter import InvocationFormatter
+from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
 from cmake_tidy.formatting.utils.invocation.utils import fix_line_comments
 
 
@@ -23,6 +24,7 @@ class ConditionFormatter(InvocationFormatter):
 
     def __split_invocation_if_needed(self, invocation: dict) -> list:
         if not self._is_fitting_in_line(invocation):
+            invocation = InvocationWrapper().wrap(invocation)
             return self.__split_invocation(invocation['arguments'])
         return invocation['arguments']
 

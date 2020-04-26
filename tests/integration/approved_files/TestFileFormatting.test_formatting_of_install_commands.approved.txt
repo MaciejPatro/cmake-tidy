@@ -8,11 +8,7 @@ install(
 	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
 
-install(
-	TARGETS mylibapp
-	RUNTIME DESTINATION bin
-	COMPONENT applications
-)
+install(TARGETS mylibapp RUNTIME DESTINATION bin COMPONENT applications)
 install(
 	FILES "${PYLON_BINARY_DIRS}/PylonUsb_MD_VC120_V5_0_TL.dll"
 	DESTINATION ${CMAKE_INSTALL_BINARY}
@@ -28,10 +24,7 @@ install(
 	DESTINATION share/unofficial-graphicsmagick
 )
 
-install(
-	FILES $<TARGET_FILE:testLib1>.genex
-	DESTINATION $<1:lib>$<0:/wrong>
-)
+install(FILES $<TARGET_FILE:testLib1>.genex DESTINATION $<1:lib>$<0:/wrong>)
 
 install(
 	TARGETS tinyfiledialogs

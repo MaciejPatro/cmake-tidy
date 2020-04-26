@@ -32,7 +32,7 @@ class CMakeLexer:
 
     t_INITIAL_commandinvocation_insideparentheses_LINE_COMMENT = r'\#[^\n]+'
     t_INITIAL_commandinvocation_insideparentheses_SPACES = r'[ \t]+'
-    t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'\\\"'
+    t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'(?<!\\)\\\"'
     t_commandinvocation_insideparentheses_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\\n]+'
 
     def __init__(self) -> None:

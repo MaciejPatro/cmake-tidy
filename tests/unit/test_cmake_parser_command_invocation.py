@@ -118,9 +118,9 @@ class TestParseCommandInvocation(TestCMakeParser):
         self.assertReprEqual(expected_parsed_structure, self.parser.parse(command))
 
     def test_escape_sequence_in_quoted_argument(self):
-        command = 'string("\\")'
+        command = 'string("\\\\")'
 
-        expected_args = arguments().add(quoted_argument('\\'))
+        expected_args = arguments().add(quoted_argument('\\\\'))
         expected_parsed_structure = file().add(command_invocation('string(', expected_args))
 
         self.assertReprEqual(expected_parsed_structure, self.parser.parse(command))

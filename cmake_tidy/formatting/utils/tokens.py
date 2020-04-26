@@ -26,5 +26,9 @@ class Tokens:
         return f'<cmake-tidy-reindent{count}>'
 
     @staticmethod
+    def get_reindent_regex() -> str:
+        return r'<cmake-tidy-reindent[0-9]+>'
+
+    @staticmethod
     def get_reindent_patterns_list(count: int, indent: str) -> list:
         return [f'({indent}){{0,{times}}}{Tokens.reindent(times)}' for times in range(1, count + 1)]

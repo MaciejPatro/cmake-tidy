@@ -4,6 +4,7 @@
 ###############################################################################
 
 
+import re
 from abc import ABC, abstractmethod
 
 from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
@@ -30,7 +31,8 @@ class InvocationFormatter(ABC):
     def _invocation_length(self, command_invocation: dict) -> int:
         invoke = self._join_command_invocation(command_invocation) + self._newline_indent()
         invoke = invoke.replace('\t', ' ' * self._settings['tab_size'])
-        return len(invoke) - len(Tokens.reindent(1))
+        invoke = re.sub(Tokens.get_reindent_regex(), '', invoke)
+        return len(invoke)
 
     def _join_command_invocation(self, invocation: dict) -> str:
         formatted = invocation['function_name'] + ''.join(invocation['arguments']) + invocation['closing']

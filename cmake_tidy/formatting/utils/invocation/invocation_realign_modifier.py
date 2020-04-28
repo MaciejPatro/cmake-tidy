@@ -4,7 +4,8 @@
 ###############################################################################
 
 
-from typing import List
+import re
+from typing import List, Tuple
 
 from cmake_tidy.formatting.utils.tokens import Tokens
 from cmake_tidy.lexical_data import KeywordVerifier
@@ -57,18 +58,29 @@ class InvocationRealignModifier:
         return invocation['arguments']
 
     def __realign_property_in_set_function(self, args: List[str]) -> list:
-        for i in range(len(args) - 3):
-            if KeywordVerifier.is_first_class_keyword(args[i]) and not KeywordVerifier.is_line_comment(args[i + 2]):
-                if not args[i + 2].startswith(Tokens.reindent(1)):
-                    args[i + 2] = Tokens.reindent(1) + args[i + 2]
-                if self.__should_realign_keyword_values(args):
-                    args[i + 3] = ' '
-        return args
-
-    @staticmethod
-    def __replace_newline_with_space_after_property_keyword(args: List[str]) -> list:
         for i in range(len(args)):
             if KeywordVerifier.is_first_class_keyword(args[i]):
+                args, position = self.__reindent_property_name(args, i)
+                if self.__should_realign_keyword_values(args) and \
+                        not KeywordVerifier.is_line_comment(args[position + 2]):
+                    args[position + 1] = ' '
+        return args
+
+    def __reindent_property_name(self, args: list, start_index: int) -> Tuple[list, int]:
+        for i in range(start_index + 1, len(args)):
+            if self.__is_argument(args[i]):
+                if not args[i].startswith(Tokens.reindent(1)):
+                    args[i] = Tokens.reindent(1) + args[i]
+                return args, i
+        return args, 0
+
+    @staticmethod
+    def __is_argument(data: str) -> bool:
+        return not (KeywordVerifier.is_line_comment(data) or re.match(r'\s+', data))
+
+    def __replace_newline_with_space_after_property_keyword(self, args: List[str]) -> list:
+        for i in range(len(args) - InvocationRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
+            if self.__is_property_followed_by_name(args, i):
                 args[i + 1] = ' '
         return args
 
@@ -81,11 +93,11 @@ class InvocationRealignModifier:
 
     def __realign_keyword_values(self, args: List[str]) -> list:
         for i in range(len(args) - InvocationRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
-            if self.__self_should_realign_value_after_keyword(args, i):
+            if self.__should_realign_value_after_keyword(args, i):
                 args[i + 1] = ' '
         return args
 
-    def __self_should_realign_value_after_keyword(self, args: List[str], current_index: int) -> bool:
+    def __should_realign_value_after_keyword(self, args: List[str], current_index: int) -> bool:
         return self.__verifier.is_keyword_or_property(args[current_index]) and \
                args[current_index + 1].startswith('\n') and \
                not self.__verifier.is_keyword_or_property(args[current_index + 2]) and \
@@ -95,3 +107,7 @@ class InvocationRealignModifier:
         tokens_diff = 4  # keyword, space, value, space, keyword
         return current_index + tokens_diff >= len(args) or \
                self.__verifier.is_keyword_or_property(args[current_index + tokens_diff])
+
+    @staticmethod
+    def __is_property_followed_by_name(args: list, i: int) -> bool:
+        return KeywordVerifier.is_first_class_keyword(args[i]) and not KeywordVerifier.is_line_comment(args[i + 2])

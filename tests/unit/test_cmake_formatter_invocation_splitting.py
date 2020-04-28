@@ -218,7 +218,7 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
         root = file().add(command_invocation('get_property(', args))
 
         expected_formatting = """get_property(dirs
-  DIRECTORY "{CMAKE_CURRENT_SOURCE_DIR}"
+  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   PROPERTY SUBDIRECTORIES
 )"""
         self.assertFormatting(expected_formatting, root)

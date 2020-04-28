@@ -6,6 +6,7 @@
 
 from typing import List
 
+from cmake_tidy.formatting.utils.tokens import Tokens
 from cmake_tidy.lexical_data import KeywordVerifier
 
 
@@ -21,6 +22,7 @@ class InvocationRealignModifier:
         invocation['arguments'] = self.__realign_properties_if_needed(invocation['arguments'])
         invocation['arguments'] = self.__realign_double_keywords(invocation['arguments'])
         invocation['arguments'] = self.__realign_get_property(invocation)
+        invocation['arguments'] = self.__realign_set_property(invocation)
         return self.__realign_keyword_values_if_needed(invocation['arguments'])
 
     def __realign_properties_if_needed(self, args: List[str]) -> list:
@@ -48,6 +50,20 @@ class InvocationRealignModifier:
         if invocation['function_name'].startswith('get_property'):
             return self.__replace_newline_with_space_after_property_keyword(invocation['arguments'])
         return invocation['arguments']
+
+    def __realign_set_property(self, invocation: dict) -> list:
+        if invocation['function_name'].startswith('set_property'):
+            return self.__realign_property_in_set_function(invocation['arguments'])
+        return invocation['arguments']
+
+    def __realign_property_in_set_function(self, args: List[str]) -> list:
+        for i in range(len(args) - 3):
+            if KeywordVerifier.is_first_class_keyword(args[i]) and not KeywordVerifier.is_line_comment(args[i + 2]):
+                if not args[i + 2].startswith(Tokens.reindent(1)):
+                    args[i + 2] = Tokens.reindent(1) + args[i + 2]
+                if self.__should_realign_keyword_values(args):
+                    args[i + 3] = ' '
+        return args
 
     @staticmethod
     def __replace_newline_with_space_after_property_keyword(args: List[str]) -> list:

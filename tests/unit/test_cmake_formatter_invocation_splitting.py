@@ -200,3 +200,25 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
   ARCHIVE DESTINATION "include/folder"
 )"""
         self.assertFormatting(expected_formatting, root)
+
+    def test_special_handling_of_get_property(self):
+        self.settings['keyword_and_single_value_in_one_line'] = True
+        self.settings['line_length'] = 5
+        args = arguments().add(unquoted_argument('dirs')) \
+            .add(newlines(1)) \
+            .add(unquoted_argument('DIRECTORY')) \
+            .add(spaces('    ')) \
+            .add(quoted_argument('${CMAKE_CURRENT_SOURCE_DIR}')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('PROPERTY')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('SUBDIRECTORIES')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('get_property(', args))
+
+        expected_formatting = """get_property(dirs
+  DIRECTORY "{CMAKE_CURRENT_SOURCE_DIR}"
+  PROPERTY SUBDIRECTORIES
+)"""
+        self.assertFormatting(expected_formatting, root)

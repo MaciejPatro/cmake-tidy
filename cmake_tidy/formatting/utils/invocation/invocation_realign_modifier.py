@@ -20,6 +20,7 @@ class InvocationRealignModifier:
     def realign(self, invocation: dict) -> list:
         invocation['arguments'] = self.__realign_properties_if_needed(invocation['arguments'])
         invocation['arguments'] = self.__realign_double_keywords(invocation['arguments'])
+        invocation['arguments'] = self.__realign_get_property(invocation)
         return self.__realign_keyword_values_if_needed(invocation['arguments'])
 
     def __realign_properties_if_needed(self, args: List[str]) -> list:
@@ -40,6 +41,18 @@ class InvocationRealignModifier:
     def __realign_double_keywords(self, args: List[str]) -> list:
         for i in range(len(args) - self.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
             if self.__verifier.is_double_keyword(args[i], args[i + self.__DIFF_BETWEEN_KEYWORD_AND_VALUE]):
+                args[i + 1] = ' '
+        return args
+
+    def __realign_get_property(self, invocation: dict) -> list:
+        if invocation['function_name'].startswith('get_property'):
+            return self.__replace_newline_with_space_after_property_keyword(invocation['arguments'])
+        return invocation['arguments']
+
+    @staticmethod
+    def __replace_newline_with_space_after_property_keyword(args: List[str]) -> list:
+        for i in range(len(args)):
+            if KeywordVerifier.is_first_class_keyword(args[i]):
                 args[i + 1] = ' '
         return args
 

@@ -17,10 +17,10 @@ class InvocationRealignModifier:
         self.__verifier = KeywordVerifier(settings)
         self.__settings = settings
 
-    def realign(self, args: List[str]) -> list:
-        args = self.__realign_properties_if_needed(args)
-        args = self.__realign_double_keywords(args)
-        return self.__realign_keyword_values_if_needed(args)
+    def realign(self, invocation: dict) -> list:
+        invocation['arguments'] = self.__realign_properties_if_needed(invocation['arguments'])
+        invocation['arguments'] = self.__realign_double_keywords(invocation['arguments'])
+        return self.__realign_keyword_values_if_needed(invocation['arguments'])
 
     def __realign_properties_if_needed(self, args: List[str]) -> list:
         return self.__realign_properties(args) if self.__should_realign_properties() else args

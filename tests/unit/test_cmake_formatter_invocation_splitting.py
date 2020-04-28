@@ -222,3 +222,24 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
   PROPERTY SUBDIRECTORIES
 )"""
         self.assertFormatting(expected_formatting, root)
+
+    def test_special_handling_of_set_property(self):
+        self.settings['keyword_and_single_value_in_one_line'] = True
+        self.settings['line_length'] = 5
+        args = arguments().add(newlines(1)) \
+            .add(unquoted_argument('GLOBAL')) \
+            .add(newlines(1)) \
+            .add(unquoted_argument('PROPERTY')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('CONFIGURATION_MSVC_RELEASE_SECURE_PREPARE')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('FALSE')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('set_property(', args))
+
+        expected_formatting = """set_property(
+  GLOBAL PROPERTY
+    CONFIGURATION_MSVC_RELEASE_SECURE_PREPARE FALSE
+)"""
+        self.assertFormatting(expected_formatting, root)

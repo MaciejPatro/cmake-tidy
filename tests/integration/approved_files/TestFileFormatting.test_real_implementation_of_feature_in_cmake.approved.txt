@@ -1,0 +1,128 @@
+if(ENABLE_MSVC_SOME_FEATURE_PREPARE)
+	set_property(GLOBAL PROPERTY CONFIGURATION_MSVC_SOME_FEATURE TRUE)
+else()
+	set_property(
+		GLOBAL PROPERTY
+			CONFIGURATION_MSVC_SOME_FEATURE_PREPARE FALSE
+	)
+endif()
+
+option(ENABLE_MSVC_SOME_FEATURE "Some Text written here" OFF)
+if(ENABLE_MSVC_SOME_FEATURE)
+	set_property(GLOBAL PROPERTY CONFIGURATION_MSVC_SOME_FEATURE TRUE)
+else()
+	set_property(GLOBAL PROPERTY CONFIGURATION_MSVC_SOME_FEATURE FALSE)
+endif()
+
+#  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec nulla vitae mi
+# molestie feugiat. Mauris hendrerit lectus in venenatis ultricies. Ut ac arcu vel libero
+# elementum cursus. Praesent justo lacus, varius eu tortor quis, maximus elementum justo.
+# Nulla accumsan augue urna, elementum condimentum sapien sodales efficitur. Curabitur eu
+# volutpat nisl. Phasellus id diam purus. Maecenas sit amet ipsum sapien.
+# cmake-check disable
+unset(ENABLE_MSVC_SOME_FEATURE_PREPARE CACHE)
+unset(ENABLE_MSVC_SOME_FEATURE CACHE)
+# cmake-check enable
+
+function(__create_def_file TARGET EXPORT_EXTERN_C)
+	message(
+		STATUS "Enable for ${TARGET} (export extern C: ${EXPORT_EXTERN_C})"
+	)
+
+	string(REPLACE "\\" ";" _path "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+	string(REPLACE "/" ";" _path "${_path}")
+	list(REVERSE _path)
+	list(GET _path 0 _platform)
+
+	find_package(NameOfATool REQUIRED)
+
+	file(TO_NATIVE_PATH "${NameOfATool_BINARY}" _NameOfATool)
+	file(TO_NATIVE_PATH "${NameOfATool_DIRECTORY}" _linksecure_dir)
+	file(
+		TO_NATIVE_PATH
+			"${CMAKE_HOME_DIRECTORY}${_platform}/SOME_FEATURE"
+			_apicompliancefiledir
+	)
+	file(
+		TO_NATIVE_PATH
+			"${_apicompliancefiledir}/${TARGET}.def"
+			_apicompliancefile
+	)
+
+	if(${EXPORT_EXTERN_C})
+		set(_export_extern_c_option "/ExportCFunctions")
+	endif()
+
+	add_custom_command(
+		TARGET ${TARGET}
+		POST_BUILD
+		VERBATIM
+		COMMAND
+			${CMAKE_COMMAND}
+			-E
+			echo
+			"Remove $<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def"
+		COMMAND
+			${CMAKE_COMMAND}
+			-E
+			remove
+			-f
+			$<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def
+		COMMAND
+			${CMAKE_COMMAND}
+			-E
+			echo
+			"Create $<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def"
+		COMMAND
+			${_NameOfATool}
+			$<TARGET_FILE:${TARGET}>
+			"$<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def"
+			${_linksecure_dir}
+			/APICompatibility
+			${_apicompliancefile}
+			${_export_extern_c_option}
+	)
+endfunction()
+
+function(__target_link_with_def_file TARGET)
+	message(STATUS "Enable re-linking of ${TARGET}")
+
+	# this custom target is needed only to be able to add a dependency.
+	# CMake cannot add dependencies to files, only to targets.
+	add_custom_target(${TARGET}-deffile
+		DEPENDS $<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def
+	)
+	add_dependencies(${TARGET} ${TARGET}-deffile)
+
+	target_link_options(${TARGET}
+		PRIVATE
+			$<$<CXX_COMPILER_ID:MSVC>:/DEF:$<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def> # ignore: export 'exportname' specified multiple times; using first specification
+			$<$<CXX_COMPILER_ID:MSVC>:/IGNORE:4197>
+	)
+endfunction()
+
+function(target_msvc_SOME_FEATURE_support TARGET)
+	get_property(_msvc_SOME_FEATURE
+		GLOBAL PROPERTY CONFIGURATION_MSVC_SOME_FEATURE
+	)
+	get_property(_msvc_SOME_FEATURE_prepare
+		GLOBAL PROPERTY CONFIGURATION_MSVC_SOME_FEATURE_PREPARE
+	)
+
+	# optional arguments
+	set(_export_extern_c FALSE)
+	foreach(arg ${ARGN})
+		if("${arg}" STREQUAL "EXPORT_EXTERN_C_FUNCTIONS")
+			set(_export_extern_c TRUE)
+		endif()
+	endforeach()
+
+	if(MSVC AND ${BUILD_SHARED_LIBS} AND _msvc_SOME_FEATURE_prepare)
+		__create_def_file(${TARGET} ${_export_extern_c})
+	endif()
+
+	if(MSVC AND ${BUILD_SHARED_LIBS} AND _msvc_SOME_FEATURE)
+		__target_link_with_def_file(${TARGET})
+	endif()
+endfunction()
+

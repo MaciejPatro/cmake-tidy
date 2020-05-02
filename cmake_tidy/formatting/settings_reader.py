@@ -72,5 +72,6 @@ class SettingsReader:
         settings['space_after_loop_condition'] = False
         settings['keep_property_and_value_in_one_line'] = True
         settings['keyword_and_single_value_in_one_line'] = False
+        settings['keep_command_in_single_line'] = True
         settings['keywords'] = []
         return settings

@@ -137,6 +137,30 @@ set_property(
 )
 ----
 
+|`keep_command_in_single_line`
+|`boolean`
+|`True`
+| Keeps `COMMAND` within single line. Enabled:
+
+[source,cmake]
+----
+add_custom_target(${target}-resources
+        ALL
+        COMMAND
+                ${CMAKE_COMMAND} -E echo "Copy resource files for ${target}"
+----
+Disabled:
+[source,cmake]
+----
+add_custom_target(${target}-resources
+        ALL
+        COMMAND
+                ${CMAKE_COMMAND}
+                -E
+                echo
+                "Copy resource files for ${target}"
+----
+
 |`keyword_and_single_value_in_one_line`
 |`boolean`
 |`False`

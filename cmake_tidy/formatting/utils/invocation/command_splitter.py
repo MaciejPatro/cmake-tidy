@@ -11,7 +11,7 @@ from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordSt
 from cmake_tidy.lexical_data import KeywordVerifier
 
 
-class InvocationSplitter:
+class CommandSplitter:
     def __init__(self, state: dict, settings: dict):
         self.__prepare_state(state)
         self.__state_updater = KeywordStateUpdater(self.__state, settings)

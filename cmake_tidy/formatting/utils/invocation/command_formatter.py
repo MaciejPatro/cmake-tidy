@@ -5,7 +5,7 @@
 
 
 from cmake_tidy.formatting.utils.invocation.invocation_formatter import InvocationFormatter
-from cmake_tidy.formatting.utils.invocation.invocation_splitter import InvocationSplitter
+from cmake_tidy.formatting.utils.invocation.command_splitter import CommandSplitter
 
 
 class CommandFormatter(InvocationFormatter):
@@ -19,5 +19,4 @@ class CommandFormatter(InvocationFormatter):
         return self._join_command_invocation(invocation)
 
     def __split_command_to_newlines(self, invocation: dict) -> list:
-        return InvocationSplitter(self._state, self._settings).split(invocation)
-
+        return CommandSplitter(self._state, self._settings).split(invocation)

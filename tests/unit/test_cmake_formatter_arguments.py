@@ -152,3 +152,26 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
     FOO def
     BAR def2)"""
         self.assertFormatting(expected_formatting, root)
+
+    def test_splitting_custom_target_command(self):
+        self.settings['line_length'] = 10
+
+        args = arguments().add(unquoted_argument('${target}-resources')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('COMMAND')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('${CMAKE_COMMAND}')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('-E')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('echo')) \
+            .add(spaces('    ')) \
+            .add(quoted_argument('Copy resource files for ${target}'))
+
+        root = file().add(command_invocation('add_custom_target(', args))
+
+        expected_formatting = """add_custom_target(${target}-resources
+  COMMAND
+    ${CMAKE_COMMAND} -E echo "Copy resource files for ${target}")"""
+
+        self.assertFormatting(expected_formatting, root)

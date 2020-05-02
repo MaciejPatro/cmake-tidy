@@ -24,7 +24,21 @@ class CommandRealignModifier:
         invocation['arguments'] = self.__realign_double_keywords(invocation['arguments'])
         invocation['arguments'] = self.__realign_get_property(invocation)
         invocation['arguments'] = self.__realign_set_property(invocation)
+        invocation['arguments'] = self.__realign_commands_if_needed(invocation['arguments'])
         return self.__realign_keyword_values_if_needed(invocation['arguments'])
+
+    def __realign_commands_if_needed(self, args: List[str]) -> list:
+        return self.__realign_commands(args) if self.__settings.get('keep_command_in_single_line') else args
+
+    def __realign_commands(self, args: List[str]) -> list:
+        for i in range(len(args)):
+            if KeywordVerifier.is_command_keyword(args[i]):
+                for j in range(i + CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE, len(args) - 1):
+                    if self.__verifier.is_keyword(args[j + 1]):
+                        break
+                    if re.match(r'\s+', args[j]):
+                        args[j] = ' '
+        return args
 
     def __realign_properties_if_needed(self, args: List[str]) -> list:
         return self.__realign_properties(args) if self.__should_realign_properties() else args

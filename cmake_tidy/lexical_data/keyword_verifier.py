@@ -60,6 +60,10 @@ class KeywordVerifier:
         return any(keyword.startswith(first) and keyword.endswith(second) \
                    for keyword in KeywordVerifier.__PROPERTIES['double-keywords'])
 
+    @staticmethod
+    def is_command_keyword(data: str) -> bool:
+        return data.replace(Tokens.reindent(1), '') == 'COMMAND'
+
     def __is_one_of_defined_keywords(self, data: str) -> bool:
         return self.__settings.get('keywords') and data in self.__settings['keywords']
 

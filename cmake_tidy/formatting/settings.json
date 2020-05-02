@@ -51,6 +51,10 @@
       "type": "boolean",
       "description": "Keep in single line property/keyword with single value"
     },
+    "keep_command_in_single_line": {
+      "type": "boolean",
+      "description": "add_custom_target COMMAND will be forced to stay in one line"
+    },
     "keywords": {
       "type": "array",
       "description": "Array of unquoted arguments to be treated as keywords"
@@ -71,6 +75,7 @@
       "space_after_loop_condition",
       "keep_property_and_value_in_one_line",
       "keyword_and_single_value_in_one_line",
+      "keep_command_in_single_line",
       "keywords"
     ]
   }

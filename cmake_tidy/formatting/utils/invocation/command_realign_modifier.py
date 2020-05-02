@@ -11,7 +11,7 @@ from cmake_tidy.formatting.utils.tokens import Tokens
 from cmake_tidy.lexical_data import KeywordVerifier
 
 
-class InvocationRealignModifier:
+class CommandRealignModifier:
     __DIFF_BETWEEN_KEYWORD_AND_VALUE = 2
 
     def __init__(self, state: dict, settings: dict):
@@ -79,7 +79,7 @@ class InvocationRealignModifier:
         return not (KeywordVerifier.is_line_comment(data) or re.match(r'\s+', data))
 
     def __replace_newline_with_space_after_property_keyword(self, args: List[str]) -> list:
-        for i in range(len(args) - InvocationRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
+        for i in range(len(args) - CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
             if self.__is_property_followed_by_name(args, i):
                 args[i + 1] = ' '
         return args
@@ -89,10 +89,10 @@ class InvocationRealignModifier:
 
     def __should_realign_keyword_values(self, args: List[str]) -> bool:
         return self.__settings['keyword_and_single_value_in_one_line'] and \
-               len(args) > InvocationRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE
+               len(args) > CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE
 
     def __realign_keyword_values(self, args: List[str]) -> list:
-        for i in range(len(args) - InvocationRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
+        for i in range(len(args) - CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
             if self.__should_realign_value_after_keyword(args, i):
                 args[i + 1] = ' '
         return args

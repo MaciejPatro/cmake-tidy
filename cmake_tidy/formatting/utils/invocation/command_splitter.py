@@ -5,7 +5,7 @@
 
 
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
-from cmake_tidy.formatting.utils.invocation.invocation_realign_modifier import InvocationRealignModifier
+from cmake_tidy.formatting.utils.invocation.command_realign_modifier import CommandRealignModifier
 from cmake_tidy.formatting.utils.invocation.utils import fix_line_comments
 from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordStateUpdater
 from cmake_tidy.lexical_data import KeywordVerifier
@@ -25,7 +25,7 @@ class CommandSplitter:
         return invocation['arguments'] + self.__add_closing_bracket_separator(invocation)
 
     def __realign(self, invocation: dict) -> list:
-        return InvocationRealignModifier(self.__state, self.__settings).realign(invocation)
+        return CommandRealignModifier(self.__state, self.__settings).realign(invocation)
 
     def __split_args_to_newlines(self, args: list) -> list:
         if self.__verifier.is_keyword_or_property(args[0]):

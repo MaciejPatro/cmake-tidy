@@ -86,3 +86,9 @@ class TestKeywordVerifier(unittest.TestCase):
         self.assertTrue(KeywordVerifier.is_conditional_invocation('foreach ('))
         self.assertFalse(KeywordVerifier.is_conditional_invocation('if2('))
         self.assertFalse(KeywordVerifier.is_conditional_invocation('if*'))
+
+    def test_is_command_keyword(self):
+        self.assertTrue(KeywordVerifier.is_command_keyword('COMMAND'))
+        self.assertTrue(KeywordVerifier.is_command_keyword(Tokens.reindent(1) + 'COMMAND'))
+        self.assertFalse(KeywordVerifier.is_command_keyword('CMD'))
+        self.assertFalse(KeywordVerifier.is_command_keyword(Tokens.reindent(2) + 'COMMAND'))

@@ -155,6 +155,7 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
 
     def test_splitting_custom_target_command(self):
         self.settings['line_length'] = 10
+        self.settings['keep_command_in_single_line'] = True
 
         args = arguments().add(unquoted_argument('${target}-resources')) \
             .add(spaces('    ')) \

@@ -4,6 +4,9 @@
 ###############################################################################
 
 
+import re
+
+
 class Tokens:
     @staticmethod
     def start_tokens() -> list:
@@ -24,6 +27,15 @@ class Tokens:
     @staticmethod
     def reindent(count: int) -> str:
         return f'<cmake-tidy-reindent{count}>'
+
+    @staticmethod
+    def remove_spaces() -> str:
+        return '<cmake-tidy-remove-space>'
+
+    @staticmethod
+    def is_spacing_token(data: str) -> bool:
+        data = data.replace(Tokens.remove_spaces(), '')
+        return re.match(r'\s+', data) is not None
 
     @staticmethod
     def get_reindent_regex() -> str:

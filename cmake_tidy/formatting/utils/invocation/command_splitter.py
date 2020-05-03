@@ -7,6 +7,7 @@
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.command_realign_modifier import CommandRealignModifier
 from cmake_tidy.formatting.utils.invocation.utils import fix_line_comments
+from cmake_tidy.formatting.utils.tokens import Tokens
 from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordStateUpdater
 from cmake_tidy.lexical_data import KeywordVerifier
 
@@ -44,7 +45,7 @@ class CommandSplitter:
 
     @staticmethod
     def __is_last_element_newline(invocation: dict) -> bool:
-        return invocation['arguments'][-1].startswith('\n')
+        return Tokens.is_spacing_token(invocation['arguments'][-1])
 
     def __get_converted_whitespace(self) -> str:
         return FormatNewline(self.__state, self.__settings)(1)

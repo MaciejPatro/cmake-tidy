@@ -67,8 +67,8 @@ endif()"""
 
     def test_invocation_with_whitespaces_before_line_end(self):
         invocation_lead_by_spaces = file() \
-            .add(command_invocation('function(')) \
+            .add(command_invocation('set(')) \
             .add(spaces('   ')) \
             .add(newlines(1))
 
-        self.assertFormatting('function()\n', invocation_lead_by_spaces)
+        self.assertFormatting('set()\n', invocation_lead_by_spaces)

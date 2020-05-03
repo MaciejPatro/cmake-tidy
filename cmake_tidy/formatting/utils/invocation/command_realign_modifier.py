@@ -36,7 +36,7 @@ class CommandRealignModifier:
                 for j in range(i + CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE, len(args) - 1):
                     if self.__verifier.is_keyword(args[j + 1]):
                         break
-                    if re.match(r'\s+', args[j]):
+                    if Tokens.is_spacing_token(args[j]):
                         args[j] = ' '
         return args
 
@@ -48,7 +48,7 @@ class CommandRealignModifier:
 
     def __realign_properties(self, args: List[str]) -> list:
         for i in range(len(args) - 1):
-            if self.__is_property(args[i]) and args[i + 1].startswith('\n'):
+            if self.__is_property(args[i]) and Tokens.is_spacing_token(args[i + 1]):
                 args[i + 1] = ' '
         return args
 
@@ -90,7 +90,7 @@ class CommandRealignModifier:
 
     @staticmethod
     def __is_argument(data: str) -> bool:
-        return not (KeywordVerifier.is_line_comment(data) or re.match(r'\s+', data))
+        return not (KeywordVerifier.is_line_comment(data) or Tokens.is_spacing_token(data))
 
     def __replace_newline_with_space_after_property_keyword(self, args: List[str]) -> list:
         for i in range(len(args) - CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
@@ -113,7 +113,7 @@ class CommandRealignModifier:
 
     def __should_realign_value_after_keyword(self, args: List[str], current_index: int) -> bool:
         return self.__verifier.is_keyword_or_property(args[current_index]) and \
-               args[current_index + 1].startswith('\n') and \
+               Tokens.is_spacing_token(args[current_index + 1]) and \
                not self.__verifier.is_keyword_or_property(args[current_index + 2]) and \
                self.__is_single_value(args, current_index)
 

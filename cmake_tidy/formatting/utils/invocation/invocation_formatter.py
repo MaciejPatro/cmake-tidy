@@ -33,6 +33,7 @@ class InvocationFormatter(ABC):
         invoke = self._join_command_invocation(command_invocation) + self._newline_indent()
         invoke = invoke.replace('\t', ' ' * self._settings['tab_size'])
         invoke = re.sub(Tokens.get_reindent_regex(), '', invoke)
+        invoke = re.sub(Tokens.remove_spaces(), '', invoke)
         return len(invoke)
 
     def _join_command_invocation(self, invocation: dict) -> str:
@@ -71,6 +72,6 @@ class InvocationFormatter(ABC):
     def __remove_whitespace_at_end_of_line(args: List[str]) -> list:
         filtered_arguments = []
         for i in range(len(args) - 1):
-            if not (re.match(r'\s+', args[i]) and re.match(r'\s+', args[i + 1])):
+            if not (Tokens.is_spacing_token(args[i]) and Tokens.is_spacing_token(args[i + 1])):
                 filtered_arguments.append(args[i])
         return filtered_arguments + [args[-1]] if args else []

@@ -5,6 +5,7 @@
 
 
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
+from cmake_tidy.formatting.utils.tokens import Tokens
 
 
 class FormatNewline:
@@ -19,4 +20,4 @@ class FormatNewline:
         return self.__state['indent'] * get_single_indent(self.__settings)
 
     def __format_newlines(self, number_of_newlines: int) -> str:
-        return '\n' * min(self.__settings['succeeding_newlines'], number_of_newlines)
+        return Tokens.remove_spaces() + '\n' * min(self.__settings['succeeding_newlines'], number_of_newlines)

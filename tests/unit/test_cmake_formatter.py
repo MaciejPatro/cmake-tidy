@@ -7,7 +7,7 @@
 import unittest
 
 from cmake_tidy.formatting import CMakeFormatter
-from tests.unit.parser_composite_elements import spaces, newlines
+from tests.unit.parser_composite_elements import spaces, newlines, file
 
 
 class TestCMakeFormatter(unittest.TestCase):
@@ -28,11 +28,11 @@ class TestCMakeFormatter(unittest.TestCase):
 
 class TestCMakeFormatterBasicElements(TestCMakeFormatter):
     def test_return_single_newline(self):
-        self.assertFormatting('\n', newlines(3))
+        self.assertFormatting('\n', file().add(newlines(3)))
 
     def test_return_3_newlines_although_settings_allow_more(self):
         self.settings['succeeding_newlines'] = 5
-        self.assertFormatting('\n\n\n', newlines(3))
+        self.assertFormatting('\n\n\n', file().add(newlines(3)))
 
     def test_replace_tab_with_space_one_to_two(self):
         self.assertFormatting(' ' * 4, spaces('\t\t'))

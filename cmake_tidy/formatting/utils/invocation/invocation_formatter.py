@@ -6,6 +6,7 @@
 
 import re
 from abc import ABC, abstractmethod
+from typing import List
 
 from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
@@ -40,6 +41,7 @@ class InvocationFormatter(ABC):
 
     def _prepare_arguments(self, invocation: dict) -> list:
         invocation['arguments'] = self.__remove_empty_arguments(invocation)
+        invocation['arguments'] = self.__remove_whitespace_at_end_of_line(invocation['arguments'])
         if self.__is_wrappable(invocation):
             invocation['arguments'] = self.__wrap_arguments_if_possible(invocation)
         return invocation['arguments']
@@ -64,3 +66,11 @@ class InvocationFormatter(ABC):
     @staticmethod
     def __remove_empty_arguments(invocation: dict) -> list:
         return list(filter(len, invocation['arguments']))
+
+    @staticmethod
+    def __remove_whitespace_at_end_of_line(args: List[str]) -> list:
+        filtered_arguments = []
+        for i in range(len(args) - 1):
+            if not (re.match(r'\s+', args[i]) and re.match(r'\s+', args[i + 1])):
+                filtered_arguments.append(args[i])
+        return filtered_arguments + [args[-1]] if args else []

@@ -64,3 +64,11 @@ elseif()
 endif()"""
 
         self.assertFormatting(expected_formatting, root)
+
+    def test_invocation_with_whitespaces_before_line_end(self):
+        invocation_lead_by_spaces = file() \
+            .add(command_invocation('function(')) \
+            .add(spaces('   ')) \
+            .add(newlines(1))
+
+        self.assertFormatting('function()\n', invocation_lead_by_spaces)

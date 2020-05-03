@@ -487,6 +487,9 @@
     "GLOBAL PROPERTY"
   ],
   "keywords": [
+    "ARGS",
+    "RETURN_VALUE",
+    "OUTPUT_VARIABLE",
     "RESULT",
     "QUERY",
     "VERSION",
@@ -597,6 +600,12 @@
     "IGNORED",
     "OPTIONAL",
     "REQUIRED",
+    "EXACT",
+    "QUIET",
+    "MODULE",
+    "COMPONENTS",
+    "OPTIONAL_COMPONENTS",
+    "NO_POLICY_SCOPE",
     "NETRC_FILE",
     "EXPECTED_HASH_ALGO",
     "EXPECTED_MD5",

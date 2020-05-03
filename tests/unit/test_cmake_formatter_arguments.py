@@ -179,7 +179,7 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
 
     def test_empty_spaces_at_end_of_line(self):
         self.settings['line_length'] = 10
-        self.settings['keep_command_in_single_line'] = True
+        self.settings['keyword_and_single_value_in_one_line'] = True
 
         args = arguments().add(unquoted_argument('abc')) \
             .add(spaces('    ')) \

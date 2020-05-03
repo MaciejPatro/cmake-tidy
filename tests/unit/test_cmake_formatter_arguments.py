@@ -176,3 +176,18 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
     ${CMAKE_COMMAND} -E echo "Copy resource files for ${target}")"""
 
         self.assertFormatting(expected_formatting, root)
+
+    def test_empty_spaces_at_end_of_line(self):
+        self.settings['line_length'] = 10
+        self.settings['keep_command_in_single_line'] = True
+
+        args = arguments().add(unquoted_argument('abc')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('TARGET')) \
+            .add(spaces('    ')) \
+            .add(newlines(1)) \
+            .add(unquoted_argument('${PROJECT_NAME}')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('add_custom_target(', args))
+        self.assertFormatting('add_custom_target(abc\n  TARGET ${PROJECT_NAME}\n)', root)

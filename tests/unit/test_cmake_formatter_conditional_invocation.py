@@ -24,6 +24,7 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
         self.assertConditionFormatting('if(abc OR def)', args)
 
     def test_splitting_only_after_logical_operations(self):
+        self.settings['condition_splitting_move_and_or_to_newline'] = False
         self.settings['line_length'] = 10
 
         args = arguments() \
@@ -55,6 +56,7 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
         self.assertConditionFormatting(expected_formatting, args)
 
     def test_splitting_only_after_logical_operations_comments_excluded(self):
+        self.settings['condition_splitting_move_and_or_to_newline'] = False
         self.settings['line_length'] = 10
 
         args = arguments() \

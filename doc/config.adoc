@@ -187,6 +187,24 @@ install(
 )
 ----
 
+|`condition_splitting_move_and_or_to_newline`
+|`boolean`
+|`True`
+| When splitting conditional invocation when enabled splits invocation
+before AND/OR operators:
+
+[source,cmake]
+----
+if(CMAKE_GENERATOR STREQUAL "Visual Studio 15 2017"
+        OR CMAKE_GENERATOR STREQUAL "Visual Studio 16 2019")
+----
+Disabled:
+[source,cmake]
+----
+if(CMAKE_GENERATOR STREQUAL "Visual Studio 15 2017" OR
+        CMAKE_GENERATOR STREQUAL "Visual Studio 16 2019")
+----
+
 |`keywords`
 |`array`
 |`[]`

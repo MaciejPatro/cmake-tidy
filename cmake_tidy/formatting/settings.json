@@ -55,6 +55,10 @@
       "type": "boolean",
       "description": "add_custom_target COMMAND will be forced to stay in one line"
     },
+    "condition_splitting_move_and_or_to_newline": {
+      "type": "boolean",
+      "description": "When splitting conditional invocation - move AND/OR to newline"
+    },
     "keywords": {
       "type": "array",
       "description": "Array of unquoted arguments to be treated as keywords"
@@ -76,6 +80,7 @@
       "keep_property_and_value_in_one_line",
       "keyword_and_single_value_in_one_line",
       "keep_command_in_single_line",
+      "condition_splitting_move_and_or_to_newline",
       "keywords"
     ]
   }

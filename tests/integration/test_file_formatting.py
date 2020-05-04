@@ -136,6 +136,19 @@ class TestFileFormatting(TestIntegrationBase):
 
     @mock.patch('sys.stdout', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
+    def test_formatting_complicated_conditions_splitting_after_operator(self, load_settings, stdout):
+        self.fake_settings['tabs_as_spaces'] = False
+        self.fake_settings['wrap_short_invocations_to_single_line'] = True
+        self.fake_settings['condition_splitting_move_and_or_to_newline'] = False
+        load_settings.return_value = self.fake_settings
+
+        self.format_file('complicated_conditions.cmake')
+
+        normalized_output = normalize(stdout.getvalue())
+        verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_real_implementation_of_feature_in_cmake(self, load_settings, stdout):
         self.fake_settings['tabs_as_spaces'] = False
         self.fake_settings['closing_parentheses_in_newline_when_split'] = True

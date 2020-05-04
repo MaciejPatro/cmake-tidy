@@ -75,10 +75,16 @@ class CommandRealignModifier:
         for i in range(len(args)):
             if KeywordVerifier.is_first_class_keyword(args[i]):
                 args, position = self.__reindent_property_name(args, i)
-                if self.__should_realign_keyword_values(args) and \
-                        not KeywordVerifier.is_line_comment(args[position + 2]):
+                if self.__is_possible_to_realign_keyword_values(args) and self.__is_value_realignable(args, position):
                     args[position + 1] = ' '
         return args
+
+    def __is_value_realignable(self, args, position):
+        return not KeywordVerifier.is_line_comment(args[position + 2]) and \
+               self.__get_number_of_arguments(args, position) == 1
+
+    def __get_number_of_arguments(self, args: List[str], start: int) -> int:
+        return sum([self.__is_argument(data) for data in args[start + 1:]])
 
     def __reindent_property_name(self, args: list, start_index: int) -> Tuple[list, int]:
         for i in range(start_index + 1, len(args)):
@@ -99,9 +105,9 @@ class CommandRealignModifier:
         return args
 
     def __realign_keyword_values_if_needed(self, args: List[str]) -> list:
-        return self.__realign_keyword_values(args) if self.__should_realign_keyword_values(args) else args
+        return self.__realign_keyword_values(args) if self.__is_possible_to_realign_keyword_values(args) else args
 
-    def __should_realign_keyword_values(self, args: List[str]) -> bool:
+    def __is_possible_to_realign_keyword_values(self, args: List[str]) -> bool:
         return self.__settings['keyword_and_single_value_in_one_line'] and \
                len(args) > CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE
 

@@ -4,7 +4,6 @@
 ###############################################################################
 
 
-import re
 from typing import List, Tuple
 
 from cmake_tidy.formatting.utils.tokens import Tokens

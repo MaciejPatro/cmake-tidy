@@ -73,7 +73,8 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
     CMAKE_CXX_COMPILER_ID STREQUAL "GNU")"""
         self.assertConditionFormatting(expected_formatting, args)
 
-    def test_splitting_already_split_invocation(self):
+    def test_splitting_already_split_invocation_after_and(self):
+        self.settings['condition_splitting_move_and_or_to_newline'] = False
         self.settings['line_length'] = 10
 
         args = arguments() \
@@ -82,3 +83,14 @@ class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
             .add(unquoted_argument('CMAKE_CXX_COMPILER_ID'))
 
         self.assertConditionFormatting('if(VERY_LONG_THING AND\n    CMAKE_CXX_COMPILER_ID)', args)
+
+    def test_splitting_before_logical_operator(self):
+        self.settings['condition_splitting_move_and_or_to_newline'] = True
+        self.settings['line_length'] = 10
+
+        args = arguments() \
+            .add(unquoted_argument('VERY_LONG_THING')).add(spaces(' ')) \
+            .add(unquoted_argument('OR')).add(spaces(' ')) \
+            .add(unquoted_argument('CMAKE_CXX_COMPILER_ID'))
+
+        self.assertConditionFormatting('if(VERY_LONG_THING\n    OR CMAKE_CXX_COMPILER_ID)', args)

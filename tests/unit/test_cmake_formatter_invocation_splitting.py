@@ -268,3 +268,32 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
       FALSE
 )"""
         self.assertFormatting(expected_formatting, root)
+
+    def test_set_property_with_multiple_values(self):
+        self.settings['keyword_and_single_value_in_one_line'] = True
+        self.settings['line_length'] = 5
+
+        args = arguments().add(newlines(1)) \
+            .add(unquoted_argument('TARGET')) \
+            .add(newlines(1)) \
+            .add(unquoted_argument('GTest::GTest')) \
+            .add(newlines(1)) \
+            .add(unquoted_argument('PROPERTY')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('INTERFACE_LINK_LIBRARIES')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('GTest::gmock')) \
+            .add(spaces('    ')) \
+            .add(unquoted_argument('GTest::gtest')) \
+            .add(newlines(1))
+
+        root = file().add(command_invocation('set_property(', args))
+
+        expected_formatting = """set_property(
+  TARGET GTest::GTest
+  PROPERTY
+    INTERFACE_LINK_LIBRARIES
+      GTest::gmock
+      GTest::gtest
+)"""
+        self.assertFormatting(expected_formatting, root)

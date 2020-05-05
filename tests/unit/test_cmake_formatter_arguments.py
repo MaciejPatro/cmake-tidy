@@ -10,9 +10,6 @@ from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
 class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
-    def assertFormattingArguments(self, expected_formatting, function_arguments):
-        self.assertFormatting(expected_formatting, file().add(command_invocation('abc(', function_arguments)))
-
     def test_no_spaces_after_opening_and_before_closing_bracket(self):
         function_arguments = arguments() \
             .add(spaces('    ')) \

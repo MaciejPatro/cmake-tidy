@@ -7,7 +7,7 @@
 import unittest
 
 from cmake_tidy.formatting import CMakeFormatter
-from tests.unit.parser_composite_elements import spaces, newlines, file
+from tests.unit.parser_composite_elements import spaces, newlines, file, command_invocation
 
 
 class TestCMakeFormatter(unittest.TestCase):
@@ -24,6 +24,9 @@ class TestCMakeFormatter(unittest.TestCase):
 
     def assertFormatting(self, formatted_string, lex_data):
         self.assertEqual(formatted_string, CMakeFormatter(self.settings).format(lex_data))
+
+    def assertFormattingArguments(self, expected_formatting, function_arguments):
+        self.assertFormatting(expected_formatting, file().add(command_invocation('abc(', function_arguments)))
 
 
 class TestCMakeFormatterBasicElements(TestCMakeFormatter):

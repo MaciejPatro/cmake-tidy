@@ -15,7 +15,11 @@ install(TARGETS mylibapp
   # why this silly line of code beneath is really here
   DESTINATION bin
   COMPONENT applications)
-    install(FILES "${PYLON_BINARY_DIRS}/PylonUsb_MD_VC120_V5_0_TL.dll" DESTINATION ${CMAKE_INSTALL_BINARY} CONFIGURATIONS Release RelWithDebInfo)
+    install(FILES "${PYLON_BINARY_DIRS}/PylonUsb_MD_VC120_V5_0_TL.dll" DESTINATION ${CMAKE_INSTALL_BINARY}
+        CONFIGURATIONS
+                # here we should have other identation also with single line
+            Release
+            RelWithDebInfo)
 
 
 	elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 15 2017"

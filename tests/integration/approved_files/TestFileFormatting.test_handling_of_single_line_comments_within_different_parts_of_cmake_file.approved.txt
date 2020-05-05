@@ -19,6 +19,7 @@ if(NOT Value)
             FILES "${PYLON_BINARY_DIRS}/PylonUsb_MD_VC120_V5_0_TL.dll"
             DESTINATION ${CMAKE_INSTALL_BINARY}
             CONFIGURATIONS
+                # here we should have other identation also with single line
                 Release
                 RelWithDebInfo)
 

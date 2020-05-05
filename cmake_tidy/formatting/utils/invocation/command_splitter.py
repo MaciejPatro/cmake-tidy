@@ -6,7 +6,6 @@
 
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.command_realign_modifier import CommandRealignModifier
-from cmake_tidy.formatting.utils.invocation.utils import fix_line_comments
 from cmake_tidy.formatting.utils.tokens import Tokens
 from cmake_tidy.formatting.utils.updaters.keyword_state_updater import KeywordStateUpdater
 from cmake_tidy.lexical_data import KeywordVerifier
@@ -21,7 +20,6 @@ class CommandSplitter:
 
     def split(self, invocation: dict) -> list:
         invocation['arguments'] = self.__split_args_to_newlines(invocation['arguments'])
-        invocation['arguments'] = fix_line_comments(invocation['arguments'])
         invocation['arguments'] = self.__realign(invocation)
         return invocation['arguments'] + self.__add_closing_bracket_separator(invocation)
 

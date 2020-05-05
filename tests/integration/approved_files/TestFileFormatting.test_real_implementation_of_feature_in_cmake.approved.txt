@@ -80,7 +80,9 @@ function(__target_link_with_def_file TARGET)
 
 	target_link_options(${TARGET}
 		PRIVATE
-			$<$<CXX_COMPILER_ID:MSVC>:/DEF:$<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def> # ignore: export 'exportname' specified multiple times; using first specification
+			$<$<CXX_COMPILER_ID:MSVC>:/DEF:$<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def>
+
+			# ignore: export 'exportname' specified multiple times; using first specification
 			$<$<CXX_COMPILER_ID:MSVC>:/IGNORE:4197>
 	)
 endfunction()

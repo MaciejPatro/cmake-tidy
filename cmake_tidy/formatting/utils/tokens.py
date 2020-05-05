@@ -35,7 +35,7 @@ class Tokens:
     @staticmethod
     def is_spacing_token(data: str) -> bool:
         data = data.replace(Tokens.remove_spaces(), '')
-        return re.match(r'\s+', data) is not None
+        return re.match(r'^\s+$', data) is not None
 
     @staticmethod
     def get_reindent_regex() -> str:
@@ -44,3 +44,7 @@ class Tokens:
     @staticmethod
     def get_reindent_patterns_list(count: int, indent: str) -> list:
         return [f'({indent}){{0,{times}}}{Tokens.reindent(times)}' for times in range(1, count + 1)]
+
+    @staticmethod
+    def is_line_comment(data: str) -> bool:
+        return data.strip().startswith('#')

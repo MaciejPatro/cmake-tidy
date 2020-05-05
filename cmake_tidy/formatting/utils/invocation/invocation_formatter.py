@@ -43,6 +43,7 @@ class InvocationFormatter(ABC):
     def _prepare_arguments(self, invocation: dict) -> list:
         invocation['arguments'] = self.__remove_empty_arguments(invocation)
         invocation['arguments'] = self.__remove_whitespace_at_end_of_line(invocation['arguments'])
+        invocation['arguments'] = self.__merge_line_comments_with_whitespaces_before(invocation['arguments'])
         if self.__is_wrappable(invocation):
             invocation['arguments'] = self.__wrap_arguments_if_possible(invocation)
         return invocation['arguments']
@@ -73,5 +74,15 @@ class InvocationFormatter(ABC):
         filtered_arguments = []
         for i in range(len(args) - 1):
             if not (Tokens.is_spacing_token(args[i]) and Tokens.is_spacing_token(args[i + 1])):
+                filtered_arguments.append(args[i])
+        return filtered_arguments + [args[-1]] if args else []
+
+    @staticmethod
+    def __merge_line_comments_with_whitespaces_before(args: List[str]) -> list:
+        filtered_arguments = []
+        for i in range(len(args) - 1):
+            if Tokens.is_spacing_token(args[i]) and Tokens.is_line_comment(args[i + 1]):
+                args[i + 1] = args[i] + args[i + 1]
+            else:
                 filtered_arguments.append(args[i])
         return filtered_arguments + [args[-1]] if args else []

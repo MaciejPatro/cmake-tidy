@@ -165,8 +165,7 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
         root = file().add(command_invocation('install(', args))
 
         expected_formatting = """install(
-  DESTINATION
-    "include/folder" # comment
+  DESTINATION "include/folder" # comment
   NAMESPACE unofficial::graphicsmagick::
 )"""
         self.assertFormatting(expected_formatting, root)

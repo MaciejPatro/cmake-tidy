@@ -9,7 +9,6 @@ from typing import List
 from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.invocation.invocation_formatter import InvocationFormatter
 from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
-from cmake_tidy.formatting.utils.invocation.utils import fix_line_comments
 from cmake_tidy.formatting.utils.tokens import Tokens
 
 
@@ -20,7 +19,6 @@ class ConditionFormatter(InvocationFormatter):
     def format(self, invocation: dict) -> str:
         invocation['arguments'] = self._prepare_arguments(invocation)
         invocation['arguments'] = self.__split_invocation_if_needed(invocation)
-        invocation['arguments'] = fix_line_comments(invocation['arguments'])
         return self._join_command_invocation(invocation)
 
     def __split_invocation_if_needed(self, invocation: dict) -> list:

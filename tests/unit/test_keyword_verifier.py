@@ -42,7 +42,6 @@ class TestKeywordVerifier(unittest.TestCase):
         self.assertFalse(self.verify.is_keyword('NOT_'))
         self.assertFalse(self.verify.is_keyword('_SOME'))
 
-
     def test_whether_token_is_first_class_keyword(self):
         self.assertTrue(self.verify.is_first_class_keyword('PROPERTY'))
         self.assertTrue(self.verify.is_first_class_keyword('PROPERTIES'))

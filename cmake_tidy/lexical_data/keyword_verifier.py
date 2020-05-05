@@ -31,10 +31,6 @@ class KeywordVerifier:
         return data in KeywordVerifier.__FIRST_CLASS_KEYWORDS
 
     @staticmethod
-    def is_line_comment(data: str) -> bool:
-        return data.startswith('#')
-
-    @staticmethod
     def get_cmake_properties_version() -> str:
         return KeywordVerifier.__PROPERTIES["cmake_version"]
 

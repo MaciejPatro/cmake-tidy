@@ -79,7 +79,7 @@ class CommandRealignModifier:
         return args
 
     def __is_value_realignable(self, args, position):
-        return not KeywordVerifier.is_line_comment(args[position + 2]) and \
+        return not Tokens.is_line_comment(args[position + 2]) and \
                self.__get_number_of_arguments(args, position) == 1
 
     def __get_number_of_arguments(self, args: List[str], start: int) -> int:
@@ -95,7 +95,7 @@ class CommandRealignModifier:
 
     @staticmethod
     def __is_argument(data: str) -> bool:
-        return not (KeywordVerifier.is_line_comment(data) or Tokens.is_spacing_token(data))
+        return not (Tokens.is_line_comment(data) or Tokens.is_spacing_token(data))
 
     def __replace_newline_with_space_after_property_keyword(self, args: List[str]) -> list:
         for i in range(len(args) - CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE):
@@ -129,4 +129,4 @@ class CommandRealignModifier:
 
     @staticmethod
     def __is_property_followed_by_name(args: list, i: int) -> bool:
-        return KeywordVerifier.is_first_class_keyword(args[i]) and not KeywordVerifier.is_line_comment(args[i + 2])
+        return KeywordVerifier.is_first_class_keyword(args[i]) and not Tokens.is_line_comment(args[i + 2])

@@ -4,8 +4,6 @@
 ###############################################################################
 
 
-from unittest import skip
-
 from tests.unit.parser_composite_elements import spaces, file, command_invocation, unquoted_argument, \
     arguments, newlines, line_ending
 from tests.unit.test_cmake_formatter import TestCMakeFormatter
@@ -32,7 +30,6 @@ class TestCMakeFormatterCommandArgumentsWithComments(TestCMakeFormatter):
 )"""
         self.assertFormatting(expected_formatting, root)
 
-    @skip
     def test_multiple_line_comments_before_keyword(self):
         args = arguments().add(unquoted_argument('abc')) \
             .add(newlines(1)) \

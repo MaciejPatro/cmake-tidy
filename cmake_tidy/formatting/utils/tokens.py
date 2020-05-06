@@ -47,4 +47,5 @@ class Tokens:
 
     @staticmethod
     def is_line_comment(data: str) -> bool:
+        data = re.sub(Tokens.get_reindent_regex(), '', data)
         return data.strip().startswith('#')

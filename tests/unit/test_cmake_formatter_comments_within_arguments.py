@@ -69,3 +69,20 @@ class TestCMakeFormatterCommandArgumentsWithComments(TestCMakeFormatter):
   TARGET
 )"""
         self.assertFormatting(expected_formatting, root)
+
+    def test_multiple_line_comments_at_the_end_of_invocation(self):
+        args = arguments().add(unquoted_argument('abc')) \
+            .add(newlines(1)) \
+            .add(unquoted_argument('TARGET')) \
+            .add(newlines(1)) \
+            .add(line_ending('# first line', 1)) \
+            .add(line_ending('# second line', 1))
+
+        root = file().add(command_invocation('add_custom_target(', args))
+
+        expected_formatting = """add_custom_target(abc
+  TARGET
+  # first line
+  # second line
+)"""
+        self.assertFormatting(expected_formatting, root)

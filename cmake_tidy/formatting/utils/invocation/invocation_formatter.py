@@ -44,7 +44,7 @@ class InvocationFormatter(ABC):
     def _prepare_arguments(self, invocation: dict) -> list:
         invocation['arguments'] = self.__remove_empty_arguments(invocation)
         invocation['arguments'] = self.__remove_whitespace_at_end_of_line(invocation['arguments'])
-        invocation['arguments'] = LineCommentsFormatter(self._settings).format(invocation['arguments'])
+        invocation['arguments'] = LineCommentsFormatter(self._state, self._settings).format(invocation['arguments'])
         if self.__is_wrappable(invocation):
             invocation['arguments'] = self.__wrap_arguments_if_possible(invocation)
         return invocation['arguments']

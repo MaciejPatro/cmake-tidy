@@ -24,7 +24,8 @@ install(TARGETS mylibapp
 
 	elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 15 2017"
 				OR CMAKE_GENERATOR STREQUAL "Visual Studio 16 2019")
-install(# do we handle arguments correctly?
+install(
+# do we handle arguments correctly?
 # are you certain?
     EXPORT graphicsmagick-targets
     FILE unofficial-graphicsmagick-targets.cmake # standard line-comment
@@ -33,6 +34,10 @@ install(# do we handle arguments correctly?
     # we can also check what happens here assuming someone commented out single line
 )
 
+	target_link_options(${PROJECT_NAME}
+		PRIVATE
+			$<$<CXX_COMPILER_ID:MSVC>:/WX:NO> # FIXME: and text
+	)
 	endif()
 endif()
 

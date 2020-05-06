@@ -9,9 +9,9 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
+from cmake_tidy.formatting.utils.invocation.line_comments_formatter import LineCommentsFormatter
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
 from cmake_tidy.formatting.utils.tokens import Tokens
-from cmake_tidy.lexical_data import KeywordVerifier
 
 
 class InvocationFormatter(ABC):
@@ -44,8 +44,7 @@ class InvocationFormatter(ABC):
     def _prepare_arguments(self, invocation: dict) -> list:
         invocation['arguments'] = self.__remove_empty_arguments(invocation)
         invocation['arguments'] = self.__remove_whitespace_at_end_of_line(invocation['arguments'])
-        invocation['arguments'] = self.__reindent_line_comments(invocation['arguments'])
-        invocation['arguments'] = self.__merge_line_comments_with_whitespaces_before(invocation['arguments'])
+        invocation['arguments'] = LineCommentsFormatter(self._settings).format(invocation['arguments'])
         if self.__is_wrappable(invocation):
             invocation['arguments'] = self.__wrap_arguments_if_possible(invocation)
         return invocation['arguments']
@@ -78,35 +77,3 @@ class InvocationFormatter(ABC):
             if not (Tokens.is_spacing_token(args[i]) and Tokens.is_spacing_token(args[i + 1])):
                 filtered_arguments.append(args[i])
         return filtered_arguments + [args[-1]] if args else []
-
-    @staticmethod
-    def __merge_line_comments_with_whitespaces_before(args: List[str]) -> list:
-        merged = []
-        for i in range(len(args) - 1):
-            if Tokens.is_spacing_token(args[i]) and Tokens.is_line_comment(args[i + 1]):
-                args[i + 1] = args[i] + args[i + 1]
-            else:
-                merged.append(args[i])
-        return merged + [args[-1]] if args else []
-
-    def __reindent_line_comments(self, args: List[str]) -> list:
-        verifier = KeywordVerifier(self._settings)
-
-        for i in reversed(range(len(args))):
-            if verifier.is_keyword(args[i]):
-                self.__try_reindent_all_comments_after_keyword(args, i)
-        return args
-
-    def __try_reindent_all_comments_after_keyword(self, args, i):
-        try:
-            self.__reindent_all_comments_after_keyword(args, i)
-        except IndexError:
-            pass
-
-    @staticmethod
-    def __reindent_all_comments_after_keyword(args: list, start: int) -> None:
-        for i in reversed(range(start)):
-            if Tokens.is_line_comment(args[i]):
-                args[i] = Tokens.reindent(1) + args[i]
-            else:
-                break

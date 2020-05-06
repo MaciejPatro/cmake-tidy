@@ -161,7 +161,6 @@ class TestFileFormatting(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
-    @skip("New handling needed to enable this failing test")
     @mock.patch('sys.stdout', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_handling_of_single_line_comments_within_different_parts_of_cmake_file(self, load_settings, stdout):

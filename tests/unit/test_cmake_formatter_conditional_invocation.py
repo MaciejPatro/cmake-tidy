@@ -11,10 +11,6 @@ from tests.unit.test_cmake_formatter import TestCMakeFormatter
 
 
 class TestCMakeFormatterConditionalInvocation(TestCMakeFormatter):
-    def assertConditionFormatting(self, expected: str, args: Element):
-        root = file().add(command_invocation('if(', args))
-        self.assertFormatting(expected, root)
-
     def test_already_aligned_invocation(self):
         args = arguments() \
             .add(unquoted_argument('abc')).add(spaces(' ')) \

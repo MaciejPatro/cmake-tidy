@@ -173,6 +173,7 @@ class TestFileFormatting(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
+    @skip("Until implementation is introduced")
     @mock.patch('sys.stdout', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_condition_formatting_with_different_kinds_of_parentheses(self, load_settings, stdout):

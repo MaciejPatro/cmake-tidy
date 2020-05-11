@@ -43,10 +43,9 @@ class CMakeParser:
 
     @staticmethod
     def p_parentheses(p):
-        """parentheses : BEGIN_PARENTHESIS arguments END_PARENTHESIS"""
+        """parentheses : start_parenthesis arguments end_parenthesis"""
         p[0] = ComplexElement('parentheses')
         for element in p[1:]:
-            if isinstance(element, (PrimitiveElement, ComplexElement)):
                 p[0].add(element)
 
     @staticmethod
@@ -153,6 +152,16 @@ class CMakeParser:
     def p_spaces(p):
         """spaces : SPACES"""
         p[0] = PrimitiveElement('spaces', p[1])
+
+    @staticmethod
+    def p_start_parenthesis(p):
+        """start_parenthesis : BEGIN_PARENTHESIS"""
+        p[0] = PrimitiveElement('parenthesis_start', p[1])
+
+    @staticmethod
+    def p_end_parenthesis(p):
+        """end_parenthesis : END_PARENTHESIS"""
+        p[0] = PrimitiveElement('parenthesis_end', p[1])
 
     @staticmethod
     def p_start_cmd_invoke(p):

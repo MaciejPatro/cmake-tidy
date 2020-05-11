@@ -15,14 +15,14 @@ class TestCMakeFormatterConditionalWithParentheses(TestCMakeFormatter):
         self.settings['condition_splitting_move_and_or_to_newline'] = True
 
     def test_split_with_parentheses(self):
-        condition = parentheses().add(arguments()
-                                      .add(unquoted_argument('${CMAKE_CXX_COMPILER_ID}')).add(spaces(' '))
-                                      .add(unquoted_argument('STREQUAL')).add(spaces(' '))
-                                      .add(quoted_argument('GNU')).add(newlines(5))
-                                      .add(unquoted_argument('AND')).add(newlines(1))
-                                      .add(unquoted_argument('${CMAKE_CXX_COMPILER_VERSION}')).add(spaces(' '))
-                                      .add(unquoted_argument('VERSION_LESS')).add(spaces(' '))
-                                      .add(quoted_argument('9')))
+        condition = parentheses(arguments()
+                                .add(unquoted_argument('${CMAKE_CXX_COMPILER_ID}')).add(spaces(' '))
+                                .add(unquoted_argument('STREQUAL')).add(spaces(' '))
+                                .add(quoted_argument('GNU')).add(newlines(5))
+                                .add(unquoted_argument('AND')).add(newlines(1))
+                                .add(unquoted_argument('${CMAKE_CXX_COMPILER_VERSION}')).add(spaces(' '))
+                                .add(unquoted_argument('VERSION_LESS')).add(spaces(' '))
+                                .add(quoted_argument('9')))
 
         expected_formatting = """if((${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU"
       AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "9"))"""

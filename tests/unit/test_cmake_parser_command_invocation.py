@@ -25,9 +25,7 @@ class TestParseCommandInvocation(TestCMakeParser):
     def test_with_unquoted_arguments_in_braces(self):
         start_invocation = 'include('
         expected_args = arguments().add(
-            parentheses().add(
-                arguments().add(unquoted_argument('some'))
-            )
+            parentheses(arguments().add(unquoted_argument('some')))
         )
         root = file().add(command_invocation(start_invocation, expected_args))
 
@@ -65,11 +63,11 @@ class TestParseCommandInvocation(TestCMakeParser):
         [===[--text]===])
     )"""
 
-        expected_arguments_in_parentheses = parentheses().add(arguments()
-                                                              .add(quoted_argument('${DATA_PATH_OPTION}'))
-                                                              .add(newlines(1))
-                                                              .add(spaces('        '))
-                                                              .add(bracket_argument(3, '--text')))
+        expected_arguments_in_parentheses = parentheses(arguments()
+                                                        .add(quoted_argument('${DATA_PATH_OPTION}'))
+                                                        .add(newlines(1))
+                                                        .add(spaces('        '))
+                                                        .add(bracket_argument(3, '--text')))
 
         expected_args = arguments() \
             .add(newlines(1)) \

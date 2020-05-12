@@ -270,6 +270,7 @@ class TestCMakeFormatterCommandInvocationSplitting(TestCMakeFormatter):
 
     def test_set_property_with_multiple_values(self):
         self.settings['keyword_and_single_value_in_one_line'] = True
+        self.settings['keep_property_and_value_in_one_line'] = True
         self.settings['line_length'] = 5
 
         args = arguments().add(newlines(1)) \

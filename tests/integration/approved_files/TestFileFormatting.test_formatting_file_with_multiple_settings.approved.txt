@@ -1,3 +1,7 @@
+################################################
+# BLABLA
+################################################
+
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 project(A_PROJECT)
 
@@ -74,6 +78,9 @@ if(COMMAND target_set)
 	)
 endif()
 
+################################################
+# BLABLA
+################################################
 add_custom_command(
 	TARGET
 		${_TARGET}

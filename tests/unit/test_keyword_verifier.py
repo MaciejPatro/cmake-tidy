@@ -89,5 +89,6 @@ class TestKeywordVerifier(unittest.TestCase):
     def test_is_command_keyword(self):
         self.assertTrue(KeywordVerifier.is_command_keyword('COMMAND'))
         self.assertTrue(KeywordVerifier.is_command_keyword(Tokens.reindent(1) + 'COMMAND'))
+        self.assertTrue(KeywordVerifier.is_command_keyword(Tokens.reindent(1) + 'ARGS'))
         self.assertFalse(KeywordVerifier.is_command_keyword('CMD'))
         self.assertFalse(KeywordVerifier.is_command_keyword(Tokens.reindent(2) + 'COMMAND'))

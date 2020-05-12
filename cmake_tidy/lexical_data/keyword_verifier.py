@@ -58,7 +58,8 @@ class KeywordVerifier:
 
     @staticmethod
     def is_command_keyword(data: str) -> bool:
-        return data.replace(Tokens.reindent(1), '') == 'COMMAND'
+        data = data.replace(Tokens.reindent(1), '')
+        return data == 'COMMAND' or data == 'ARGS'
 
     def __is_one_of_defined_keywords(self, data: str) -> bool:
         return self.__settings.get('keywords') and data in self.__settings['keywords']

@@ -42,7 +42,7 @@ function(__create_def_file TARGET EXPORT_EXTERN_C)
 
 	add_custom_command(TARGET ${TARGET} POST_BUILD
 		VERBATIM
-		COMMAND ${CMAKE_COMMAND} -E echo "Remove $<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def"
+		COMMAND ${CMAKE_COMMAND} ARGS -E echo "Remove $<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def"
 		COMMAND ${CMAKE_COMMAND} -E remove -f $<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def
 		COMMAND ${CMAKE_COMMAND} -E echo "Create $<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def"
 		COMMAND ${_NameOfATool} $<TARGET_FILE:${TARGET}> "$<TARGET_PROPERTY:${TARGET},BINARY_DIR>/${TARGET}.def" ${_linksecure_dir} /APICompatibility ${_apicompliancefile} ${_export_extern_c_option}

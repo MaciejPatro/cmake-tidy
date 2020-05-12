@@ -30,9 +30,10 @@ class CommandRealignModifier:
         return self.__realign_commands(args) if self.__settings.get('keep_command_in_single_line') else args
 
     def __realign_commands(self, args: List[str]) -> list:
+        diff = 0 if self.__settings.get('keyword_and_single_value_in_one_line') else CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE
         for i in range(len(args)):
             if KeywordVerifier.is_command_keyword(args[i]):
-                for j in range(i + CommandRealignModifier.__DIFF_BETWEEN_KEYWORD_AND_VALUE, len(args) - 1):
+                for j in range(i + diff, len(args) - 1):
                     if self.__verifier.is_keyword(args[j + 1]):
                         break
                     if Tokens.is_spacing_token(args[j]):

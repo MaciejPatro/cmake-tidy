@@ -38,6 +38,14 @@ install(
 		PRIVATE
 			$<$<CXX_COMPILER_ID:MSVC>:/WX:NO> # FIXME: and text
 	)
+
+        target_compile_options(${PROJECT_NAME}
+	PRIVATE
+		$<$<CXX_COMPILER_ID:MSVC>:/wd4251> # warning about DLL interface
+		$<$<AND:$<AND:$<PLATFORM_ID:A_PLATFORM>,$<VERSION_EQUAL:${CMAKE_SYSTEM_VERSION},64.00>,$<CXX_COMPILER_ID:MSVC>>,$<CONFIG:Release>>:/QRfpe->
+		$<$<CXX_COMPILER_ID:GNU>:-w> # TODO: suppress all GCC warnings
+		$<$<CXX_COMPILER_ID:Clang>:-Wno-everything> # TODO: suppress all Clang warnings
+)
 	endif()
 endif()
 

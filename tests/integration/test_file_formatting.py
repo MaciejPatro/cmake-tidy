@@ -179,7 +179,9 @@ class TestFileFormatting(TestIntegrationBase):
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_handling_of_single_line_comments_within_different_parts_of_cmake_file(self, load_settings, stdout):
         self.fake_settings['wrap_short_invocations_to_single_line'] = True
+        self.fake_settings['keep_property_and_value_in_one_line'] = True
         self.fake_settings['keyword_and_single_value_in_one_line'] = True
+        self.fake_settings['closing_parentheses_in_newline_when_split'] = True
         load_settings.return_value = self.fake_settings
 
         self.format_file('comments.cmake')

@@ -47,8 +47,8 @@ class CommandRealignModifier:
         return self.__settings['keep_property_and_value_in_one_line'] and self.__state['has_first_class_keyword']
 
     def __realign_properties(self, args: List[str]) -> list:
-        for i in range(len(args) - 1):
-            if self.__is_property(args[i]) and Tokens.is_spacing_token(args[i + 1]):
+        for i in range(len(args) - 2):
+            if self.__is_property(args[i]) and self.__should_realign_value_after_keyword(args, i):
                 args[i + 1] = ' '
         return args
 

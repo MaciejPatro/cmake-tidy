@@ -41,6 +41,12 @@ class TestParseBasicElements(TestCMakeParser):
 
         self.assertReprEqual(root, self.parser.parse(comment + '\n\n'))
 
+    def test_should_handle_empty_comment(self):
+        comment = '#'
+        root = file().add(line_ending(comment, 2))
+
+        self.assertReprEqual(root, self.parser.parse(comment + '\n\n'))
+
     def test_should_parse_line_comments_and_unhandled_data_together(self):
         comment = '# cdaew9u32#$#@%#232cd a2o#@$@!'
         root = file() \

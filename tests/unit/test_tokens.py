@@ -18,6 +18,7 @@ class TestTokens(unittest.TestCase):
         self.assertTrue(Tokens.is_line_comment('# comment'))
         self.assertTrue(Tokens.is_line_comment('#comment'))
         self.assertTrue(Tokens.is_line_comment(Tokens.reindent(1) + '#comment'))
+        self.assertTrue(Tokens.is_line_comment(Tokens.remove_spaces() + Tokens.reindent(1) + '#comment'))
         self.assertTrue(Tokens.is_line_comment('\t # something'))
         self.assertTrue(Tokens.is_line_comment('\t #'))
         self.assertFalse(Tokens.is_line_comment('_# not a comment'))

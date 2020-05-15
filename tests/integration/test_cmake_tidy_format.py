@@ -62,3 +62,11 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         self.assertFail(execute_cmake_tidy(command='format', arguments=[get_input_file('arguments.cmake')]))
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stderr', new_callable=StringIO)
+    @mock.patch('cmake_tidy.commands.format.output_writer.OutputWriter.write')
+    def test_format_inplace_with_error_should_inform_about_failure_and_keep_initial_file(self, write, stderr):
+        self.assertFail(execute_cmake_tidy(command='format', arguments=['-i', get_input_file('incorrect_file.cmake')]))
+        write.assert_not_called()
+        normalized_output = normalize(stderr.getvalue())
+        verify(normalized_output, self.reporter)

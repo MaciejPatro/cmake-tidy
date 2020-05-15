@@ -10,11 +10,16 @@ from cmake_tidy.parsing.cmake_lexer import CMakeLexer
 from cmake_tidy.lexical_data.elements import PrimitiveElement, ComplexElement
 
 
+class ParsingError(Exception):
+    pass
+
+
 class CMakeParser:
     def __init__(self) -> None:
         self.lexer = CMakeLexer()
         self.tokens = self.lexer.tokens
         self.parser = yacc.yacc(module=self)
+        self.__lineno = 1
 
     @staticmethod
     def p_file(p):
@@ -30,8 +35,7 @@ class CMakeParser:
     def p_file_element(p):
         """file_element : line_ending
                         | spaces
-                        | command_invocation
-                        | unhandled"""
+                        | command_invocation"""
         p[0] = p[1]
 
     @staticmethod
@@ -104,21 +108,16 @@ class CMakeParser:
         """line_comment : LINE_COMMENT"""
         p[0] = PrimitiveElement('line_comment', p[1])
 
-    @staticmethod
-    def p_newlines(p):
+    def p_newlines(self, p):
         """newlines : NEWLINES"""
-        p[0] = PrimitiveElement('newlines', len(p[1]))
+        newlines = len(p[1])
+        self.__lineno += newlines
+        p[0] = PrimitiveElement('newlines', newlines)
 
     @staticmethod
     def p_empty(p):
         """empty :"""
         p[0] = PrimitiveElement()
-
-    @staticmethod
-    def p_unhandled(p):
-        """unhandled : unhandled unhandled_element
-                     | unhandled_element"""
-        _create_content(p, 'unhandled')
 
     @staticmethod
     def p_bracket_argument_content(p):
@@ -132,11 +131,6 @@ class CMakeParser:
                                    | quoted_argument_content_element
                                    | empty"""
         _create_content(p, 'quoted_argument_content')
-
-    @staticmethod
-    def p_unhandled_element(p):
-        """unhandled_element : UNHANDLED_YET"""
-        p[0] = _get_content_element(p[1])
 
     @staticmethod
     def p_bracket_argument_content_element(p):
@@ -173,9 +167,10 @@ class CMakeParser:
         """end_cmd_invoke : COMMAND_INVOCATION_END"""
         p[0] = PrimitiveElement('end_cmd_invoke', p[1])
 
-    @staticmethod
-    def p_error(p):
-        print(f'Illegal symbol {p.type} \"{p.value}\"')
+    def p_error(self, p):
+        if p is not None:
+            raise ParsingError(f'Illegal symbol in line {self.__lineno}: \"{p.value}\"')
+        raise ParsingError('Missing symbol - some invocation is not properly finished')
 
     def parse(self, data: str):
         return self.parser.parse(data)

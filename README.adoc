@@ -1,4 +1,4 @@
-= cmake-tidy
+= cmake-tidy - work in progress
 :toc:
 :numbered:
 
@@ -55,7 +55,8 @@ For more information about available parameters and values visit link:doc/config
 
 == Known limitations/bugs
 
-* Application can format only valid cmake files (Syntax errors cause application to exit with).
+* Application can format only valid cmake files (Syntax errors cause application to exit without
+modifying content of formatted file).
 * Support for `deprecated` keywords/properties for older version of cmake than specified in `--version`
 command might be limited. If you need to support them please provide pull request or specify them as custom
 keywords in `.cmake-tidy.json` config file.

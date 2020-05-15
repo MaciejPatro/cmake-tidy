@@ -30,7 +30,7 @@ class CMakeLexer:
               'BEGIN_PARENTHESIS',
               'END_PARENTHESIS']
 
-    t_INITIAL_commandinvocation_insideparentheses_LINE_COMMENT = r'\#[^\n]+'
+    t_INITIAL_commandinvocation_insideparentheses_LINE_COMMENT = r'\#((?=\n)|[^\n]+)'
     t_INITIAL_commandinvocation_insideparentheses_SPACES = r'[ \t]+'
     t_quotedargument_QUOTED_ARGUMENT_CONTENT = r'(?<!\\)\\\"'
     t_commandinvocation_insideparentheses_UNQUOTED_ARGUMENT = r'[^ \t\(\)\#\"\\\n]+'

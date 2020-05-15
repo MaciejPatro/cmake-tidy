@@ -27,14 +27,6 @@ class TestParseBasicElements(TestCMakeParser):
         file_with_new_lines = file().add(newlines(2))
         self.assertReprEqual(file_with_new_lines, self.parser.parse('\n\n'))
 
-    def test_should_parse_with_unhandled_data_still_collecting_output(self):
-        root = file() \
-            .add(newlines(1)) \
-            .add(unhandled('aaa')) \
-            .add(newlines(2))
-
-        self.assertReprEqual(root, self.parser.parse('\naaa\n\n'))
-
     def test_should_handle_line_comments(self):
         comment = '# comment here'
         root = file().add(line_ending(comment, 2))
@@ -47,20 +39,9 @@ class TestParseBasicElements(TestCMakeParser):
 
         self.assertReprEqual(root, self.parser.parse(comment + '\n\n'))
 
-    def test_should_parse_line_comments_and_unhandled_data_together(self):
+    def test_should_parse_line_comments(self):
         comment = '# cdaew9u32#$#@%#232cd a2o#@$@!'
         root = file() \
-            .add(line_ending(comment, 1)) \
-            .add(unhandled('xc_43'))
+            .add(line_ending(comment, 1))
 
-        self.assertReprEqual(root, self.parser.parse(comment + '\nxc_43'))
-
-    def test_should_parse_spacings_within_text(self):
-        begin = 'abc'
-        spacing = '  \t'
-        end = '_\"DWa'
-        root = file().add(unhandled(begin)) \
-            .add(spaces(spacing)) \
-            .add(unhandled(end))
-
-        self.assertReprEqual(root, self.parser.parse(begin + spacing + end))
+        self.assertReprEqual(root, self.parser.parse(comment + '\n'))

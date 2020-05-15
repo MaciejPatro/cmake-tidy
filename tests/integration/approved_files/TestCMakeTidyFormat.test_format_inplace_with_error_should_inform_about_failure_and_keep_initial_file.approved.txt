@@ -1,0 +1,1 @@
+cmake-tidy format: Illegal symbol in line 4: ")"

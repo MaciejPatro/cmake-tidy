@@ -11,6 +11,7 @@ from cmake_tidy.commands.format import try_create_configuration, FormatConfigura
 from cmake_tidy.formatting import try_read_settings, CMakeFormatter
 from cmake_tidy.formatting.settings_reader import SchemaValidationError
 from cmake_tidy.parsing import CMakeParser
+from cmake_tidy.parsing.cmake_parser import ParsingError
 from cmake_tidy.utils.app_configuration import ConfigurationError
 from cmake_tidy.utils.command_line_handling import arguments
 from cmake_tidy.utils import ExitCodes
@@ -42,7 +43,7 @@ class FormatCommand(Command):
         try:
             config = try_create_configuration(args)
             return self.__format_file(config)
-        except (ConfigurationError, SchemaValidationError) as error:
+        except (ConfigurationError, SchemaValidationError, ParsingError) as error:
             return self._handle_error(error)
 
     def __format_file(self, configuration: FormatConfiguration) -> int:

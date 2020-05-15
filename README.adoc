@@ -1,5 +1,5 @@
 = cmake-tidy
-
+:toc:
 :numbered:
 
 == Introduction
@@ -31,7 +31,7 @@ sub-commands:
 
 === `format` subcommand
 
-==== usage
+==== Usage
 
 [source,text]
 ----
@@ -48,7 +48,19 @@ optional arguments:
   -i, --inplace  inplace edit specified <input_data> file
 ----
 
-==== configuration
+==== link:doc/config.adoc[Configuration]
 
 User can provide alternative settings to an application by providing custom `.cmake-tidy.json` file.
-For more information about available parameters and values visit link:doc/config.adoc[here].
+For more information about available parameters and values visit link:doc/config.adoc[*here*].
+
+== Known limitations/bugs
+
+* Application can format only valid cmake files (Syntax errors cause application to exit with).
+* Support for `deprecated` keywords/properties for older version of cmake than specified in `--version`
+command might be limited. If you need to support them please provide pull request or specify them as custom
+keywords in `.cmake-tidy.json` config file.
+* Line continuation `\` handling is not implemented.
+
+== Other information
+
+* Automated tests are currently executed on `python-3.8` with `Linux` operating system.

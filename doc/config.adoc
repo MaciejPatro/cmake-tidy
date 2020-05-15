@@ -1,4 +1,13 @@
-= `format` subcommand settings
+= `format` subcommand configuration
+
+:numbered:
+
+== Usage
+
+There is a number of configurable settings possible to provide in `.cmake-tidy.json` configuration file.
+The file should be placed in current working directory (`cwd`) where `cmake-tidy` is executed.
+
+== Settings and default values
 
 [cols="2,1,1, 6a", options="header"]
 .Settings

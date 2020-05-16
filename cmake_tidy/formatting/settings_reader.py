@@ -61,17 +61,17 @@ class SettingsReader:
     def get_default_format_settings() -> dict:
         settings = dict()
         settings['succeeding_newlines'] = 2
-        settings['tabs_as_spaces'] = True
+        settings['tabs_as_spaces'] = False
         settings['tab_size'] = 4
         settings['force_command_lowercase'] = True
         settings['space_between_command_and_begin_parentheses'] = False
-        settings['line_length'] = 80
-        settings['wrap_short_invocations_to_single_line'] = False
-        settings['closing_parentheses_in_newline_when_split'] = False
+        settings['line_length'] = 100
+        settings['wrap_short_invocations_to_single_line'] = True
+        settings['closing_parentheses_in_newline_when_split'] = True
         settings['unquoted_uppercase_as_keyword'] = False
         settings['space_after_loop_condition'] = False
         settings['keep_property_and_value_in_one_line'] = True
-        settings['keyword_and_single_value_in_one_line'] = False
+        settings['keyword_and_single_value_in_one_line'] = True
         settings['keep_command_in_single_line'] = True
         settings['condition_splitting_move_and_or_to_newline'] = True
         settings['keywords'] = []

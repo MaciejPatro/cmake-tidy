@@ -11,6 +11,9 @@ class CommandLineParser:
     def __init__(self):
         self.__parser = argparse.ArgumentParser(prog='cmake-tidy',
                                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+        self.__parser.add_argument('-v', '--version', action='store_true', default=False)
+
         self.__sub_parser = self.__parser.add_subparsers(title='sub-commands',
                                                          dest='sub_command',
                                                          help='see "cmake-tidy <command> --help" to read more '

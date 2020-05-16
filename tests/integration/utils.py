@@ -5,13 +5,17 @@
 
 
 from pathlib import Path
+from typing import Optional
 
 from cmake_tidy.__main__ import main
 
 
-def execute_cmake_tidy(command: str, arguments: list) -> int:
+def execute_cmake_tidy(command: Optional[str], arguments: list) -> int:
     try:
-        main([command] + arguments)
+        if command:
+            main([command] + arguments)
+        else:
+            main(arguments)
     except SystemExit as system_exited:
         return system_exited.code
 

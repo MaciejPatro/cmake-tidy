@@ -30,9 +30,8 @@ class KeywordVerifier:
         data = data.replace(Tokens.reindent(1), '')
         return data in KeywordVerifier.__FIRST_CLASS_KEYWORDS
 
-    @staticmethod
-    def get_cmake_properties_version() -> str:
-        return KeywordVerifier.__PROPERTIES["cmake_version"]
+    def get_cmake_properties_version(self) -> str:
+        return self.__PROPERTIES["cmake_version"]
 
     def is_keyword_or_property(self, data: str) -> bool:
         return self.is_property(data) or self.is_keyword(data)

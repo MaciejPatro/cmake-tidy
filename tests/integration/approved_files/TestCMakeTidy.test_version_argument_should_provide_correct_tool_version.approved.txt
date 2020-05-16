@@ -1,0 +1,1 @@
+cmake-tidy: 0.4.0 | supported CMake: 3.17.0

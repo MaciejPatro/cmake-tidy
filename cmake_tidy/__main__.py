@@ -7,7 +7,9 @@
 import sys
 
 from cmake_tidy.commands.format.format_command import FormatCommand
+from cmake_tidy.utils import ExitCodes
 from cmake_tidy.utils.command_line_handling.command_line_parser import CommandLineParser
+from cmake_tidy.version import show_version
 
 
 def main(args=sys.argv[1:]):
@@ -25,8 +27,15 @@ def __init_parser() -> CommandLineParser:
 def __execute(arguments, parser) -> int:
     if arguments.sub_command:
         return arguments.func(arguments)
-    parser.print_help()
-    return 0
+    __handle_basic_functionality(arguments, parser)
+    return ExitCodes.SUCCESS
+
+
+def __handle_basic_functionality(arguments, parser) -> None:
+    if arguments.version:
+        show_version()
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":

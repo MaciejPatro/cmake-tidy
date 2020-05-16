@@ -24,7 +24,7 @@ The file should be placed in current working directory (`cwd`) where `cmake-tidy
 
 |`tabs_as_spaces`
 |`boolean`
-|`True`
+|`False`
 | Dictates whether code indentation should be done using spaces (`True`) or tabs (`False`).
 
 |`tab_size`
@@ -44,12 +44,12 @@ The file should be placed in current working directory (`cwd`) where `cmake-tidy
 
 |`line_length`
 |`integer`
-|`80`
+|`100`
 | Maximum line length that will not cause `command invocation` splitting.
 
 |`wrap_short_invocations_to_single_line`
 |`boolean`
-|`False`
+|`True`
 | Wrap command invocations into single line when they fit in `line_length`.
 from:
 
@@ -70,7 +70,7 @@ target_sources(${PROJECT_NAME} PRIVATE file1.cpp)
 
 |`closing_parentheses_in_newline_when_split`
 |`boolean`
-|`False`
+|`True`
 | Force closing parentheses to new line when command invocation splitting is needed.
 from:
 
@@ -172,7 +172,7 @@ add_custom_target(${target}-resources
 
 |`keyword_and_single_value_in_one_line`
 |`boolean`
-|`False`
+|`True`
 | Enforces keyword and its value to be in single line. Disabled:
 
 [source,cmake]

@@ -36,10 +36,7 @@ install(
 	FILES_MATCHING PATTERN ".*"
 	FILES_MATCHING EXCLUDE abc.cpp
 )
-install(
-	FILES tinyfiledialogs.h
-	DESTINATION "${CMAKE_INSTALL_PREFIX}/include/tinyfiledialogs"
-)
+install(FILES tinyfiledialogs.h DESTINATION "${CMAKE_INSTALL_PREFIX}/include/tinyfiledialogs")
 
 export(
 	TARGETS tinyfiledialogs

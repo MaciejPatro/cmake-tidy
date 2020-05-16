@@ -43,7 +43,11 @@ class TestFileFormatting(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stdout', new_callable=StringIO)
-    def test_format_tabs_with_spaces_replacement(self, stdout):
+    @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
+    def test_format_tabs_with_spaces_replacement(self, load_settings, stdout):
+        self.fake_settings['tabs_as_spaces'] = True
+        load_settings.return_value = self.fake_settings
+
         self.format_file('spaces_violations.cmake')
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
@@ -64,6 +68,7 @@ class TestFileFormatting(TestIntegrationBase):
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_format_indentation_when_spaces_after_command_name_are_present(self, load_settings, stdout):
         self.fake_settings['space_between_command_and_begin_parentheses'] = True
+        self.fake_settings['tabs_as_spaces'] = False
         load_settings.return_value = self.fake_settings
 
         self.format_file('indentations.cmake')
@@ -75,6 +80,7 @@ class TestFileFormatting(TestIntegrationBase):
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_format_line_splitting(self, load_settings, stdout):
         self.fake_settings['wrap_short_invocations_to_single_line'] = True
+        self.fake_settings['line_length'] = 80
         load_settings.return_value = self.fake_settings
 
         self.format_file('line_length_handling.cmake')
@@ -85,7 +91,7 @@ class TestFileFormatting(TestIntegrationBase):
     @mock.patch('sys.stdout', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_formatting_with_tabs(self, load_settings, stdout):
-        self.fake_settings['tabs_as_spaces'] = False
+        self.fake_settings['line_length'] = 80
         load_settings.return_value = self.fake_settings
 
         self.format_file('line_length_handling.cmake')
@@ -99,8 +105,9 @@ class TestFileFormatting(TestIntegrationBase):
     @mock.patch('sys.stdout', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_formatting_file_with_multiple_settings(self, load_settings, stdout):
-        self.fake_settings['tabs_as_spaces'] = False
         self.fake_settings['keywords'] = ['GROUP']
+        self.fake_settings['wrap_short_invocations_to_single_line'] = False
+        self.fake_settings['keyword_and_single_value_in_one_line'] = False
         load_settings.return_value = self.fake_settings
 
         self.format_file('target_setting.cmake')
@@ -151,6 +158,7 @@ class TestFileFormatting(TestIntegrationBase):
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_real_implementation_of_feature_in_cmake(self, load_settings, stdout):
         self.fake_settings['tabs_as_spaces'] = False
+        self.fake_settings['line_length'] = 80
         self.fake_settings['closing_parentheses_in_newline_when_split'] = True
         self.fake_settings['wrap_short_invocations_to_single_line'] = True
         self.fake_settings['keyword_and_single_value_in_one_line'] = True
@@ -165,6 +173,7 @@ class TestFileFormatting(TestIntegrationBase):
     @mock.patch('cmake_tidy.commands.format.format_command.try_read_settings')
     def test_real_implementation_of_feature_in_cmake_split_keywords_and_values(self, load_settings, stdout):
         self.fake_settings['tabs_as_spaces'] = False
+        self.fake_settings['line_length'] = 80
         self.fake_settings['closing_parentheses_in_newline_when_split'] = False
         self.fake_settings['wrap_short_invocations_to_single_line'] = False
         self.fake_settings['keyword_and_single_value_in_one_line'] = False

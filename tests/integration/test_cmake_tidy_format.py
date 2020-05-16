@@ -33,7 +33,7 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('cmake_tidy.formatting.settings_reader.SettingsReader._read_settings',
-                mock.MagicMock(return_value={'tabs_as_spaces': False}))
+                mock.MagicMock(return_value={'keywords': ['CUSTOM_KEYWORD']}))
     @mock.patch('sys.stdout', new_callable=StringIO)
     def test_format_should_dump_full_config_even_if_file_overrides_only_one(self, stdout):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=['--dump-config', 'file.txt']))

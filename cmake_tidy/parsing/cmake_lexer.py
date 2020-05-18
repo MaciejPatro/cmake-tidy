@@ -15,7 +15,6 @@ class CMakeLexer:
         ('insideparentheses', 'exclusive')
     )
     tokens = ['NEWLINES',
-              'UNHANDLED',
               'LINE_COMMENT',
               'SPACES',
               'COMMAND_INVOCATION_START',
@@ -97,7 +96,7 @@ class CMakeLexer:
 
     @staticmethod
     def t_INITIAL_commandinvocation_insideparentheses_error(t: lex.LexToken) -> lex.LexToken:
-        return _skip_one_and_return_with(t, 'UNHANDLED')
+        return _skip_one_and_return_with(t, '?')
 
     @staticmethod
     def t_bracketargument_error(t: lex.LexToken) -> lex.LexToken:

@@ -1,4 +1,7 @@
 = cmake-tidy - work in progress
+
+image:https://github.com/MaciejPatro/cmake-tidy/workflows/Python%20application/badge.svg[title="Pause"]
+
 :toc:
 :numbered:
 

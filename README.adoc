@@ -1,8 +1,6 @@
 = cmake-tidy - work in progress
 :toc:
 
-image:https://github.com/MaciejPatro/cmake-tidy/workflows/Python%20application/badge.svg[Status]
-
 :numbered:
 
 == Introduction
@@ -67,4 +65,7 @@ keywords in `.cmake-tidy.json` config file.
 
 == Other information
 
-* Automated tests are currently executed on `python-3.8` with `Linux` operating system.
+Automated testing is done with workflows:
+
+* `ubuntu-lastest, python-3.8` image:https://github.com/MaciejPatro/cmake-tidy/workflows/linux/badge.svg[Status]
+* `windows-lastest, python-3.8` image:https://github.com/MaciejPatro/cmake-tidy/workflows/windows/badge.svg[Status]

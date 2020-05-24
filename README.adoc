@@ -65,6 +65,24 @@ keywords in `.cmake-tidy.json` config file.
 
 == Other information
 
+=== Installation
+
+The tool is available throught python package index using command:
+
+[source,shell]
+----
+python3 -m pip install cmake-tidy
+----
+
+To confirm installation was successful you can run:
+
+[source,shell]
+----
+cmake-tidy -v
+----
+
+=== CI status
+
 Automated testing is done with workflows:
 
 * `ubuntu-lastest, python-3.8` image:https://github.com/MaciejPatro/cmake-tidy/workflows/linux/badge.svg[Status]

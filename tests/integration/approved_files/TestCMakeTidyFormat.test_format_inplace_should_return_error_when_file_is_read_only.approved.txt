@@ -1,1 +1,0 @@
-cmake-tidy format: File /home/mpatro/projects/cmake-tidy/tests/integration/input_files/arguments.cmake is read-only!

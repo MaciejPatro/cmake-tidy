@@ -4,6 +4,7 @@
 ###############################################################################
 
 
+import re
 from unittest import mock
 
 from approvaltests.approvals import verify
@@ -74,7 +75,8 @@ class TestCMakeTidyFormat(TestIntegrationBase):
     @mock.patch('sys.stderr', new_callable=StringIO)
     @mock.patch('cmake_tidy.commands.format.output_writer.write_to_file',
                 mock.MagicMock(side_effect=PermissionError))
-    def test_format_inplace_should_return_error_when_file_is_read_only(self, stderr):
+    def test_format_should_return_error_when_file_is_read_only_and_inplace_param_is_used(self, stderr):
         self.assertFail(execute_cmake_tidy(command='format', arguments=['-i', get_input_file('arguments.cmake')]))
         normalized_output = normalize(stderr.getvalue())
+        normalized_output = re.sub(r'File .*arguments', 'File <path>arguments', normalized_output)
         verify(normalized_output, self.reporter)

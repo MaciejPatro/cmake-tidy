@@ -40,11 +40,11 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         verify(normalized_output, self.reporter)
 
-    @mock.patch('cmake_tidy.commands.format.output_writer.OutputWriter.write')
+    @mock.patch('cmake_tidy.commands.format.output_writer.write_to_file')
     def test_format_inplace_simple_file(self, write):
         self.assertSuccess(execute_cmake_tidy(command='format', arguments=['-i', get_input_file('arguments.cmake')]))
         write.assert_called_once()
-        normalized_output = normalize(write.call_args[0][0])
+        normalized_output = normalize(write.call_args[0][1])
         verify(normalized_output, self.reporter)
 
     @mock.patch('cmake_tidy.formatting.settings_reader.SettingsReader._read_settings',
@@ -64,9 +64,17 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         verify(normalized_output, self.reporter)
 
     @mock.patch('sys.stderr', new_callable=StringIO)
-    @mock.patch('cmake_tidy.commands.format.output_writer.OutputWriter.write')
+    @mock.patch('cmake_tidy.commands.format.output_writer.write_to_file')
     def test_format_inplace_with_error_should_inform_about_failure_and_keep_initial_file(self, write, stderr):
         self.assertFail(execute_cmake_tidy(command='format', arguments=['-i', get_input_file('incorrect_file.cmake')]))
         write.assert_not_called()
+        normalized_output = normalize(stderr.getvalue())
+        verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stderr', new_callable=StringIO)
+    @mock.patch('cmake_tidy.commands.format.output_writer.write_to_file',
+                mock.MagicMock(side_effect=PermissionError))
+    def test_format_inplace_should_return_error_when_file_is_read_only(self, stderr):
+        self.assertFail(execute_cmake_tidy(command='format', arguments=['-i', get_input_file('arguments.cmake')]))
         normalized_output = normalize(stderr.getvalue())
         verify(normalized_output, self.reporter)

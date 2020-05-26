@@ -8,6 +8,7 @@ import json
 
 from cmake_tidy.commands import Command
 from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration, OutputWriter
+from cmake_tidy.commands.format.output_writer import WriterError
 from cmake_tidy.formatting import try_read_settings, CMakeFormatter
 from cmake_tidy.formatting.settings_reader import SchemaValidationError
 from cmake_tidy.parsing import CMakeParser
@@ -43,7 +44,7 @@ class FormatCommand(Command):
         try:
             config = try_create_configuration(args)
             return self.__format_file(config)
-        except (ConfigurationError, SchemaValidationError, ParsingError) as error:
+        except (WriterError, ConfigurationError, SchemaValidationError, ParsingError) as error:
             return self._handle_error(error)
 
     def __format_file(self, configuration: FormatConfiguration) -> int:

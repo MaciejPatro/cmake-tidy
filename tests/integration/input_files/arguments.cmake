@@ -10,6 +10,11 @@ set([==[ currently a weird bracket argument introduced
 some 2839697%%*^$& text ]===] fake close and stuff]==] some
     other
     [===[www]===]
+    [======[this
+    should
+    be
+    indented differently
+]======]
     "quoted argument with \" escaped quote")
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

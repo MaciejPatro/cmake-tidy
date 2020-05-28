@@ -26,13 +26,13 @@ class CMakeFormatter:
         self.__formatters['spaces'] = utils.FormatSpaces(self.__settings, self.__state)
         self.__formatters['arguments'] = utils.FormatArguments(self.__state)
         self.__formatters['end_cmd_invoke'] = utils.FormatEndCommandInvocation(self.__state)
+        self.__formatters['bracket_argument'] = utils.FormatBracketArgument()
         self.__formatters['line_comment'] = lambda data: data
         self.__formatters['bracket_start'] = lambda data: data
         self.__formatters['bracket_end'] = lambda data: data
         self.__formatters['parenthesis_start'] = lambda data: data
         self.__formatters['parenthesis_end'] = lambda data: data
         self.__formatters['bracket_argument_content'] = lambda data: data
-        self.__formatters['bracket_argument'] = lambda data: ''.join(data)
         self.__formatters['line_ending'] = lambda data: ''.join(data)
         self.__formatters['quoted_argument'] = lambda data: f'"{data}"'
         self.__formatters['parentheses'] = lambda data: data

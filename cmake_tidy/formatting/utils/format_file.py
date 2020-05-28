@@ -16,7 +16,8 @@ class FormatFile:
 
     def __call__(self, data: list) -> str:
         processed = self.__cleanup_end_invocations(''.join(data))
-        return self.__cleanup_whitespaces_at_line_ends(processed)
+        processed = self.__cleanup_whitespaces_at_line_ends(processed)
+        return self.__cleanup_reindent_all(processed)
 
     def __cleanup_end_invocations(self, formatted_file: str) -> str:
         for pattern in Tokens.get_reindent_patterns_list(3, get_single_indent(self.__settings)):
@@ -26,3 +27,7 @@ class FormatFile:
     @staticmethod
     def __cleanup_whitespaces_at_line_ends(processed: str) -> str:
         return re.sub('[ \t]*' + Tokens.remove_spaces(), '', processed)
+
+    @staticmethod
+    def __cleanup_reindent_all(data: str) -> str:
+        return re.sub('[ \t]*' + Tokens.reindent(), '', data)

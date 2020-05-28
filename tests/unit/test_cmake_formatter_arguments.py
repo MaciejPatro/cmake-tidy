@@ -49,7 +49,7 @@ class TestCMakeFormatterCommandArguments(TestCMakeFormatter):
             .add(spaces('    ')) \
             .add(bracket_argument(2, 'text\n  endif(\nother'))
 
-        expected_formatting = f'abc(\n  [==[text\n  endif(\nother]==])'
+        expected_formatting = f'abc(\n[==[text\n  endif(\nother]==])'
         self.assertFormattingArguments(expected_formatting, function_arguments)
 
     def test_ident_target_keyword_in_command(self):

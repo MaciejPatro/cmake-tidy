@@ -13,6 +13,7 @@ class TestTokens(unittest.TestCase):
     def test_reindent_token_generation_and_matching(self):
         self.assertRegex(Tokens.reindent(1), Tokens.get_reindent_regex())
         self.assertRegex(Tokens.reindent(9), Tokens.get_reindent_regex())
+        self.assertRegex(Tokens.reindent(), Tokens.get_reindent_regex())
 
     def test_matching_line_comment_tokens(self):
         self.assertTrue(Tokens.is_line_comment('# comment'))

@@ -12,3 +12,4 @@ from cmake_tidy.formatting.utils.format_newline import FormatNewline
 from cmake_tidy.formatting.utils.format_spaces import FormatSpaces
 from cmake_tidy.formatting.utils.format_start_command_invocation import FormatStartCommandInvocation
 from cmake_tidy.formatting.utils.format_unquoted_argument import FormatUnquotedArgument
+from cmake_tidy.formatting.utils.format_bracket_argument import FormatBracketArgument

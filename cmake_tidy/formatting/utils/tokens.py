@@ -25,7 +25,7 @@ class Tokens:
         return ['if', 'while', 'foreach', 'elseif']
 
     @staticmethod
-    def reindent(count: int) -> str:
+    def reindent(count=99) -> str:
         return f'<cmake-tidy-reindent{count}>'
 
     @staticmethod

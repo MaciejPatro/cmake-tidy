@@ -11,6 +11,11 @@ some 2839697%%*^$& text ]===] fake close and stuff]==]
 	some
 	other
 	[===[www]===]
+[======[this
+    should
+    be
+    indented differently
+]======]
 	"quoted argument with \" escaped quote"
 )
 

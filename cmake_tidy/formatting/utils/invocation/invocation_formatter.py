@@ -10,6 +10,7 @@ from typing import List
 
 from cmake_tidy.formatting.utils.invocation.invocation_wrapper import InvocationWrapper
 from cmake_tidy.formatting.utils.invocation.line_comments_formatter import LineCommentsFormatter
+from cmake_tidy.formatting.utils.line_length_calculator import LineLengthCalculator
 from cmake_tidy.formatting.utils.single_indent import get_single_indent
 from cmake_tidy.formatting.utils.tokens import Tokens
 
@@ -32,10 +33,7 @@ class InvocationFormatter(ABC):
 
     def _invocation_length(self, command_invocation: dict) -> int:
         invoke = self._join_command_invocation(command_invocation) + self._newline_indent()
-        invoke = invoke.replace('\t', ' ' * self._settings['tab_size'])
-        invoke = re.sub(Tokens.get_reindent_regex(), '', invoke)
-        invoke = re.sub(Tokens.remove_spaces(), '', invoke)
-        return len(invoke)
+        return LineLengthCalculator(self._settings).calculate(invoke)
 
     def _join_command_invocation(self, invocation: dict) -> str:
         formatted = invocation['function_name'] + ''.join(invocation['arguments']) + invocation['closing']

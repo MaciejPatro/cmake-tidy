@@ -23,13 +23,13 @@ class SettingsReader:
         self.__schema = self.__try_reading_schema()
         self.__settings = self.get_default_format_settings()
 
-    def try_loading_format_settings(self) -> dict:
-        self.__settings.update(self.__try_reading_settings())
+    def try_loading_format_settings(self, filepath: Path) -> dict:
+        self.__settings.update(self.__try_reading_settings(filepath))
         return self.__settings
 
-    def __try_reading_settings(self) -> dict:
+    def __try_reading_settings(self, filepath: Path) -> dict:
         try:
-            user_define_settings = self._read_settings()
+            user_define_settings = self._read_settings(filepath)
             self.__schema.validate(user_define_settings)
             return user_define_settings
         except (ValidationError, JSONDecodeError) as error:
@@ -50,7 +50,7 @@ class SettingsReader:
             return json.load(file)
 
     @staticmethod
-    def _read_settings() -> dict:
+    def _read_settings(filepath: Path) -> dict:
         settings_file = Path.cwd() / '.cmake-tidy.json'
         if settings_file.exists() and settings_file.stat().st_size > 0:
             with settings_file.open() as file:

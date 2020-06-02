@@ -14,7 +14,6 @@ class FormatConfiguration(Configuration):
     def __init__(self, arguments: dict):
         super().__init__(arguments)
         self.__input_data = self.__initialize_input(arguments)
-        self.__inplace = arguments['inplace']
 
     @property
     def input(self) -> str:

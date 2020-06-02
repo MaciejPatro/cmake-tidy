@@ -2,8 +2,7 @@
 # Copyright Maciej Patro (maciej.patro@gmail.com)
 # MIT License
 ###############################################################################
-
-
+from pathlib import Path
 from unittest import mock, TestCase
 
 from cmake_tidy.formatting.settings_reader import InvalidSchemaError, SettingsReader, SchemaValidationError
@@ -36,10 +35,10 @@ class TestSettingReader(TestCase):
     def test_default_settings_should_be_valid(self, read_settings):
         read_settings.return_value = SettingsReader.get_default_format_settings()
         try:
-            SettingsReader().try_loading_format_settings()
+            SettingsReader().try_loading_format_settings(Path('invalid'))
         except SchemaValidationError:
             self.fail()
 
     def assertSchemaValidationFails(self):
         with self.assertRaises(SchemaValidationError):
-            SettingsReader().try_loading_format_settings()
+            SettingsReader().try_loading_format_settings(Path('invalid'))

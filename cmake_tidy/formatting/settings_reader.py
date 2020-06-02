@@ -49,12 +49,12 @@ class SettingsReader:
         with schema_file.open() as file:
             return json.load(file)
 
-    @staticmethod
-    def _read_settings(filepath: Path) -> dict:
-        settings_file = Path.cwd() / '.cmake-tidy.json'
-        if settings_file.exists() and settings_file.stat().st_size > 0:
-            with settings_file.open() as file:
-                return json.load(file)
+    def _read_settings(self, filepath: Path) -> dict:
+        for path in filepath.parents:
+            self.__settings_file = path / '.cmake-tidy.json'
+            if self.__settings_file.exists() and self.__settings_file.stat().st_size > 0:
+                with self.__settings_file.open() as file:
+                    return json.load(file)
         return dict()
 
     @staticmethod

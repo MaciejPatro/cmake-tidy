@@ -6,6 +6,7 @@
 
 import json
 from pathlib import Path
+from typing import Optional
 
 from cmake_tidy.commands import Command
 from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration, OutputWriter
@@ -31,10 +32,10 @@ class FormatCommand(Command):
 
     def execute_command(self, args) -> int:
         if args.dump_config:
-            return self.__dump_config(Path(args.input))
+            return self.__dump_config(Path(args.input)) if args.input else self.__dump_config(None)
         return self.__format(args)
 
-    def __dump_config(self, filepath: Path) -> int:
+    def __dump_config(self, filepath: Optional[Path]) -> int:
         try:
             print(json.dumps(try_read_settings(filepath), indent=2))
         except SchemaValidationError as error:

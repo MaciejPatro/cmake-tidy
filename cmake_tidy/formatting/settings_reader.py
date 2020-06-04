@@ -7,6 +7,8 @@
 import json
 from json import JSONDecodeError
 from pathlib import Path
+from typing import Optional
+
 from jsonschema import Draft6Validator, SchemaError, ValidationError
 
 
@@ -23,11 +25,11 @@ class SettingsReader:
         self.__schema = self.__try_reading_schema()
         self.__settings = self.get_default_format_settings()
 
-    def try_loading_format_settings(self, filepath: Path) -> dict:
+    def try_loading_format_settings(self, filepath: Optional[Path]) -> dict:
         self.__settings.update(self.__try_reading_settings(filepath))
         return self.__settings
 
-    def __try_reading_settings(self, filepath: Path) -> dict:
+    def __try_reading_settings(self, filepath: Optional[Path]) -> dict:
         try:
             user_define_settings = self._read_settings(filepath)
             self.__schema.validate(user_define_settings)
@@ -49,12 +51,25 @@ class SettingsReader:
         with schema_file.open() as file:
             return json.load(file)
 
-    def _read_settings(self, filepath: Path) -> dict:
+    def _read_settings(self, filepath: Optional[Path]) -> dict:
+        if filepath:
+            return self.__try_reading_settings_recursively(filepath)
+        else:
+            return self.__read_settings_from_filepath(Path.cwd())
+
+    def __try_reading_settings_recursively(self, filepath: Path) -> dict:
+        content = dict()
         for path in filepath.parents:
-            self.__settings_file = path / '.cmake-tidy.json'
-            if self.__settings_file.exists() and self.__settings_file.stat().st_size > 0:
-                with self.__settings_file.open() as file:
-                    return json.load(file)
+            content = self.__read_settings_from_filepath(path)
+            if content:
+                break
+        return content
+
+    def __read_settings_from_filepath(self, filepath: Path) -> dict:
+        self.__settings_file = filepath / '.cmake-tidy.json'
+        if self.__settings_file.exists() and self.__settings_file.stat().st_size > 0:
+            with self.__settings_file.open() as file:
+                return json.load(file)
         return dict()
 
     @staticmethod

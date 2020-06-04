@@ -5,7 +5,11 @@
 == Usage
 
 There is a number of configurable settings possible to provide in `.cmake-tidy.json` configuration file.
-The file should be placed in current working directory (`cwd`) where `cmake-tidy` is executed.
+The file is searched in following locations and order of precedence
+
+* location of `input_file` to be formatted
+* parent locations of `input_file`
+* current working directory of the tool (`cwd`)
 
 == Settings and default values
 

@@ -15,7 +15,8 @@ def dump_config(parser):
     parser.add_argument('--dump-config',
                         action='store_true',
                         help='dump to stdout current settings. Script tries to read settings from `.cmake-tidy.json` '
-                             'file existing in a current directory or provides default settings.')
+                             'or provides default settings. Precedence of searching `.cmake-tidy.json` is described '
+                             'on github')
 
 
 def inplace(parser):

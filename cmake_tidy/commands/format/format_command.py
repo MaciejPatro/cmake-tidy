@@ -6,16 +6,11 @@
 
 import json
 from pathlib import Path
-from typing import Optional
 
 from cmake_tidy.commands import Command
 from cmake_tidy.commands.format import try_create_configuration, FormatConfiguration, OutputWriter
-from cmake_tidy.commands.format.output_writer import WriterError
 from cmake_tidy.formatting import try_read_settings, CMakeFormatter
-from cmake_tidy.formatting.settings_reader import SchemaValidationError
 from cmake_tidy.parsing import CMakeParser
-from cmake_tidy.parsing.cmake_parser import ParsingError
-from cmake_tidy.utils.app_configuration import ConfigurationError
 from cmake_tidy.utils.command_line_handling import arguments
 from cmake_tidy.utils import ExitCodes
 
@@ -31,35 +26,31 @@ class FormatCommand(Command):
         arguments.input_data(self._command_parser)
 
     def execute_command(self, args) -> int:
+        try:
+            self.__try_execute_command(args)
+            return ExitCodes.SUCCESS
+        except Exception as error:
+            return self._handle_error(error)
+
+    def __try_execute_command(self, args):
         if args.dump_config:
-            return self.__dump_config(Path(args.input)) if args.input else self.__dump_config(None)
-        return self.__format(args)
-
-    def __dump_config(self, filepath: Optional[Path]) -> int:
-        try:
-            print(json.dumps(try_read_settings(filepath), indent=2))
-        except SchemaValidationError as error:
-            return self._handle_error(error)
-        return ExitCodes.SUCCESS
-
-    def __format(self, args) -> int:
-        try:
+            self.__try_dump_config(args)
+        else:
             config = try_create_configuration(args)
-            return self.__format_file(config)
-        except (WriterError, ConfigurationError, SchemaValidationError, ParsingError) as error:
-            return self._handle_error(error)
-
-    def __format_file(self, configuration: FormatConfiguration) -> int:
-        parsed_input = self.__parse_input(configuration.input)
-        formatted_data = self.__format_input_data(configuration, parsed_input)
-        OutputWriter(configuration).write(formatted_data)
-        return ExitCodes.SUCCESS
+            formatted_file = self.__try_format_file(config)
+            self.__try_output_formatted_file(config, formatted_file)
 
     @staticmethod
-    def __format_input_data(configuration: FormatConfiguration, parsed_input) -> str:
+    def __try_dump_config(args):
+        filepath = Path(args.input) if args.input else None
+        print(json.dumps(try_read_settings(filepath), indent=2))
+
+    @staticmethod
+    def __try_format_file(configuration: FormatConfiguration) -> str:
+        parsed_input = CMakeParser().parse(configuration.input)
         format_settings = try_read_settings(configuration.file)
         return CMakeFormatter(format_settings).format(parsed_input)
 
     @staticmethod
-    def __parse_input(input_data: str):
-        return CMakeParser().parse(input_data)
+    def __try_output_formatted_file(configuration: FormatConfiguration, formatted_file: str) -> None:
+        OutputWriter(configuration).write(formatted_file)

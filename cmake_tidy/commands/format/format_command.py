@@ -26,6 +26,7 @@ class FormatCommand(Command):
         arguments.inplace(self._command_parser)
         arguments.input_data(self._command_parser)
         arguments.diff(self._command_parser)
+        arguments.verbose(self._command_parser)
 
     def execute_command(self, args) -> int:
         try:

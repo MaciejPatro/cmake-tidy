@@ -29,3 +29,9 @@ def diff(parser):
     parser.add_argument('--diff',
                         action='store_true',
                         help='Print to stdout unified diff between original file and formatted version.')
+
+
+def verbose(parser):
+    parser.add_argument('--verbose',
+                        action='store_true',
+                        help='Print to stdout information about formatted file')

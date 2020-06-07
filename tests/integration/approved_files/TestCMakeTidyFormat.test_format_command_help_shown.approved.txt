@@ -1,4 +1,5 @@
-usage: cmake-tidy format [-h] [--dump-config] [-i] [--diff] [input]
+usage: cmake-tidy format [-h] [--dump-config] [-i] [--diff] [--verbose]
+                         [input]
 
 positional arguments:
   input          CMake file to be formatted
@@ -12,3 +13,4 @@ optional arguments:
   -i, --inplace  Inplace edit specified <input_data> file
   --diff         Print to stdout unified diff between original file and
                  formatted version.
+  --verbose      Print to stdout information about formatted file

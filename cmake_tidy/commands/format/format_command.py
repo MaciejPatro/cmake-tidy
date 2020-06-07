@@ -13,6 +13,7 @@ from cmake_tidy.formatting import try_read_settings, CMakeFormatter
 from cmake_tidy.parsing import CMakeParser
 from cmake_tidy.utils.command_line_handling import arguments
 from cmake_tidy.utils import ExitCodes
+from cmake_tidy.utils.diff import get_unified_diff
 
 
 class FormatCommand(Command):
@@ -24,6 +25,7 @@ class FormatCommand(Command):
         arguments.dump_config(self._command_parser)
         arguments.inplace(self._command_parser)
         arguments.input_data(self._command_parser)
+        arguments.diff(self._command_parser)
 
     def execute_command(self, args) -> int:
         try:
@@ -38,7 +40,10 @@ class FormatCommand(Command):
         else:
             config = try_create_configuration(args)
             formatted_file = self.__try_format_file(config)
-            self.__try_output_formatted_file(config, formatted_file)
+            if args.diff:
+                print(get_unified_diff(config.input, formatted_file, config.file))
+            else:
+                self.__try_output_formatted_file(config, formatted_file)
 
     @staticmethod
     def __try_dump_config(args):

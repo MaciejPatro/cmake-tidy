@@ -80,3 +80,15 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         normalized_output = normalize(stderr.getvalue())
         normalized_output = re.sub(r'File .*arguments', 'File <path>arguments', normalized_output)
         verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    def test_format_should_provide_unified_diff_to_stdout(self, stdout):
+        self.assertSuccess(execute_cmake_tidy(command='format',
+                                              arguments=['--diff', get_input_file('arguments.cmake')]))
+        normalized_output = normalize(stdout.getvalue())
+        normalized_output = self.__replace_with_fake_path('arguments.cmake', normalized_output)
+        verify(normalized_output, self.reporter)
+
+    @staticmethod
+    def __replace_with_fake_path(filename: str, text: str) -> str:
+        return re.sub(r' .*' + filename, ' <replaced_path>/' + filename, text)

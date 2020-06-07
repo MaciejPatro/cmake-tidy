@@ -40,11 +40,17 @@ class FormatCommand(Command):
             self.__try_dump_config(args)
         else:
             config = try_create_configuration(args)
+            self.__print_filename_if_needed(args, config)
             formatted_file = self.__try_format_file(config)
             if args.diff:
                 print(get_unified_diff(config.input, formatted_file, config.file))
             else:
                 self.__try_output_formatted_file(config, formatted_file)
+
+    @staticmethod
+    def __print_filename_if_needed(args, config):
+        if args.verbose:
+            print(f'Formatting file: {config.file}')
 
     @staticmethod
     def __try_dump_config(args):

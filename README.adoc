@@ -36,18 +36,20 @@ sub-commands:
 
 [source,text]
 ----
-usage: cmake-tidy format [-h] [--dump-config] [-i] [input]
+usage: cmake-tidy format [-h] [--dump-config] [-i] [--diff] [input]
 
 positional arguments:
   input          CMake file to be formatted
 
 optional arguments:
   -h, --help     show this help message and exit
-  --dump-config  dump to stdout current settings. Script tries to read
+  --dump-config  Dump to stdout current settings. Script tries to read
                  settings from `.cmake-tidy.json` or provides default
                  settings. Precedence of searching `.cmake-tidy.json` is
                  described on github
-  -i, --inplace  inplace edit specified <input_data> file
+  -i, --inplace  Inplace edit specified <input_data> file
+  --diff         Print to stdout unified diff between original file and
+                 formatted version.
 ----
 
 ==== link:doc/config.adoc[Configuration]

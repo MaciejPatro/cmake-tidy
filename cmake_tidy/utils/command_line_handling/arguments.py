@@ -14,7 +14,7 @@ def input_data(parser):
 def dump_config(parser):
     parser.add_argument('--dump-config',
                         action='store_true',
-                        help='dump to stdout current settings. Script tries to read settings from `.cmake-tidy.json` '
+                        help='Dump to stdout current settings. Script tries to read settings from `.cmake-tidy.json` '
                              'or provides default settings. Precedence of searching `.cmake-tidy.json` is described '
                              'on github')
 
@@ -22,4 +22,10 @@ def dump_config(parser):
 def inplace(parser):
     parser.add_argument('-i', '--inplace',
                         action='store_true',
-                        help='inplace edit specified <input_data> file')
+                        help='Inplace edit specified <input_data> file')
+
+
+def diff(parser):
+    parser.add_argument('--diff',
+                        action='store_true',
+                        help='Print to stdout unified diff between original file and formatted version.')

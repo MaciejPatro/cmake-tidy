@@ -1,0 +1,26 @@
+--- <replaced_path>/arguments.cmake
++++ <replaced_path>/arguments.cmake
+@@ -7,15 +7,17 @@
+ 
+ # Here we have a line comment with weird stuff like #[===]] $#%!#@$!#@%^^%$&%
+ set([==[ currently a weird bracket argument introduced
+-some 2839697%%*^$& text ]===] fake close and stuff]==] some
+-    other
+-    [===[www]===]
+-    [======[this
++some 2839697%%*^$& text ]===] fake close and stuff]==]
++	some
++	other
++	[===[www]===]
++[======[this
+     should
+     be
+     indented differently
+ ]======]
+-    "quoted argument with \" escaped quote")
++	"quoted argument with \" escaped quote"
++)
+ 
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ 
+

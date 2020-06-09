@@ -1,6 +1,6 @@
 from cmake_tidy.lexical_data import KeywordVerifier
 
-VERSION = '0.4.0'
+VERSION = '0.5.0'
 
 
 def show_version():

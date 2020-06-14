@@ -5,6 +5,7 @@
 
 
 import json
+from copy import copy
 from pathlib import Path
 
 from cmake_tidy.commands import Command
@@ -24,23 +25,37 @@ class FormatCommand(Command):
 
         arguments.dump_config(self._command_parser)
         arguments.inplace(self._command_parser)
-        arguments.input_data(self._command_parser)
         arguments.diff(self._command_parser)
         arguments.verbose(self._command_parser)
+        arguments.input_data(self._command_parser)
 
     def execute_command(self, args) -> int:
+        if args.dump_config:
+            return self.__dump_config(args)
+
         try:
             self.__try_execute_command(args)
             return ExitCodes.SUCCESS
         except Exception as error:
             return self._handle_error(error)
 
-    def __try_execute_command(self, args):
-        if args.dump_config:
+    def __dump_config(self, args):
+        try:
             self.__try_dump_config(args)
-        else:
-            config = try_create_configuration(args)
-            self.__print_filename_if_needed(args, config)
+            return ExitCodes.SUCCESS
+        except Exception as error:
+            return self._handle_error(error)
+
+    def __try_execute_command(self, args):
+        if not args.input:
+            raise ValueError('Error - incorrect \"input\" - please specify existing file to be formatted')
+
+        current_args = copy(args)
+        for filename in args.input:
+            current_args.input = filename
+
+            config = try_create_configuration(current_args)
+            self.__print_filename_if_needed(config)
             formatted_file = self.__try_format_file(config)
             if args.diff:
                 print(get_unified_diff(config.input, formatted_file, config.file))
@@ -48,13 +63,13 @@ class FormatCommand(Command):
                 self.__try_output_formatted_file(config, formatted_file)
 
     @staticmethod
-    def __print_filename_if_needed(args, config):
-        if args.verbose:
+    def __print_filename_if_needed(config):
+        if config.verbose:
             print(f'Formatting file: {config.file}')
 
     @staticmethod
     def __try_dump_config(args):
-        filepath = Path(args.input) if args.input else None
+        filepath = Path(args.input[0]) if args.input else None
         print(json.dumps(try_read_settings(filepath), indent=2))
 
     @staticmethod

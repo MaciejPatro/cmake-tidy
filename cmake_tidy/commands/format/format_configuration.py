@@ -4,7 +4,6 @@
 ###############################################################################
 
 
-import sys
 from pathlib import Path
 
 from cmake_tidy.utils.app_configuration.configuration import Configuration, ConfigurationError
@@ -26,6 +25,10 @@ class FormatConfiguration(Configuration):
     @property
     def file(self) -> Path:
         return Path(self._config['input'])
+
+    @property
+    def verbose(self) -> bool:
+        return self._config.get(self._property_name()) is True
 
     @property
     def command(self) -> str:

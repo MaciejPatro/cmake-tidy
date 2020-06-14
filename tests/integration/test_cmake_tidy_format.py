@@ -92,6 +92,15 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         normalized_output = self.__replace_with_fake_path('arguments.cmake', normalized_output)
         verify(normalized_output, self.reporter)
 
+    @mock.patch('cmake_tidy.commands.format.output_writer.write_to_file')
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    def test_format_multiple_files_verbose(self, stdout, write):
+        arguments = ['-i', '--verbose', get_input_file('arguments.cmake'), get_input_file('comments.cmake')]
+        self.assertSuccess(execute_cmake_tidy(command='format', arguments=arguments))
+        self.assertEqual(2, write.call_count)
+        self.assertIn(get_input_file('arguments.cmake'), stdout.getvalue())
+        self.assertIn(get_input_file('comments.cmake'), stdout.getvalue())
+
     @staticmethod
     def __replace_with_fake_path(filename: str, text: str) -> str:
         return re.sub(r' .*' + filename, ' <replaced_path>/' + filename, text)

@@ -1,5 +1,5 @@
 usage: cmake-tidy format [-h] [--dump-config] [-i] [--diff] [--verbose]
-                         [input]
+                         [input [input ...]]
 
 positional arguments:
   input          CMake file to be formatted

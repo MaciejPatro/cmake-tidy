@@ -7,7 +7,7 @@
 def input_data(parser):
     parser.add_argument('input',
                         type=str,
-                        nargs='?',
+                        nargs='*',
                         help='CMake file to be formatted')
 
 

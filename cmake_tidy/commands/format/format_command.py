@@ -32,35 +32,39 @@ class FormatCommand(Command):
     def execute_command(self, args) -> int:
         if args.dump_config:
             return self.__dump_config(args)
+        return self.__format_files(args)
 
+    def __format_files(self, args):
         try:
-            self.__try_execute_command(args)
-            return ExitCodes.SUCCESS
+            self.__try_formatting_all_files(args)
         except Exception as error:
             return self._handle_error(error)
+        return ExitCodes.SUCCESS
 
     def __dump_config(self, args):
         try:
             self.__try_dump_config(args)
-            return ExitCodes.SUCCESS
         except Exception as error:
             return self._handle_error(error)
+        return ExitCodes.SUCCESS
 
-    def __try_execute_command(self, args):
+    def __try_formatting_all_files(self, args):
         if not args.input:
             raise ValueError('Error - incorrect \"input\" - please specify existing file to be formatted')
 
         current_args = copy(args)
         for filename in args.input:
             current_args.input = filename
+            self.__try_formatting_a_file(current_args)
 
-            config = try_create_configuration(current_args)
-            self.__print_filename_if_needed(config)
-            formatted_file = self.__try_format_file(config)
-            if args.diff:
-                print(get_unified_diff(config.input, formatted_file, config.file))
-            else:
-                self.__try_output_formatted_file(config, formatted_file)
+    def __try_formatting_a_file(self, current_args):
+        config = try_create_configuration(current_args)
+        self.__print_filename_if_needed(config)
+        formatted_file = self.__try_format_file(config)
+        if current_args.diff:
+            print(get_unified_diff(config.input, formatted_file, config.file))
+        else:
+            self.__try_output_formatted_file(config, formatted_file)
 
     @staticmethod
     def __print_filename_if_needed(config):

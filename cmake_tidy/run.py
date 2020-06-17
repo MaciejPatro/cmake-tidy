@@ -29,14 +29,9 @@ def __init_parser() -> CommandLineParser:
 
 
 def __execute(arguments, parser) -> int:
-    if arguments.sub_command:
-        return arguments.func(arguments)
-    __handle_basic_functionality(arguments, parser)
-    return ExitCodes.SUCCESS
-
-
-def __handle_basic_functionality(arguments, parser) -> None:
     if arguments.version:
-        show_version()
-    else:
-        parser.print_help()
+        return show_version()
+    elif arguments.sub_command:
+        return arguments.func(arguments)
+    parser.print_help()
+    return ExitCodes.SUCCESS

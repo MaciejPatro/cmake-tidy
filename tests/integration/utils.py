@@ -4,6 +4,7 @@
 ###############################################################################
 
 
+import re
 from pathlib import Path
 from typing import Optional
 
@@ -22,6 +23,10 @@ def execute_cmake_tidy(command: Optional[str], arguments: list) -> int:
 
 def normalize(data: str) -> str:
     return data.replace('\r\n', '\n')
+
+
+def mangle_version(data: str) -> str:
+    return re.sub(r'[0-9]+', 'X', data)
 
 
 def get_input_file(filename: str) -> str:

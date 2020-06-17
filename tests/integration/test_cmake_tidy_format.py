@@ -11,7 +11,7 @@ from approvaltests.approvals import verify
 from io import StringIO
 
 from tests.integration.test_integration_base import TestIntegrationBase
-from tests.integration.utils import execute_cmake_tidy, normalize, get_input_file
+from tests.integration.utils import execute_cmake_tidy, normalize, get_input_file, mangle_version
 
 
 class TestCMakeTidyFormat(TestIntegrationBase):
@@ -91,6 +91,11 @@ class TestCMakeTidyFormat(TestIntegrationBase):
         normalized_output = normalize(stdout.getvalue())
         normalized_output = self.__replace_with_fake_path('arguments.cmake', normalized_output)
         verify(normalized_output, self.reporter)
+
+    @mock.patch('sys.stdout', new_callable=StringIO)
+    def test_format_should_correctly_print_version(self, stdout):
+        self.assertSuccess(execute_cmake_tidy(None, arguments=['-v', 'format']))
+        verify(mangle_version(stdout.getvalue()), self.reporter)
 
     @mock.patch('cmake_tidy.commands.format.output_writer.write_to_file')
     @mock.patch('sys.stdout', new_callable=StringIO)

@@ -1,0 +1,1 @@
+cmake-tidy: X.X.X | supported CMake: X.X.X

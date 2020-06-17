@@ -6,6 +6,7 @@
 
 import sys
 
+from cmake_tidy.commands.analyze.analyze_command import AnalyzeCommand
 from cmake_tidy.commands.format.format_command import FormatCommand
 from cmake_tidy.utils import ExitCodes
 from cmake_tidy.utils.command_line_handling.command_line_parser import CommandLineParser
@@ -25,6 +26,7 @@ def main(args=sys.argv[1:]):
 def __init_parser() -> CommandLineParser:
     parser = CommandLineParser()
     parser.add_command(FormatCommand)
+    parser.add_command(AnalyzeCommand)
     return parser
 
 

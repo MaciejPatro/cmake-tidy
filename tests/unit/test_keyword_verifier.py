@@ -50,7 +50,7 @@ class TestKeywordVerifier(unittest.TestCase):
         self.assertFalse(self.verify.is_first_class_keyword('proPERTY'))
 
     def test_available_properties_version(self):
-        self.assertEqual('3.17.0', self.verify.get_cmake_properties_version())
+        self.assertEqual('3.18.0', self.verify.get_cmake_properties_version())
 
     def test_cmake_properties_matching_exactly(self):
         self.assertTrue(self.verify.is_property('LINK_DIRECTORIES'))

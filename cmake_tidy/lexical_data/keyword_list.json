@@ -1,5 +1,5 @@
 {
-  "cmake_version": "3.17.0",
+  "cmake_version": "3.18.0",
   "properties_full_names": [
     "ALLOW_DUPLICATE_CUSTOM_TARGETS",
     "AUTOGEN_SOURCE_GROUP",
@@ -484,7 +484,8 @@
     "REGEX MATCH",
     "REGEX MATCHALL",
     "FILES_MATCHING PERMISSIONS",
-    "GLOBAL PROPERTY"
+    "GLOBAL PROPERTY",
+    "EVAL CODE"
   ],
   "keywords": [
     "ARGS",
@@ -666,6 +667,7 @@
     "GENEX_STRIP",
     "REPLACE",
     "COMPARE",
+    "CALL",
     "CASE",
     "ORDER",
     "SORT",
@@ -775,6 +777,13 @@
     "COMPATIBILITY",
     "ARCH_INDEPENDENT",
     "BUILD_TESTING",
-    "STRINGS"
+    "STRINGS",
+    "ECHO_OUTPUT_VARIABLE",
+    "ECHO_ERROR_VARIABLE",
+    "ARCHIVE_CREATE",
+    "ARCHIVE_EXTRACT",
+    "NATURAL",
+    "STOP_ON_FAILURE",
+    "TARBALL_COMPRESSION"
   ]
 }

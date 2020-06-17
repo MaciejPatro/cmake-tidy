@@ -59,6 +59,10 @@ optional arguments:
 User can provide alternative settings to an application by providing custom `.cmake-tidy.json` file.
 For more information about available parameters and values visit link:doc/config.adoc[*here*].
 
+=== `analyze` subcommand
+
+Introduction is ongoing.
+
 == Known limitations/bugs
 
 * Application can format only valid cmake files (Syntax errors cause application to exit without

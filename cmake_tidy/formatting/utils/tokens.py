@@ -22,7 +22,7 @@ class Tokens:
 
     @staticmethod
     def conditional_tokens() -> list:
-        return ['if', 'while', 'foreach', 'elseif']
+        return ['if', 'while', 'elseif']
 
     @staticmethod
     def reindent(count=99) -> str:

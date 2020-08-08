@@ -24,4 +24,61 @@ foreach(ARG ${ARGN}) # Iterate over each argument
 	endif()
 endforeach()
 
+foreach(X
+	aaaa
+	bbbb
+	cccc
+	dddd
+	eeee
+	ffff
+	gggg
+	hhhh
+	jjjj
+	iiii
+	kkkk
+	llll
+	mmmm
+	nnnn
+	oooo
+	pppp
+	rrrr
+)
+	message("${X}")
+endforeach()
+
+foreach(X
+	IN LISTS
+		aaaa
+		bbbb
+		cccc
+		dddd
+		eeee
+		ffff
+		gggg
+		hhhh
+		jjjj
+		iiii
+		kkkk
+		llll
+		mmmm
+		nnnn
+		oooo
+		pppp
+		rrrr
+)
+	message("${X}")
+endforeach()
+
+foreach(loop_count RANGE ${very_long_start_name} ${even_longer_finish_name})
+	message("${X}")
+endforeach()
+
+foreach(first_name
+	second_name
+	IN ZIP_LISTS
+		long_list_of_first_names
+		long_list_of_second_names
+)
+	message(STATUS "en=${en}, ba=${ba}")
+endforeach()
 

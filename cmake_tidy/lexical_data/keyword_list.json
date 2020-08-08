@@ -485,10 +485,15 @@
     "REGEX MATCHALL",
     "FILES_MATCHING PERMISSIONS",
     "GLOBAL PROPERTY",
+    "IN LISTS",
+    "IN ITEMS",
+    "IN ZIP_LISTS",
     "EVAL CODE"
   ],
   "keywords": [
     "ARGS",
+    "RANGE",
+    "IN",
     "RETURN_VALUE",
     "OUTPUT_VARIABLE",
     "RESULT",

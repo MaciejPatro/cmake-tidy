@@ -14,7 +14,7 @@ def make_invocation(name: str, arguments: Iterable[str]) -> dict:
     return {'function_name': name, 'arguments': arguments, 'closing': ')'}
 
 
-class TestKeywordVerifier(unittest.TestCase):
+class TestNewCommandFormatter(unittest.TestCase):
     def setUp(self) -> None:
         self.state = dict()
         self.settings = dict()

@@ -28,7 +28,8 @@ class TestNewCommandFormatter(unittest.TestCase):
 
     def test_invocation_split_with_closing_parenthesis_in_newline_setting(self):
         self.settings['closing_parentheses_in_newline_when_split'] = True
-        self.assertEqual('set(argument\n\tnext\n)', self.__get_formatted('set(', ['argument', 'next']))
+        self.state['indent'] = 1
+        self.assertEqual('set(argument\n\t\tnext\n\t)', self.__get_formatted('set(', ['argument', 'next']))
 
     @staticmethod
     def __make_invocation(name: str, arguments: Iterable[str]) -> dict:

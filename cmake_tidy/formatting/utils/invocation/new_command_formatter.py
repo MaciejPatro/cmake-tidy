@@ -25,8 +25,9 @@ class NewCommandFormatter:
                self.__get_formatted_closing_parenthesis()
 
     def __handle_arguments(self, args: List[str]) -> str:
-        args = [token for token in args if not Tokens.is_spacing_token(token)]
-        return ' '.join(args)
+        if self.__settings['wrap_short_invocations_to_single_line']:
+            args = map(lambda token: ' ' if Tokens.is_spacing_token(token) else token, args)
+        return ''.join(args)
 
     def __get_formatted_closing_parenthesis(self):
         if self.__settings['closing_parentheses_in_newline_when_split']:

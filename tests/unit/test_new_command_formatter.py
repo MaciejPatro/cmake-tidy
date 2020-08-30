@@ -12,8 +12,9 @@ from cmake_tidy.formatting.utils.tokens import Tokens
 
 class TestNewCommandFormatter(unittest.TestCase):
     def setUp(self) -> None:
-        self.state = {'indent': 1}
-        self.settings = {'line_length': 2, 'tabs_as_spaces': False, 'succeeding_newlines': 2}
+        self.state = {'indent': 0}
+        self.settings = {'line_length': 2, 'tabs_as_spaces': False, 'succeeding_newlines': 2,
+                         'closing_parentheses_in_newline_when_split': False}
         self.formatter = NewCommandFormatter(self.state, self.settings)
 
     def test_format_empty_invocation(self):
@@ -24,6 +25,10 @@ class TestNewCommandFormatter(unittest.TestCase):
 
     def test_invocation_with_two_arguments_split_due_to_line_length(self):
         self.assertEqual('set(argument\n\tnext)', self.__get_formatted('set(', ['argument', 'next']))
+
+    def test_invocation_split_with_closing_parenthesis_in_newline_setting(self):
+        self.settings['closing_parentheses_in_newline_when_split'] = True
+        self.assertEqual('set(argument\n\tnext\n)', self.__get_formatted('set(', ['argument', 'next']))
 
     @staticmethod
     def __make_invocation(name: str, arguments: Iterable[str]) -> dict:

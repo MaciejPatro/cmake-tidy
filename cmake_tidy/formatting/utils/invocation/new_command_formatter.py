@@ -13,10 +13,22 @@ class NewCommandFormatter:
     def __init__(self, state: dict, settings: dict):
         self.__state = state
         self.__settings = settings
-        self.__newline_formatter = FormatNewline(state, settings)
 
     def format(self, invocation: dict) -> str:
-        return invocation['function_name'] + self.handle_arguments(invocation['arguments']) + invocation['closing']
+        formatted = self.__format(invocation)
+        return formatted
 
-    def handle_arguments(self, args: List[str]) -> str:
-        return self.__newline_formatter(1).join(args)
+    def __format(self, invocation):
+        return invocation['function_name'] + \
+               self.__handle_arguments(invocation['arguments']) + \
+               self.__get_formatted_closing_parenthesis()
+
+    def __handle_arguments(self, args: List[str]) -> str:
+        state = self.__state.copy()
+        state['indent'] += 1
+        return FormatNewline(state, self.__settings)(1).join(args)
+
+    def __get_formatted_closing_parenthesis(self):
+        if self.__settings['closing_parentheses_in_newline_when_split']:
+            return FormatNewline(self.__state, self.__settings)(1) + ')'
+        return ')'

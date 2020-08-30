@@ -36,6 +36,11 @@ class TestNewCommandFormatter(unittest.TestCase):
     def test_do_not_wrap_when_not_defined(self):
         self.assertEqual('set(argument\n\tnext)', self.__get_formatted('set(', ['argument', '\n\t', 'next']))
 
+    def test_do_not_wrap_with_line_comment(self):
+        self.settings['wrap_short_invocations_to_single_line'] = True
+        self.assertEqual('set(argument # a comment\n\tnext)',
+                         self.__get_formatted('set(', ['argument', ' # a comment\n\t', 'next']))
+
     @staticmethod
     def __make_invocation(name: str, arguments: Iterable[str]) -> dict:
         return {'function_name': name, 'arguments': arguments, 'closing': ')'}

@@ -7,6 +7,7 @@
 from typing import List
 
 from cmake_tidy.formatting.utils import FormatNewline
+from cmake_tidy.formatting.utils.tokens import Tokens
 
 
 class NewCommandFormatter:
@@ -24,9 +25,8 @@ class NewCommandFormatter:
                self.__get_formatted_closing_parenthesis()
 
     def __handle_arguments(self, args: List[str]) -> str:
-        state = self.__state.copy()
-        state['indent'] += 1
-        return FormatNewline(state, self.__settings)(1).join(args)
+        args = [token for token in args if not Tokens.is_spacing_token(token)]
+        return ' '.join(args)
 
     def __get_formatted_closing_parenthesis(self):
         if self.__settings['closing_parentheses_in_newline_when_split']:

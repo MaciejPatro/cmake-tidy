@@ -1,6 +1,6 @@
 name: linux
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
@@ -8,20 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint with flake8
-      run: |
-        pip install flake8
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        pytest
+      - uses: actions/checkout@v2
+      - uses: docker://maciejpatro/ubuntu-20.04-gcc-10
+      - name: Test with pytest
+        run: |
+          cmake -v
+          ninja -v
